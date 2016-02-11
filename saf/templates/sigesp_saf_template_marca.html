@@ -1,0 +1,87 @@
+{% extends "base_saf.html" %}
+{% block content %}
+<script type="text/javascript" language="JavaScript1.2" src="js/sigesp_saf_d_marca.js"></script>
+  <h1 class="titulo">Definici&oacute;n de las marca</h1>
+	<h2 class="subtitulo">Datos</h2>
+
+	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" onreset="limpiar()">
+	
+    {# SEGURIDAD #}
+    <input type=hidden name=permisos id=permisos value='{{ ls_permisos }}'>
+    <input type=hidden name=leer id=leer value='{{ la_permisos_leer }}'>
+    <input type=hidden name=incluir id=incluir value='{{ la_permisos_incluir }}'>
+    <input type=hidden name=cambiar id=cambiar value='{{ la_permisos_cambiar }}'>
+    <input type=hidden name=eliminar id=eliminar value='{{ la_permisos_eliminar }}'>
+    <input type=hidden name=imprimir id=imprimir value='{{ la_permisos_imprimir }}'>
+    <input type=hidden name=anular id=anular value='{{ la_permisos_anular }}'>
+    <input type=hidden name=ejecutar id=ejecutar value='{{ la_permisos_ejecutar }}'>
+    {# SEGURIDAD #}
+
+    {# BLOQUES PARA MENSAJES #}
+      <div id="save_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El formunario no pudo ser guardado.
+        </div>
+      </div>
+      <div id="save_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>Éxito!</strong> El formulario fue guardado.
+        </div>
+      </div>
+      <div id="delete_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El objeto no pudo ser borrado.
+        </div>
+      </div>
+      <div id="delete_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>Éxito!</strong> El objeto fue borrado.
+        </div>
+      </div>
+      <div id="new_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> Al asignar un <i>Código</i> al formulario de registro.
+        </div>
+      </div>
+
+    {# Comienza tu formulario aqui #}
+    <div class="form-group">
+      <label for="codigo" class="control-label col-md-10">Código</label>
+      <div class="col-md-2">
+        <input type="text" class="form-control" name="codmarca" type="text" id="codmarcaid" style="text-align:center" disabled>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="denominacionmarca" class="control-label col-md-3">Denominación Comercial de la Marca:</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="denominacioncomercial" id="denominacioncomercialid">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="nombrefabricante" class="control-label col-md-3">Nombre del Fabricante:</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" name="nombrefabricante"  id="nombrefabricanteid">
+      </div>  
+    </div> 
+
+    {# Marcador Guardar-Actualuzar #}
+    <input name="hidstatus" type="hidden" id="hidstatus">
+    {# fin del formulario #}
+</form>
+
+  {% if debug == true %}
+    <div class="debug">
+      <label>Usuario:</label> {{ loguser }}
+      <label>Permisos:</label> {{ ls_permisos }}
+      <label>Leer:</label> {{ la_permisos_leer }}
+      <label>Incluir:</label> {{ la_permisos_incluir }}
+      <label>Cambiar:</label> {{ la_permisos_cambiar }}
+      <label>Eliminar:</label> {{ la_permisos_eliminar }}
+      <label>Imprimir:</label> {{ la_permisos_imprimir }}
+      <label>Anular:</label> {{ la_permisos_anular }}
+      <label>Ejecutar:</label> {{ la_permisos_ejecutar }}
+    </div>
+  {% endif %}
+{% endblock %}

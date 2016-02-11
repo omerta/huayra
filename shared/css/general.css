@@ -7,17 +7,8 @@ body{
 	top: 0px;
 	right: 5px;
 }
-input,checkbox{
-	border:thin solid #000000;
-	color: #000000;
-}
-input,select,textarea,text{
-	background-color:#FFFFFF;
-	border:1px solid #999999;
-	color:#000000;
-	font-family:Tahoma, Verdana, Arial;
-	font-size:11px;
-}
+input,checkbox{border:thin solid #000000;color: #000000;}
+input,select,textarea,text{background-color:#FFFFFF;border:1px solid #999999;color:#000000;font-family:Tahoma, Verdana, Arial;font-size:11px;}
 .sin-borde{
 	border:none;
 	color:#000000;
@@ -29,8 +20,8 @@ input,select,textarea,text{
 	border-top:1px ridge #FFFFFF;
 	border-left:1px ridge #FFFFFF;
 	border-bottom:1px ridge #666666;
-	font-wejght:bold;
-	cursor:hand;
+	font-weight:bold;
+	cursor:pointer;
 	color: #000000;
 	background-color:#CCCCCC;
 	font-family: Tahoma, Verdana, Arial;
@@ -67,4 +58,73 @@ input,select,textarea,text{
 	font-style: italic;
 	font-weight: bold;
 	text-transform: none;
+}
+.mensaje_error{font-size:11px;COLOR:#FF0000;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#FFF4F0;border:#FF0000;border-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;}
+.mensaje_error_2{font-size:12px;COLOR:#FF0000;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif}
+.mensaje_advertencia{font-size:10px;COLOR:#CC9933;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif}
+.mensaje_informacion{FONT-SIZE:10px;COLOR:#38598F;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif}
+.mensaje_informacion_2{FONT-SIZE:14px;COLOR:#38598F;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif}
+.mensaje_error_3{background-image:url(../imagenes/comun/error.gif);background-repeat:no-repeat;background-position:5%50%;font-size:12px;color:#FF0000;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#FFF4F0;border-width:1px;border-style:solid;padding:13px}
+.mensaje_advertencia_3{background-image:url(../imagenes/comun/adv.gif);background-repeat:no-repeat;background-position:5%50%;font-size:12px;color:#000000;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#FFFFCC;border-width:1px;border-style:solid;border-color:#CC9933;padding:13px;padding-left:70px}
+.mensaje_advertencia_4{font-size:10px;color:#000000;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#FFFFCC;border-width:1px;border-style:solid;border-color:#CC9933;padding:13px}
+.mensaje_informacion_3{background-image:url(../imagenes/comun/inf.png);background-repeat:no-repeat;background-position:5%50%;font-size:12px;color:#38598F;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#EFF5F7;border-width:1px;border-style:solid;padding:13px;padding-left:70px}
+.mensaje_informacion_4{font-size:11px;color:#38598F;font-weight:bold;font-family:Verdana,Arial,Helvetica,sans-serif;background-color:#EFF5F7;border-width:1px;border-style:dashed;text-align:center;padding:5px}
+
+div.descripcion-sistema
+{
+	background-color:#E7E7E7;
+	color: #3C3C3C;
+	padding:5px;
+	text-align:right;
+	font-size:10px;
+}
+
+div.conteiner-botonera 
+{
+	background-color:#F7F7F7;
+	font-size:12px;
+}
+
+div.menu 
+{
+	background-color:#d9d9d9;
+	margin-bottom:45px;
+}
+
+div.menu_pantalla 
+{
+	float:left;
+	padding:5px;
+	margin:5px;
+}
+
+h1.titulo{
+	background-color: #3B77B3;
+	color:#FFFFFF;
+	font-family:Tahoma, Verdana, Arial;
+	font-size:18px;
+	font-weight:bold;
+	text-align: center;
+	margin: 0.2cm 0cm 0.2cm 0cm;
+}
+
+h2.subtitulo {
+	background-color:#3982C6;
+	color:#FFFFFF;
+	font-family:Tahoma, Verdana, Arial;
+	font-size:15px;
+	font-weight:bold;
+	text-align: center;
+	border: thin none #CCCCCC;
+	margin: 0.2cm 0cm 0.2cm 0cm;
+}
+
+footer.footer {
+  	position: absolute;
+  	bottom: 0;
+  	width: 100%;
+  	height: 30px;
+  	background-color: #f5f5f5;
+  	text-align:center;
+  	font-size:10px;
 }

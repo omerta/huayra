@@ -1,13 +1,20 @@
 <?php
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //       Class : class_funciones_db
-  // Description : Clase que posee funciones de manejo de configuracion interna de base de datos
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+*  Clase class_funciones_db, Clase que posee funciones de manejo de configuracion interna de base de datos
+*  @author SIGESP
+*  @package SUGAU	
+*  @version 1.0
+*  @filesource 
+*  @access public
+*/
 class class_funciones_db
 {
     var $is_msg_error;
     var $io_database;
-    function class_funciones_db($conn)//Constructor de la clase.
+	/**
+	* Constructor de la clase class_funciones_db
+	*/
+    function class_funciones_db($conn)
 	{
 	  require_once("class_funciones.php");
 	  require_once("class_mensajes.php");
@@ -16,17 +23,13 @@ class class_funciones_db
 	  $this->io_msg   = new class_mensajes(); 
 	  $this->io_database  = $_SESSION["ls_database"];
 	  $this->ls_gestor    = $_SESSION["ls_gestor"];
-	} // end contructor
-
+	} 
+	
+	/**
+	* Determina la longitud de una columna tipo caracter
+	*/
     function uf_longitud_columna_char($as_tabla,$as_columna)
     {
-       /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	   //	     Function: uf_longitud_columna_char
-	   //		   Access: public 
-	   //	  Description: determina la longitud de una columna tipo caracter
-	   //	   Creado Por: Ing. Wilmer Briceño
-	   //  Fecha Creación: 06/07/2006 							
-	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	   $li_length = 0;
 	   switch ($this->ls_gestor)
 	   {
@@ -55,19 +58,14 @@ class class_funciones_db
 	   return $li_length; 
     } // end function()
 
+	
+	/**
+	* Deternima si existe una columna en una tabla (uf_select_column)
+	* @param string $as_tabla  Nombre de la tabla
+	* @param string $as_columna Nombre de la columna	
+    */
 	function uf_select_column($as_tabla,$as_columna)
 	{
-	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	   //	     Function: uf_select_column
-	   //		   Access: public 
-	   //		Argumento: $as_tabla   // nombre de la tabla
-	   //				   $as_columna // nombre de la columna	
-	   //	  Description: deternima si existe una columna en una tabla
-	   //	   Creado Por: Ing. Wilmer Briceño
-	   //  Fecha Creación: 06/07/2006 								
-	   //  Modificado Por: Ing. Luis Anibal Lang
-	   //    Fecha Modif.: 27/10/2006
-	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       $lb_existe = false;
 	   switch ($this->ls_gestor)
 	   {
@@ -100,21 +98,14 @@ class class_funciones_db
   		  $this->io_sql->free_result($rs_data);	 
 	  }	  
 	  return $lb_existe;
-	} // end function uf_select_column
+	} 
 
-
+	/**
+	* Selecciona  en una tabla (uf_select_table)
+	* @param string $as_tabla  Nombre de la tabla
+	*/
 	function uf_select_table($as_tabla)
 	{
-	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	   //	     Function: uf_select_table
-	   //		   Access: public 
-	   //		Argumento: $as_tabla   // nombre de la tabla
-	   //	  Description: deternima si existe una columna en una tabla
-	   //	   Creado Por: Ing. Wilmer Briceño
-	   //  Fecha Creación: 06/07/2006 							
-	   //  Modificado Por: Ing. Luis Anibal Lang
-	   //    Fecha Modif.: 27/10/2006
-	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
        $lb_existe = false;
 	   switch ($this->ls_gestor)
 	   {
@@ -146,22 +137,19 @@ class class_funciones_db
    	   }	  
 	   return $lb_existe;
 	} // end function uf_select_table
-
+	
+	/**
+	*  Este método genera el numero consecutivo del código de cualquier tabla deseada
+	*	@param string $ab_empresa Si usara el campo empresa como filtro      
+	*	@param string $as_codemp Codigo de la empresa
+	*	@param string $as_tabla Nombre de la tabla 
+	*	@param string $as_campo Nombre del campo que desea incrementar
+	*	@param int  ai_length    Longitud del campo
+	*   @return string $ls_codigo   Representa el codigo incrementado o generado
+	*	@todo el mensaje de error no funciona (is_msg_error)
+	*/
     function uf_generar_codigo($ab_empresa,$as_codemp,$as_tabla,$as_columna)
 	{ 
-		//////////////////////////////////////////////////////////////////////////////////////////
-		//	Function :  uf_generar_codigo
-		//	  Access :  public
-		//	Arguments:
-		//           ab_empresa   // Si usara el campo empresa como filtro      
-		//           as_codemp    // codigo de la empresa
-		//           as_tabla     // Nombre de la tabla 
-		//           as_campo     // nombre del campo que desea incrementar
-		//           ai_length    // longitud del campo
-		//	  Returns:	ls_codigo   // representa el codigo incrementado o generado
-		//	Description:  Este método genera el numero consecutivo del código de
-		//                cualquier tabla deseada
-		///////////////////////////////////////////////////////////////////////////////////////////
 		$lb_existe=$this->uf_select_table($as_tabla);
 		if ($lb_existe)
 		   {
@@ -171,7 +159,7 @@ class class_funciones_db
 				   $li_longitud=$this->uf_longitud_columna_char($as_tabla,$as_columna) ;
 				   if ($ab_empresa)
 				   {	
-						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." WHERE codemp='".$as_codemp."' ORDER BY ".$as_columna." DESC LIMIT 1";	
+						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." WHERE codemp='".$as_codemp."' ORDER BY ".$as_columna." DESC";		
 						  $rs_funciondb=$this->io_sql->select($ls_sql);
 						  if ($row=$this->io_sql->fetch_row($rs_funciondb))
 						  { 
@@ -189,7 +177,7 @@ class class_funciones_db
 					}	
 					else
 					{
-						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." ORDER BY ".$as_columna." DESC LIMIT 1";		
+						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." ORDER BY ".$as_columna." DESC";		
 						  $rs_funciondb=$this->io_sql->select($ls_sql);
 						  if ($row=$this->io_sql->fetch_row($rs_funciondb))
 						  { 
@@ -209,16 +197,55 @@ class class_funciones_db
 				else
 				{
 					$ls_codigo="";
-					$this->is_msg_error="No existe el campo" ;
+					$this->is_msg_error="No existe el campo";
 				}
 		 }
 		 else
 		{
 			$ls_codigo="";
-			$this->is_msg_error="No existe la tabla	" ;
+			$this->is_msg_error="No existe la tabla";
 		}
 	    return $ls_codigo;
 	 } // end function
+
+
+	/**
+	 *  Este método genera el numero consecutivo del código de una tabla con PK tipo SERIAL,
+	 *	reemplaza a la función 'uf_generar_codigo'. La nuevas tablas usan el tipo de dato
+	 * 	serial para el campo que es llave primaria.
+	 *	@param string $as_tabla Nombre de la tabla 
+	 *	@param string $as_campo Nombre del campo que desea incrementar
+	 *	@param int  ai_length    Longitud del campo
+	 *  @return string $ls_codigo   Representa el codigo incrementado o generado
+	 *	@todo el mensaje de error no funciona (is_msg_error)
+	 */
+    function uf_generar_codigo_serial($as_tabla,$as_columna)
+	{ 
+		$lb_existe=$this->uf_select_table($as_tabla);
+		if ($lb_existe)
+		   {
+				$lb_existe=$this->uf_select_column($as_tabla,$as_columna);
+			  	if ($lb_existe)
+			  	{
+			  		$ls_sql="SELECT nextval(pg_get_serial_sequence('".$as_tabla."', '".$as_columna."'))";
+			  		$rs_funciondb=$this->io_sql->select($ls_sql);
+			  		$row=$this->io_sql->fetch_row($rs_funciondb);
+			  		$ls_codigo=$row[nextval];
+				}
+				else
+				{
+					$ls_codigo="";
+					$this->is_msg_error="No existe el campo";
+				}
+		 }
+		 else
+		{
+			$ls_codigo="";
+			$this->is_msg_error="No existe la tabla";
+		}
+	    return $ls_codigo;
+	 } // end function
+
 ///--------------------------------------------------------------------------------------------------------------------------------
     function uf_select_constraint($as_tabla,$as_constrains)
 	{ 
@@ -494,5 +521,38 @@ function uf_select_index($as_tabla,$as_index)
 	 }
   return $lb_existe;
 }
+    function uf_generar_codigo_movimiento_saf($as_tipcmp)
+	{ 
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//	   Function: uf_generar_codigo
+		//	     Access: public
+		//	  Arguments: $as_tipcmp = Variable que me indica si el movimiento es (IN)corporacion,
+		//               (DE)sincorporacion,(RE)asignacion,(MO)dificacion,(IG)Incorporacion General e
+		//               (IL)Incorporacion por Lotes. 
+		//	    Returns: $ls_codigo   // representa el codigo incrementado o generado
+		//	Description: Este método genera el numero consecutivo del código de la tabla saf_movimiento
+		//               según el tipo de comprobante.
+		///////////////////////////////////////////////////////////////////////////////////////////
+		
+		$ls_sql = "SELECT numcmp 
+					 FROM saf_movimiento 
+		            WHERE codemp = '".$_SESSION["la_empresa"]["codemp"]."' 
+					  AND tipcmp = '".$as_tipcmp."'
+				    ORDER BY numcmp DESC LIMIT 1";
+		$rs_funciondb=$this->io_sql->select($ls_sql);
+	    if ($row=$this->io_sql->fetch_row($rs_funciondb))
+	       {   
+		     $codigo=$row["numcmp"];
+		     settype($codigo,'int');                             // Asigna el tipo a la variable.
+		     $codigo = $codigo + 1;                              // Le sumo uno al entero.
+			 settype($codigo,'string');                          // Lo convierto a varchar nuevamente.
+	       }
+	    else
+	       {
+		     $codigo="1";
+	       }
+	    $ls_codigo = str_pad($codigo,15,0,0);
+		return $ls_codigo;
+	 } // end function
 } // end class_funcrions_db 
 ?>

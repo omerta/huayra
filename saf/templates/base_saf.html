@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% block head %}
+
+<title >Definici&oacute;n de Activos</title>
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<!-- <script type="text/javascript" language="JavaScript1.2" src="../shared/js/disabled_keys.js"></script>  -->
+<link rel="stylesheet" href="bootstrap-3.3.4/css/bootstrap.min.css">
+<script type="text/javascript" language="JavaScript1.2" src="js/stm31.js"></script>
+<script type="text/javascript" language="JavaScript1.2" src="js/funciones.js"></script>
+<script type="text/javascript" language="JavaScript1.2" src="../shared/js/valida_tecla.js"></script>
+<link href="../shared/css/tablas.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/cabecera.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/general.css" rel="stylesheet" type="text/css">
+<link href="../shared/js/css_intra/datepickercontrol.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script> 
+
+</head>
+{% endblock %}
+
+<body>
+    <div class="container">
+    	{# BANER DEL ENTE #}
+    	{#<div class="container-fluid">#}
+    	{#	<div class="row">#}
+    	{#		<img src="http://www.foo.org/img/image.png" class="img-responsive">#}
+    	{#   	</div>#}
+    	{#</div>	#}
+    	{# BANER DEL SISTEMA #}
+    	<div class="container-fluid">
+	   		<div class="row">
+				<img src="../shared/imagebank/header.jpg" class="img-responsive">
+	   		</div>
+		</div>
+
+        <div class="seccion">
+	    	<div class="descripcion-sistema">
+		    	<div>
+		    		<font color="#6699CC" size="3">Sistema de Activos Fijos</font>
+		    	</div>
+		    	<div>
+		    		{{ fecha }}
+	    		</div>
+		    	<div>
+		    		{{ usuario }} {{usuario_apellido}} <i>en</i> {{ db_name }}
+	    		</div>
+		    </div>
+
+	        <div class="conteiner-botonera">	
+				{% if rbtipocat == 1 %}
+					<div class=""><script type="text/javascript" language="JavaScript1.2" src="js/menu_csc.js"></script></div>
+				{% elseif rbtipocat == 2 %}
+					<div class=""><script type="text/javascript" language="JavaScript1.2" src="js/menu_cgr.js"></script></div>
+				{% else %}
+					<div class=""><script type="text/javascript" language="JavaScript1.2" src="js/menu.js"></script></div>			
+				{% endif %}
+			</div>
+
+	    	<div class="menu">
+	        	<div class="menu_pantalla">
+	        		<a href="javascript: ue_nuevo();"><span>Nuevo</span>
+	        			<img src="../shared/imagebank/tools20/nuevo.gif" alt="Nuevo" width="20" title="Nuevo" height="20" border="0">
+	        		</a>
+        		</div>
+	        	<div class="menu_pantalla">
+	        		<a href="javascript: ue_guardar();"><span>Guardar</span>
+	        			<img src="../shared/imagebank/tools20/grabar.gif" alt="Grabar"  width="20" title="Guardar" height="20" border="0">
+	        		</a>
+	        	</div>
+	       		<div class="menu_pantalla">
+	       			<a href="javascript: ue_buscar();"><span>Buscar</span>
+	       				<img src="../shared/imagebank/tools20/buscar.gif" alt="Buscar" width="20"  height="20" title="Buscar" border="0">
+	       			</a>
+       			</div>
+	       		<div class="menu_pantalla">
+	       			<a href="javascript: ue_eliminar();"><span>Eliminar</span>
+	       				<img src="../shared/imagebank/tools20/eliminar.gif" alt="Eliminar" width="20" height="20" title="Eliminar" border="0">
+	       			</a>
+	       		</div>
+	       		<div class="menu_pantalla">
+	       			<a href="javascript: ue_cerrar();">
+	       				<img src="../shared/imagebank/tools20/salir.gif" alt="Salir" width="20" height="20" title="Salir" border="0">
+	       			</a>
+	       		</div>
+	        	<div class="menu_pantalla">
+	        		<a href="javascript: ue_ayuda();">
+	        			<img src="../shared/imagebank/tools20/ayuda.gif" alt="Ayuda" title="Ayuda" width="20" height="20">
+        			</a>
+	        	</div>
+	    	</div>
+    	</div>
+
+    	<div class="form-horizontal">{% block content %}{% endblock %}</div>
+    </div>
+    
+           
+    <footer class="footer">
+     	<p>Av. Foo . Esq. Foo , Torre Foo, Pisos, Estado - Venezuela. - RIF: XXXX-XXXX-0  </br> Teléfonos: (+58-212) XXX-XXXX Fax:(+58-212) XXX-XXXX - <a href:"#">foo@foo.org</a></p>
+   	</footer>
+
+    </body>
+</html>
