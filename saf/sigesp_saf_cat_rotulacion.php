@@ -23,6 +23,7 @@ a:active {
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/tablas.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 </head>
 
 <body>
@@ -92,8 +93,8 @@ print "</tr>";
 if($ls_operacion=="BUSCAR")
 {
 	$ls_sql="SELECT * FROM saf_rotulacion".
-			" WHERE codrot like '".$ls_codigo."'".
-			"   AND denrot like '".$ls_denominacion."'".
+			" WHERE codrot ilike '".$ls_codigo."'".
+			"   AND denrot ilike '".$ls_denominacion."'".
 			" ORDER BY codrot";
     $rs_cta=$io_sql->select($ls_sql);
     $data=$rs_cta;
@@ -105,7 +106,7 @@ if($ls_operacion=="BUSCAR")
 		$ds->data=$data;
 
 		$totrow=$ds->getRowCount("codrot");
-	
+
 		for($z=1;$z<=$totrow;$z++)
 		{
 			print "<tr class=celdas-blancas>";
@@ -115,7 +116,7 @@ if($ls_operacion=="BUSCAR")
 			print "<td><a href=\"javascript: aceptar('$ls_codigo','$ls_denominacion','$ls_empleo','$ls_status');\">".$ls_codigo."</a></td>";
 			//print "<td>".$data["NomGru"][$z]."</td>";
 			print "<td>".$data["denrot"][$z]."</td>";
-			print "</tr>";			
+			print "</tr>";
 		}
 	}
 }
@@ -129,12 +130,24 @@ print "</table>";
 <script language="JavaScript">
   function aceptar(prov,d,v,n,hidstatus)
   {
+		opener.document.form1.txtcodrot.value=prov;
+		opener.document.form1.txtdenrot.value=d;
+		opener.document.form1.txtempleo.value=v;
+		opener.document.form1.operacion.value="G";
 
-	opener.document.form1.txtcodrot.value=prov;
-	opener.document.form1.txtdenrot.value=d;
-	opener.document.form1.txtempleo.value=v;
-	opener.document.form1.hidstatus.value="C";
-	close();
+		/* se borra cualquier mensaje impreso */
+		/* @TODO
+		$("#delete_error_block").hide( "slow" );
+		$("#delete_success_block").hide( "slow" );
+		$("#save_success_block").hide( "slow" );
+		$("#save_error_block").hide( "slow" );
+		$("#new_error_block").hide( "slow" );
+		$("#new_error_block_detail").hide( "slow" );
+		$("#required_error_block").hide("slow");
+		$("#warning_success_block").hide("slow");
+		*/
+
+		close();
   }
   function ue_search()
   {
