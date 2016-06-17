@@ -35,7 +35,7 @@ function ue_nuevo()
   				$("#new_error_block").show( "slow" );
   				$("#new_error_block_detail").show( "slow" );
   				$("#new_error_block_detail").children('div').html('<strong>' + data[1] + '</strong> ');
-  				$("#txtnombre").val('')
+  				$("#txtcodigo").val('')
   			}else if(data[0] == true)
   			{
   				$("#delete_error_block").hide( "slow" );
@@ -46,13 +46,14 @@ function ue_nuevo()
   				$("#new_error_block_detail").hide( "slow" );
   				$("#required_error_block").hide("slow");
   				$("#warning_success_block").hide("slow");
-  				$("#txtnombre").val(data[1]);
-  				$("#txtnota2").val('');
+  				$("#txtcodigo").val(data[1]);
+  				$("#txtdenominacion").val('');
   				$("#txtexplicacion").val('');
           //$('input:radio[name=radiotipo]:checked').val();
           $('input:radio[name=radiotipo]').attr('checked',false);
           //$("#chkcontable").val();
           $("#chkcontable").attr('checked',false);
+					$("#chkpresupuestaria").attr('checked',false);
   				$("#hidstatus").val(''); // bandera que indica una modificación del formulario
   			}
   		});
@@ -97,7 +98,7 @@ function ue_guardar()
 
 	if(((lb_status=="G")&&(li_cambiar==1))||(lb_status=="")&&(li_incluir==1))
 	{
-		li_codigo=f.txtnombre.value;
+		li_codigo=f.txtcodigo.value;
 		li_denominacion=f.txtdenominacion.value;
 		li_explicacion= f.txtexplicacion.value;
 		li_tipo = $('input:radio[name=radiotipo]:checked').val();
@@ -131,6 +132,7 @@ function ue_guardar()
 							$("#save_success_block").hide( "slow" );
 							$("#save_error_block").hide( "slow" );
 							$("#new_error_block").hide( "slow" );
+							$("#required_error_block").hide( "slow" );
 							/* */
 							$("#save_error_block").show( "slow" );
 							$("#new_error_block_detail").show( "slow" );
@@ -193,6 +195,7 @@ function ue_guardar()
 		}else
 	   	{
 	 		$("#required_error_block").show( "slow" );
+			$("#delete_success_block").hide( "slow" );
 	   	}
 		}
 	else
@@ -214,7 +217,7 @@ function ue_eliminar()
 
 	if(li_eliminar==1)
 	{
-		li_codigo=f.txtnombre.value;
+		li_codigo=f.txtcodigo.value;
 		if(li_codigo!="")
 			{
 				$.post("sigesp_saf_puente_movimientos.php",
@@ -231,6 +234,8 @@ function ue_eliminar()
 						$("#save_error_block").hide( "slow" );
 						$("#delete_error_block").hide( "slow" );
 						$("#new_error_block").hide( "slow" );
+						$("#required_error_block").hide( "slow" );
+						$("#sub_required_error_block").hide( "slow" );
 						//$("#error_block").after( data );
 						$("#delete_error_block").show( "slow" );
 						$("#new_error_block_detail").show( "slow" );
@@ -242,6 +247,8 @@ function ue_eliminar()
 						$("#delete_success_block").hide( "slow" );
 						$("#save_success_block").hide( "slow" );
 						$("#save_error_block").hide( "slow" );
+						$("#required_error_block").hide( "slow" );
+						$("#sub_required_error_block").hide( "slow" );
 						// ocular el bloque de error si existe
 						$("#delete_error_block").hide( "slow" );
 						$("#new_error_block").hide( "slow" );
@@ -255,8 +262,8 @@ function ue_eliminar()
 						}
 						// colocamos todos los campos en blanco
 						// quizas se pueda hacer con un for
-						$("#txtnombre").val('');
-						$("#txtnota2").val('');
+						$("#txtcodigo").val('');
+						$("#txtdenominacion").val('');
 						$("#txtexplicacion").val('');
 						$("#hidstatus").val('');
 					}
@@ -281,4 +288,18 @@ function ue_cerrar()
 function ue_ayuda()
 {
     window.open("/doc/saf/sigesp_saf_d_movimientos.md","fullscreen=yes,menubar=no,toolbar=no,scrollbars=yes");
+}
+
+
+function hiddenOn()
+{
+	var hiddenStatus = document.getElementById("hidstatus").value;
+	if(hiddenStatus == "")
+	{
+		document.getElementById("valuehidden").innerHTML = "VACIO";
+	}
+	if(hiddenStatus == "G")
+	{
+		document.getElementById("valuehidden").innerHTML = "G";
+	}
 }

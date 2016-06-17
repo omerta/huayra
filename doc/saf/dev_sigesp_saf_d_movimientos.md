@@ -10,7 +10,8 @@
 * js/sigesp_saf_d_movimientos.js
 * templates/sigesp_saf_template_movimientos.html
 * sigesp_saf_puente_movimiento.php
-*
+* sigesp_saf_c_movimientos.php
+* sigesp_saf_cat_causas.php
 
 |        | HTML | d | c | DB |
 |--------|------|---|---|----|

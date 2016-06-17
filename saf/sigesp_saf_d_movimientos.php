@@ -33,7 +33,7 @@ class Movimiento {
 		//file_put_contents('/tmp/sugau_saf.log', print_r($la_seguridad,TRUE), FILE_APPEND);
 
 		/**
-		  * @todo determinar la funci�n de este segmento de c�digo.
+		  * @todo determinar la función de este segmento de código.
 		  * sigesp_config
 		  *	$ls_rbtipocat
 		  */
