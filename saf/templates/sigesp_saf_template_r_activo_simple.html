@@ -1,0 +1,154 @@
+{% extends "base_saf_reportes_pdf.html" %}
+{% block content %}
+<script type="text/javascript" language="JavaScript1.2" src="js/sigesp_saf_r_activo_simple.js"></script>
+  <h1 class="titulo">Reporte Simple de Activos</h1>
+  <h2 class="subtitulo">Ultimos Activos Registrados</h2>
+	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" onreset="limpiar()" data-toggle="validator">
+
+    {# SEGURIDAD #}
+    <input type=hidden name=permisos id=permisos value='{{ ls_permisos }}'>
+    <input type=hidden name=leer id=leer value='{{ la_permisos_leer }}'>
+    <input type=hidden name=incluir id=incluir value='{{ la_permisos_incluir }}'>
+    <input type=hidden name=cambiar id=cambiar value='{{ la_permisos_cambiar }}'>
+    <input type=hidden name=eliminar id=eliminar value='{{ la_permisos_eliminar }}'>
+    <input type=hidden name=imprimir id=imprimir value='{{ la_permisos_imprimir }}'>
+    <input type=hidden name=anular id=anular value='{{ la_permisos_anular }}'>
+    <input type=hidden name=ejecutar id=ejecutar value='{{ la_permisos_ejecutar }}'>
+    {# SEGURIDAD #}
+
+    {# BLOQUES PARA MENSAJES #}
+      <div id="required_error_block" style="display:none;">
+          <div class="alert alert-danger">
+            <p><strong>Error!</strong> Falta llenar los siguientes campos.</p>
+          </div>
+          <div class="sub_required_error_block alert alert-danger">
+          </div>
+      </div>
+
+      <div id="save_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El formunario no pudo ser guardado.
+        </div>
+      </div>
+      <div id="save_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>&Eacute;xito!</strong> El formulario fue guardado.
+        </div>
+      </div>
+      <div id="delete_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El objeto no pudo ser borrado.
+        </div>
+      </div>
+      <div id="delete_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>&Eacute;xito!</strong> El objeto fue borrado.
+        </div>
+      </div>
+      <div id="new_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> Al asignar un <i>C&oacute;digo</i> al formulario de registro.
+        </div>
+      </div>
+
+    {# Comienza tu formulario aqui #}
+
+    {# Marcador Guardar-Actualuzar #}
+    <input name="hidstatus" type="hidden" id="hidstatus">
+
+    {# #}
+        <div id="myModal" class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="width:90%" >
+            <div class="modal-content">
+            	<div class="modal-header">
+            		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                {#<h4 class="modal-title">Modal title</h4>#}
+            	</div>
+            	<div class="modal-body">
+                <div id="PDF">
+                </div>
+            	</div>
+              <div class="modal-footer">
+            		<button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+            	</div>
+            </div>
+          </div>
+        </div>
+    {# #}
+
+    {# Array ( [0] => Array ( [codact] => 000000000000002   #}
+    {#                        [denact] => MONITOR   #}
+    {#                        [maract] => HP  #}
+    {#                        [modact] => N/A   #}
+    {#                        [feccmpact] => 2009-02-20   #}
+    {#                        [serial] =>   #}
+    {#                        [numero_chapa] =>   #}
+    {#                        [costo] => 1675.16 )  #}
+    {#         [1] => Array ( [codact] => 000000000000003   #}
+    {#                        [denact] => MONITOR   #}
+    {#                        [maract] => LENOVO  #}
+    {#                        [modact] => 17 LCD  #}
+    {#                        [feccmpact] => 2011-10-28   #}
+    {#                        [serial] =>   #}
+    {#                        [numero_chapa] =>   #}
+    {#                        [costo] => 2000 )   #}
+    {#         [2] => Array ( [codact] => 000000000000004   #}
+    {#                        [denact] => Libro Direcci�n de la Producci�n  #}
+    {#                        [maract] => N/A   #}
+    {#                        [modact] => N/A   #}
+    {#                        [feccmpact] =>  #}
+    {#                        [serial] =>   #}
+    {#                        [numero_chapa] =>   #}
+    {#                        [costo] => 300 )  #}
+
+    <style>
+    td {
+      border: 1px solid #ddd;
+    }
+    </style>
+
+    <table width='' border='1' bodercolor="#ddd" align='center' align='center' cellpadding='1' cellspacing='1' class='fondo-tabla'>
+      <tr class='titulo-celda'>
+        <td>C&oacute;digo</td>
+        <td>Denominaci&oacute;n</td>
+        <td>Marca</td>
+        <td>Modelo</td>
+        <td>Fecha Compra</td>
+        <td>Serial</td>
+        <td>Numero Chapa</td>
+        <td>Costo</td>
+      </tr>
+    {% for item in activos %}
+      <tr class=celdas-blancas>
+        <td align='center'>{{ item.codact }}</td>
+        <td align='center'>{{ item.denact }}</td>
+        <td align='center'>{{ item.maract }}</td>
+        <td align='center'>{{ item.modact }}</td>
+        <td align='center'>{{ item.feccmpact }}</td>
+        <td align='center'>{{ item.serial }}</td>
+        <td align='center'>{{ item.numero_chapa }}</td>
+        <td align='center'>{{ item.costo }}</td>
+      </tr>
+    {% endfor %}
+
+    {# fin del formulario #}
+    </table>
+</form>
+
+  {% if debug == true %}
+    <div class="debug">
+      <label>Usuario:</label> {{ loguser }}
+      <label>Permisos:</label> {{ ls_permisos }}
+      <label>Leer:</label> {{ la_permisos_leer }}
+      <label>Incluir:</label> {{ la_permisos_incluir }}
+      <label>Cambiar:</label> {{ la_permisos_cambiar }}
+      <label>Eliminar:</label> {{ la_permisos_eliminar }}
+      <label>Imprimir:</label> {{ la_permisos_imprimir }}
+      <label>Anular:</label> {{ la_permisos_anular }}
+      <label>Ejecutar:</label> {{ la_permisos_ejecutar }}
+      <div>
+        <button onclick="hiddenOn();" id="valuehidden">Hidden</button>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
