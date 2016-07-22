@@ -1,0 +1,128 @@
+{% extends "base_saf.html" %}
+{% block content %}
+<script type="text/javascript" language="JavaScript1.2" src="js/sigesp_saf_d_catalogo.js"></script>
+
+  <h1 class="titulo">Definici&oacute;n de Cat&aacute;logo</h1>
+	<h2 class="subtitulo">Datos</h2>
+
+	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" onreset="limpiar()" data-toggle="validator">
+
+    {# SEGURIDAD #}
+    <input type="hidden" name="permisos" id="permisos" value="{{ ls_permisos }}">
+    <input type="hidden" name="leer" id="leer" value="{{ la_permisos_leer }}">
+    <input type="hidden" name="incluir" id="incluir" value="{{ la_permisos_incluir }}">
+    <input type="hidden" name="cambiar" id="cambiar" value="{{ la_permisos_cambiar }}">
+    <input type="hidden" name="eliminar" id="eliminar" value="{{ la_permisos_eliminar }}">
+    <input type="hidden" name="imprimir" id="imprimir" value="{{ la_permisos_imprimir }}">
+    <input type="hidden" name="anular" id="anular" value="{{ la_permisos_anular }}">
+    <input type="hidden" name="ejecutar" id="ejecutar" value="{{ la_permisos_ejecutar }}">
+    {# SEGURIDAD #}
+
+    {# BLOQUES PARA MENSAJES #}
+      <div id="required_error_block" style="display:none;">
+          <div class="alert alert-danger">
+            <p><strong>Error!</strong> Falta llenar los siguientes campos.</p>
+          </div>
+          <div class="sub_required_error_block alert alert-danger">
+          </div>
+      </div>
+
+      <div id="save_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El formunario no pudo ser guardado.
+        </div>
+      </div>
+      <div id="save_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>&Eacute;xito!</strong> El formulario fue guardado.
+        </div>
+      </div>
+
+      <div id="delete_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> El objeto no pudo ser borrado.
+        </div>
+      </div>
+      <div id="delete_success_block" style="display:none;">
+        <div class="alert alert-success">
+          <strong>&Eacute;xito!</strong> El objeto fue borrado.
+        </div>
+      </div>
+      <div id="new_error_block" style="display:none;">
+        <div class="alert alert-danger">
+          <strong>Error!</strong> Al asignar un <i>C�digo</i> al formulario de registro.
+        </div>
+      </div>
+      <div id="new_error_block_detail" style="display:none;">
+        <div class="alert alert-danger">
+          <p></p>
+        </div>
+      </div>
+      <div id="warning_success_block" style="display:none;">
+        <div class="alert alert-warning">
+          <p></p>
+        </div>
+      </div>
+
+    {# Comienza tu formulario aqui #}
+    <input name="txtempresa" type="hidden" id="txtempresa">
+
+    <div class="form-group">
+    	<label for="" class="control-label col-md-3">Cat&aacute;logo</label>
+    	<div class="col-md-4">
+    		<input class="form-control" name="txtcatalogo" type="text" id="txtcatalogo" onkeypress="return keyRestrict(event,'1234567890-');" style="text-align:center ">
+    	</div>
+    </div>
+
+    <div class="form-group">
+    	<label for="" class="control-label col-md-3">Denominaci&oacute;n</label>
+    	<div class="col-md-9">
+    		<textarea class="form-control" name="txtdencat" cols="50" rows="3" id="txtdencat" onblur="javascript: ue_validarcomillas(this);"></textarea>
+    	</div>
+    </div>
+
+    <div class="form-group">
+    	<label for="" class="control-label col-md-3">Cuenta Presupuestaria</label>
+    	<div class="col-md-4">
+    		<input class="form-control" name="txtcuenta" type="text" id="txtcuenta" size="25"  style="text-align:center" readonly>
+    		<a href="javascript: ue_abrircuentas();">
+    			<img src="../shared/imagebank/tools15/buscar.gif" width="15" height="15" border="0">
+    		</a>
+    		<input class="form-control" name="txtdenominacion" type="text" id="txtdenominacion" size="50" style="text-align:center" readonly>
+    	</div>
+    </div>
+
+    {# Marcador Guardar-Actualuzar #}
+    <input name="hidstatus" type="hidden" id="hidstatus">
+
+    {# registro de sucesos #}
+    <input type="hidden" id="empresa" value="{{ la_seguridad_empresa }}">
+    <input type="hidden" id="sistema" value="{{ la_seguridad_sistema }}">
+    <input type="hidden" id="logusr" value="{{ la_seguridad_logusr }}">
+    <input type="hidden" id="ventanas" value="{{ la_seguridad_ventanas }}">
+    {# #}
+
+    {# fin del formulario #}
+</form>
+
+  {% if debug == true %}
+    <div class="debug">
+      <label>Usuario:</label> {{ loguser }}
+      <label>Permisos:</label> {{ ls_permisos }}
+      <label>Leer:</label> {{ la_permisos_leer }}
+      <label>Incluir:</label> {{ la_permisos_incluir }}
+      <label>Cambiar:</label> {{ la_permisos_cambiar }}
+      <label>Eliminar:</label> {{ la_permisos_eliminar }}
+      <label>Imprimir:</label> {{ la_permisos_imprimir }}
+      <label>Anular:</label> {{ la_permisos_anular }}
+      <label>Ejecutar:</label> {{ la_permisos_ejecutar }}
+      <label>Seguridad empresa:</label>{{ la_seguridad_empresa }}
+      <label>Seguridad logusr:</label>{{ la_seguridad_logusr }}
+      <label>Seguridad sistema:</label>{{ la_seguridad_sistema }}
+      <label>Seguridad ventanas:</label>{{ la_seguridad_ventanas }}
+      <div>
+        <button onclick="hiddenOn();" id="valuehidden">Hidden</button>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
