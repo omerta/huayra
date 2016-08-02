@@ -8,10 +8,10 @@ class class_funciones_nomina
 		//		   Access: public
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 	}
-	
+
    //--------------------------------------------------------------
    function uf_obteneroperacion()
    {
@@ -19,11 +19,11 @@ class class_funciones_nomina
 		//	     Function: uf_obteneroperacion
 		//		   Access: public
 		//	      Returns: operacion valor de la variable
-		//	  Description: Función que obtiene que tipo de operación se va a ejecutar
+		//	  Description: Funciï¿½n que obtiene que tipo de operaciï¿½n se va a ejecutar
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
-		
+
 		if(array_key_exists("operacion",$_POST))
 		{
 			$operacion=$_POST["operacion"];
@@ -32,7 +32,7 @@ class class_funciones_nomina
 		{
 			$operacion="NUEVO";
 		}
-   		return $operacion; 
+   		return $operacion;
    }// end function uf_obteneroperacion
    //--------------------------------------------------------------
 
@@ -43,9 +43,9 @@ class class_funciones_nomina
 		//	     Function: uf_obtenerexiste
 		//		   Access: public
 		//	      Returns: existe valor de la variable
-		//	  Description: Función que obtiene si existe el registro ó no
+		//	  Description: Funciï¿½n que obtiene si existe el registro ï¿½ no
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists("existe",$_POST))
 		{
@@ -55,10 +55,10 @@ class class_funciones_nomina
 		{
 			$existe="FALSE";
 		}
-   		return $existe; 
+   		return $existe;
    }// end function uf_obtenerexiste
    //--------------------------------------------------------------
-	
+
    //--------------------------------------------------------------
    function uf_seleccionarcombo($as_valores,$as_seleccionado,&$aa_parametro,$li_total)
    {
@@ -69,9 +69,9 @@ class class_funciones_nomina
 		//				   as_seleccionado  // Valor que se debe seleccionar
 		//				   aa_parametro  // arreglo de valores
 		//				   li_total  // Valor toatl de valores
-		//	  Description: Función que seleciona un valor de un combo
+		//	  Description: Funciï¿½n que seleciona un valor de un combo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
    		$la_valores = split("-",$as_valores);
 		$li_total = count($la_valores);
@@ -95,9 +95,9 @@ class class_funciones_nomina
 		//	    Arguments: as_valor  // Variable que deseamos obtener
 		//				   as_valordefecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_valor,$_POST))
 		{
@@ -107,7 +107,7 @@ class class_funciones_nomina
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    }// end function uf_obtenervalor
    //--------------------------------------------------------------
 
@@ -118,31 +118,31 @@ class class_funciones_nomina
 		//	     Function: uf_obtenervariable
 		//		   Access: public
 		//	    Arguments: as_variable  // Variable que deseamos obtener
-		//			       as_caso1  // condición 1
-		//			       as_caso2  // condición 2
-		//			       as_valor1  // Valor si se cumple la condición 1
-		//			       as_valor2  // Valor si se cumple la condición 2
+		//			       as_caso1  // condiciï¿½n 1
+		//			       as_caso2  // condiciï¿½n 2
+		//			       as_valor1  // Valor si se cumple la condiciï¿½n 1
+		//			       as_valor2  // Valor si se cumple la condiciï¿½n 2
 		//	  		       as_defecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que dependiendo del caso trae un valor u otro
+		//	  Description: Funciï¿½n que dependiendo del caso trae un valor u otro
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		switch($as_variable)
 		{
 			case $as_caso1:
 				$valor = $as_valor1;
 				break;
-					
+
 			case $as_caso2:
 				$valor = $as_valor2;
-				break;					
-			
+				break;
+
 			default:
 				$valor = $as_defecto;
 				break;
 		}
-   		return $valor; 
+   		return $valor;
    }// end function uf_obtenervariable
    //--------------------------------------------------------------
 
@@ -152,11 +152,11 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_formatonumerico
 		//		   Access: public
-		//	    Arguments: as_valor  // valor sin formato numérico
-		//	      Returns: as_valor valor numérico formateado
-		//	  Description: Función que le da formato a los valores numéricos que vienen de la BD
+		//	    Arguments: as_valor  // valor sin formato numï¿½rico
+		//	      Returns: as_valor valor numï¿½rico formateado
+		//	  Description: Funciï¿½n que le da formato a los valores numï¿½ricos que vienen de la BD
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$as_valor=number_format($as_valor,2,",",".");
 /*		if (empty($as_valor))
@@ -184,7 +184,7 @@ class class_funciones_nomina
 		$li_poscoma = $li_poscoma - 1;
 		for($li_index=$li_poscoma;$li_index>=0;--$li_index)
 		{
-			if(($li_contador==3)&&(($li_index-1)>=0)) 
+			if(($li_contador==3)&&(($li_index-1)>=0))
 			{
 				$as_valor = substr($as_valor,0,$li_index).".".substr($as_valor,$li_index);
 				$li_contador=1;
@@ -208,9 +208,9 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtenertipo
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de llamada del catalogo
+		//	  Description: Funciï¿½n que obtiene que tipo de llamada del catalogo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists("tipo",$_GET))
 		{
@@ -220,7 +220,7 @@ class class_funciones_nomina
 		{
 			$tipo="";
 		}
-   		return $tipo; 
+   		return $tipo;
    	}// end function uf_obtenertipo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -230,9 +230,9 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtenervalor_get
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de llamada del catalogo
+		//	  Description: Funciï¿½n que obtiene que tipo de llamada del catalogo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_variable,$_GET))
 		{
@@ -242,7 +242,7 @@ class class_funciones_nomina
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    	}// end function uf_obtenervalor_get
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -255,9 +255,9 @@ class class_funciones_nomina
 		//	    Arguments: as_valor  // Variable que deseamos obtener
 		//				   as_valordefecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_valor,$_POST))
 		{
@@ -267,15 +267,15 @@ class class_funciones_nomina
 		{
 			$valor=$as_valordefecto;
 		}
-		
+
 		if ($valor=="")
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    }// end function uf_asignarvalor
    //--------------------------------------------------------------
-	
+
    //----------------------------------------------------------------------------------------------------------------------------
    function uf_load_seguridad($as_sistema,$as_ventanas,&$as_permisos,&$aa_seguridad,&$aa_permisos)
    {
@@ -284,12 +284,12 @@ class class_funciones_nomina
 		//		   Access: public (en todas las clases que usen seguridad)
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
-		//				   as_permisos  // persimo si puede entrar ó no a la página
+		//				   as_permisos  // persimo si puede entrar ï¿½ no a la pï¿½gina
 		//				   aa_seguridad  // arreglo de las variables de seguridad
 		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
@@ -328,13 +328,13 @@ class class_funciones_nomina
 		//		   Access: public (en todas las clases que usen seguridad)
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
-		//				   as_nomina // código de la Nómina
-		//				   as_permisos  // persimo si puede entrar ó no a la página
+		//				   as_nomina // cï¿½digo de la Nï¿½mina
+		//				   as_permisos  // persimo si puede entrar ï¿½ no a la pï¿½gina
 		//				   aa_seguridad  // arreglo de las variables de seguridad
 		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
@@ -372,13 +372,13 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_print_permisos
 		//		   Access: public
-		//	    Arguments: as_permisos  // permisos que tiene el usuario en la página
+		//	    Arguments: as_permisos  // permisos que tiene el usuario en la pï¿½gina
 		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
 		//				   as_logusr  // login de usuario
-		//				   as_accion  // acción que va a ejecutar si no tiene permiso el usuario
-		//	  Description: Función que imprime el permiso de seguridad en las páginas
+		//				   as_accion  // acciï¿½n que va a ejecutar si no tiene permiso el usuario
+		//	  Description: Funciï¿½n que imprime el permiso de seguridad en las pï¿½ginas
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if (($as_permisos)||($as_logusr=="PSEGIS"))
 		{
@@ -409,14 +409,14 @@ class class_funciones_nomina
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 27/04/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 27/04/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
 
-		$lb_valido=true;	
+		$lb_valido=true;
 		$ls_empresa=$_SESSION["la_empresa"]["codemp"];
 		$ls_logusr=$_SESSION["la_logusr"];
 		$la_seguridad["empresa"]=$ls_empresa;
@@ -427,7 +427,7 @@ class class_funciones_nomina
 		if (($as_permisos)||($ls_logusr=="PSEGIS"))
 		{
 			if($aa_permisos["imprimir"]=="1")
-			{			
+			{
 				$ls_evento="REPORT";
 				$lb_valido= $io_seguridad->uf_sss_insert_eventos_ventana($la_seguridad["empresa"],
 										$la_seguridad["sistema"],$ls_evento,$la_seguridad["logusr"],
@@ -436,15 +436,15 @@ class class_funciones_nomina
 			else
 			{
 				print("<script language=JavaScript>");
-				print("alert('No tiene permiso para realizar esta operación.');");
-				print("</script>");		
-				$lb_valido=false;	
+				print("alert('No tiene permiso para realizar esta operaciï¿½n.');");
+				print("</script>");
+				$lb_valido=false;
 			}
 		}
 		else
 		{
 			$lb_valido=false;
-		}		
+		}
 		unset($io_seguridad);
 		return $lb_valido;
    }// end function uf_load_seguridad
@@ -458,16 +458,16 @@ class class_funciones_nomina
 		//		   Access: public (en todas las clases que usen seguridad)
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
-		//				   as_descripcion  // Descripción del log
-		//				   as_nomina  // Código de Nómina
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//				   as_descripcion  // Descripciï¿½n del log
+		//				   as_nomina  // Cï¿½digo de Nï¿½mina
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 27/04/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 27/04/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
 
-		$lb_valido=true;	
+		$lb_valido=true;
 		$ls_empresa=$_SESSION["la_empresa"]["codemp"];
 		$ls_logusr=$_SESSION["la_logusr"];
 		$la_seguridad["empresa"]=$ls_empresa;
@@ -479,7 +479,7 @@ class class_funciones_nomina
 		if (($as_permisos)||($ls_logusr=="PSEGIS"))
 		{
 			if($aa_permisos["imprimir"]=="1")
-			{			
+			{
 				$ls_evento="REPORT";
 				$lb_valido= $io_seguridad->uf_sss_insert_eventos_ventana($la_seguridad["empresa"],
 										$la_seguridad["sistema"],$ls_evento,$la_seguridad["logusr"],
@@ -488,15 +488,15 @@ class class_funciones_nomina
 			else
 			{
 				print("<script language=JavaScript>");
-				print("alert('No tiene permiso para realizar esta operación.');");
-				print("</script>");		
-				$lb_valido=false;	
+				print("alert('No tiene permiso para realizar esta operaciï¿½n.');");
+				print("</script>");
+				$lb_valido=false;
 			}
 		}
 		else
 		{
 			$lb_valido=false;
-		}		
+		}
 		unset($io_seguridad);
 		return $lb_valido;
    }// end function uf_load_seguridad
@@ -514,9 +514,9 @@ class class_funciones_nomina
 		//				   $as_codestpro3  // Codigo de Estrutura Presupuestaria 3
 		//				   $as_codestpro4  // Codigo de Estrutura Presupuestaria 4
 		//				   $as_codestpro5  // Codigo de Estrutura Presupuestaria 5
-		//	  Description: Función que convierte la estructura presupuestaria completa y le da formato por nivel
+		//	  Description: Funciï¿½n que convierte la estructura presupuestaria completa y le da formato por nivel
 		//	   Creado Por: Ing. Luiser Blanco
-		// Fecha Creación: 04/01/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 04/01/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$la_empresa=$_SESSION["la_empresa"];
 		$ls_loncodestpro1=$_SESSION["la_empresa"]["loncodestpro1"];
@@ -539,7 +539,7 @@ class class_funciones_nomina
 		$as_codestpro3= substr($as_codestpro3,$li_longestpro3-1,$ls_loncodestpro3);
 		$as_codestpro4= substr($as_codestpro4,$li_longestpro4-1,$ls_loncodestpro4);
 		$as_codestpro5= substr($as_codestpro5,$li_longestpro5-1,$ls_loncodestpro5);
-	}// end function uf_formato_estructura	
+	}// end function uf_formato_estructura
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
    	function uf_loadmodalidad(&$ai_len1,&$ai_len2,&$ai_len3,&$ai_len4,&$ai_len5,&$as_titulo)
@@ -547,9 +547,9 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_loadmodalidad
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de modalidad y da las longitudes por accion
+		//	  Description: Funciï¿½n que obtiene que tipo de modalidad y da las longitudes por accion
 		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 19/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
 		$ai_len1=$_SESSION["la_empresa"]["loncodestpro1"];
@@ -562,7 +562,7 @@ class class_funciones_nomina
 			case "1": // Modalidad por Proyecto
 				$as_titulo="Estructura Presupuestaria";
 				break;
-				
+
 			case "2": // Modalidad por Programatica
 				$as_titulo="Estructura Programatica";
 				break;
@@ -576,9 +576,9 @@ class class_funciones_nomina
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_formatoprogramatica
 		//		   Access: public
-		//	  Description: Función que obtiene que de acuerdo a la modalidad imprime la programatica
+		//	  Description: Funciï¿½n que obtiene que de acuerdo a la modalidad imprime la programatica
 		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 19/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
 		$li_len1=0;
@@ -587,7 +587,7 @@ class class_funciones_nomina
 		$li_len4=0;
 		$li_len5=0;
 		$ls_titulo="";
-		$this->uf_loadmodalidad(&$li_len1,&$li_len2,&$li_len3,&$li_len4,&$li_len5,&$ls_titulo);
+		$this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
 		$ls_codest1=substr($as_codpro,0,25);
 		$ls_codest2=substr($as_codpro,25,25);
 		$ls_codest3=substr($as_codpro,50,25);
@@ -597,7 +597,7 @@ class class_funciones_nomina
 		$ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
 		$ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
 		$ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
-		$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);		
+		$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);
 		switch($ls_modalidad)
 		{
 			case "1": // Modalidad por Proyecto
@@ -610,16 +610,16 @@ class class_funciones_nomina
 		}
    	}// end function uf_obtenertipo
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
    	function uf_formato_programatica_detallado($ai_longitud,&$as_estructura)
    	{
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_formatoprogramatica
 		//		   Access: public
-		//	  Description: Función que obtiene que de acuerdo a la modalidad imprime la programatica
+		//	  Description: Funciï¿½n que obtiene que de acuerdo a la modalidad imprime la programatica
 		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 19/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$as_estructura=substr($as_estructura,(25-$ai_longitud),$ai_longitud);
    	}// end function uf_obtenertipo

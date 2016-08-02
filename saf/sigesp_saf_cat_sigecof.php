@@ -46,7 +46,7 @@ a:active {
         <td height="22" colspan="2"><input name="coddestino" type="hidden" id="coddestino" value="<?php print $ls_coddestino ?>">
           <input name="hidstatus" type="hidden" id="hidstatus">
           <input name="operacion" type="hidden" id="operacion">
-        Cat&aacute;logo SIGECOF 
+        Cat&aacute;logo SIGECOF
         <input name="txtempresa" type="hidden" id="txtempresa">
         <input name="dendestino" type="hidden" id="dendestino" value="<?php print $ls_dendestino ?>">
         <input name="txtnombrevie" type="hidden" id="txtnombrevie"></td>
@@ -80,7 +80,7 @@ a:active {
 	require_once("../shared/class_folder/class_mensajes.php");
 	$io_msg=new class_mensajes();
 	$arr=$_SESSION["la_empresa"];
-	
+
 	if(array_key_exists("operacion",$_POST))
 	{
 		$ls_operacion=$_POST["operacion"];
@@ -91,7 +91,7 @@ a:active {
 	else
 	{
 		$ls_operacion="";
-	
+
 	}
 echo "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 echo "<tr class=titulo-celda>";
@@ -103,10 +103,10 @@ if ($ls_operacion=="BUSCAR")
    {
      $ls_sql="SELECT trim(catalogo) as catalogo, rtrim(dencat) as dencat, trim(spg_cuenta) as spg_cuenta
 	            FROM saf_catalogo
-			   WHERE catalogo like '".$ls_catalogo."'
-			     AND UPPER(dencat) like '".strtoupper($ls_denominacion)."'
-			     AND spg_cuenta like '404%'"; 
-   
+			   WHERE catalogo ilike '".$ls_catalogo."'
+			     AND UPPER(dencat) ilike '".strtoupper($ls_denominacion)."'
+			     AND spg_cuenta ilike '404%'".
+             " ORDER BY catalogo";
 	 $rs_data = $io_sql->select($ls_sql);
 	 if ($rs_data===false)
 	    {
@@ -134,7 +134,7 @@ if ($ls_operacion=="BUSCAR")
 		      {
 			    $io_msg->message("No se han definido Cuentas para el Cat&aacute;logo !!!");
 			  }
-		 }  		 
+		 }
    }
 echo "</table>";
 ?>
@@ -146,12 +146,12 @@ echo "</table>";
 <script language="JavaScript">
 	function aceptar(ls_codigo,ls_denominacion,ls_cuenta,ls_status,ls_coddestino,ls_dendestino)
 	{
-		obj=eval("opener.document.form1."+ls_coddestino+"");
+	  obj=eval("opener.document.form1."+ls_coddestino+"");
 		obj.value=ls_codigo;
 		obj=eval("opener.document.form1."+ls_dendestino+"");
 		obj.value=ls_denominacion;
 		opener.document.form1.txtcuenta.value=ls_cuenta;
-		opener.document.form1.hidstatus.value="C";
+		opener.document.form1.hidstatus.value="G";
 		close();
 	}
 

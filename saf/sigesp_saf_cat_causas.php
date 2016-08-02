@@ -1,15 +1,16 @@
 <?php
 session_start();
+//print_r($_POST);
 	function uf_select_config($as_codemp)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_config
 		//		   Access: public
-		//	    Arguments: 
+		//	    Arguments:
 		//	      Returns: $ls_resultado variable buscado
-		//	  Description: Función que obtiene una variable de la tabla config
+		//	  Description: Funciï¿½n que obtiene una variable de la tabla config
 		// Modificado por: Ing. Luis Anibal Lang
-		// Fecha Creación: 13/02/2008 	 Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 13/02/2008 	 Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		global $io_msg,$io_sql;
 		$ls_estcat="";
@@ -22,7 +23,7 @@ session_start();
 		$rs_data=$io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$io_msg->message("Ocurrio un error al procesar el uf_select_config"); 
+			$io_msg->message("Ocurrio un error al procesar el uf_select_config");
 			return false;
 		}
 		else
@@ -44,17 +45,6 @@ session_start();
 <title>Cat&aacute;logo de Causas de Movimientos</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-<!--
-a:link {
-	color: #006699;
-}
-a:visited {
-	color: #006699;
-}
-a:active {
-	color: #006699;
-}
--->
 </style>
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
@@ -115,22 +105,22 @@ if(array_key_exists("operacion",$_POST))
 else
 {
 	$ls_operacion="";
-
 }
 print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 print "<tr class=titulo-celda>";
 //print "<td>Empresa </td>";
-print "<td>Código</td>";
-print "<td>Denominación</td>";
+print "<td>C&oacute;digo</td>";
+print "<td>Denominaci&oacute;n</td>";
 print "</tr>";
+
 if($ls_operacion=="BUSCAR")
 {
 	$ls_estcat=uf_select_config($ls_codemp);
 	if($ls_estcat!="")
 	{
 		$ls_sql="SELECT * FROM saf_causas".
-				" WHERE codcau like '".$ls_codigo."'".
-				"   AND dencau like '".$ls_denominacion."'".
+				" WHERE codcau::text LIKE '".$ls_codigo."'".
+				"   AND dencau ilike '".$ls_denominacion."'".
 				"   AND estcat='".$ls_estcat."'".
 				" ORDER BY codcau";
 		$rs_data=$io_sql->select($ls_sql);
@@ -141,9 +131,9 @@ if($ls_operacion=="BUSCAR")
 			$arrcols=array_keys($data);
 			$totcol=count($arrcols);
 			$ds->data=$data;
-	
+
 			$totrow=$ds->getRowCount("codcau");
-		
+
 			for($z=1;$z<=$totrow;$z++)
 			{
 				print "<tr class=celdas-blancas>";
@@ -155,7 +145,43 @@ if($ls_operacion=="BUSCAR")
 				$ls_explicacion=$data["expcau"][$z];
 				print "<td><a href=\"javascript: aceptar('$ls_codigo','$ls_denominacion','$ls_tipo','$ls_contable','$ls_presupuestaria','$ls_explicacion','$ls_status');\">".$ls_codigo."</a></td>";
 				print "<td>".$data["dencau"][$z]."</td>";
-				print "</tr>";			
+				print "</tr>";
+			}
+		}
+	}
+	else
+	{
+		$io_msg->message("Debe establecer una configuracion para el modulo");
+	}
+}else{
+	$ls_estcat=uf_select_config($ls_codemp);
+	if($ls_estcat!="")
+	{
+		$ls_sql="SELECT * FROM saf_causas".
+     				" ORDER BY codcau LIMIT 10";
+		$rs_data=$io_sql->select($ls_sql);
+		$data=$rs_data;
+		if($row=$io_sql->fetch_row($rs_data))
+		{
+			$data=$io_sql->obtener_datos($rs_data);
+			$arrcols=array_keys($data);
+			$totcol=count($arrcols);
+			$ds->data=$data;
+
+			$totrow=$ds->getRowCount("codcau");
+
+			for($z=1;$z<=$totrow;$z++)
+			{
+				print "<tr class=celdas-blancas>";
+				$ls_codigo=$data["codcau"][$z];
+				$ls_denominacion=$data["dencau"][$z];
+				$ls_tipo=$data["tipcau"][$z];
+				$ls_contable=$data["estafecon"][$z];
+				$ls_presupuestaria=$data["estafepre"][$z];
+				$ls_explicacion=$data["expcau"][$z];
+				print "<td><a href=\"javascript: aceptar('$ls_codigo','$ls_denominacion','$ls_tipo','$ls_contable','$ls_presupuestaria','$ls_explicacion');\">".$ls_codigo."</a></td>";
+				print "<td>".$data["dencau"][$z]."</td>";
+				print "</tr>";
 			}
 		}
 	}
@@ -172,13 +198,13 @@ print "</table>";
 <p>&nbsp;</p>
 </body>
 <script language="JavaScript">
-  function aceptar(codigo,denominacion,tipo,contable,presup,explicacion,hidstatus)
+  function aceptar(codigo,denominacion,tipo,contable,presup,explicacion)
   {
 
 	opener.document.form1.txtcodigo.value=codigo;
 	opener.document.form1.txtdenominacion.value=denominacion;
 	opener.document.form1.txtexplicacion.value=explicacion;
-	opener.document.form1.hidstatus.value="C";
+	opener.document.form1.hidstatus.value="G";
 //	opener.document.form1.txtcodigo.readonly=true;
 	switch(tipo)
 	{
@@ -194,16 +220,25 @@ print "</table>";
 		case 'M':
 			opener.document.form1.radiotipo[3].checked= true;
 			break;
-
+		case '':
+		opener.document.form1.radiotipo[0].checked= false;
+		opener.document.form1.radiotipo[1].checked= false;
+		opener.document.form1.radiotipo[2].checked= false;
+		opener.document.form1.radiotipo[3].checked= false;
 	}
+
 	if (contable==1)
 	{
 		opener.document.form1.chkcontable.checked= true;
+	}else{
+		opener.document.form1.chkcontable.checked= false;
 	}
 
 	if (presup==1)
 	{
 		opener.document.form1.chkpresupuestaria.checked= true;
+	}else{
+		opener.document.form1.chkpresupuestaria.checked= false;
 	}
 	close();
   }

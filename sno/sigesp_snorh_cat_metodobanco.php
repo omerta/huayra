@@ -5,7 +5,7 @@
 		print "<script language=JavaScript>";
 		print "close();";
 		print "opener.document.form1.submit();";
-		print "</script>";		
+		print "</script>";
 	}
 
    //--------------------------------------------------------------
@@ -14,27 +14,27 @@
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_print
 		//		   Access: public
-		//	    Arguments: as_codmet  // Código del método
-		//				   as_desmet  // Descripción del mátodo
-		//				   as_tipo  // Verifica de donde se está llamando el catálogo
-		//	  Description: Función que obtiene e imprime los resultados de la busqueda
+		//	    Arguments: as_codmet  // Cï¿½digo del mï¿½todo
+		//				   as_desmet  // Descripciï¿½n del mï¿½todo
+		//				   as_tipo  // Verifica de donde se estï¿½ llamando el catï¿½logo
+		//	  Description: Funciï¿½n que obtiene e imprime los resultados de la busqueda
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_include.php");
 		$io_include=new sigesp_include();
 		$io_conexion=$io_include->uf_conectar();
 		require_once("../shared/class_folder/class_sql.php");
-		$io_sql=new class_sql($io_conexion);	
+		$io_sql=new class_sql($io_conexion);
 		require_once("../shared/class_folder/class_mensajes.php");
-		$io_mensajes=new class_mensajes();		
+		$io_mensajes=new class_mensajes();
 		require_once("../shared/class_folder/class_funciones.php");
-		$io_funciones=new class_funciones();		
+		$io_funciones=new class_funciones();
         $ls_codemp=$_SESSION["la_empresa"]["codemp"];
 		print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 		print "<tr class=titulo-celda>";
-		print "<td width=50>Código</td>";
-		print "<td width=180>Método</td>";
+		print "<td width=50>C&oacute;digo</td>";
+		print "<td width=180>M&eacute;todo</td>";
 		print "<td width=150>Tipo</td>";
 		print "</tr>";
 		$ls_sql="SELECT codemp, codmet, desmet, tipmet, codempnom, tipcuecrenom, tipcuedebnom, numplalph, numconlph, suclph, ".
@@ -47,12 +47,12 @@
 		if(($as_tipo=="replisban")||($as_tipo=="repconlisban"))
 		{
 			$ls_sql=$ls_sql." AND tipmet='0' ";
-		}		
+		}
 		$ls_sql=$ls_sql." ORDER BY  tipmet, desmet ASC";
 		$rs_data=$io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-        	$io_mensajes->message("ERROR->".$io_funciones->uf_convertirmsg($io_sql->message)); 
+        	$io_mensajes->message("ERROR->".$io_funciones->uf_convertirmsg($io_sql->message));
 		}
 		else
 		{
@@ -61,9 +61,18 @@
 				$ls_codmet=$row["codmet"];
 				$ls_desmet=$row["desmet"];
 				$ls_tipmet=$row["tipmet"];
+				/* */
 				$ls_codempnom=$row["codempnom"];
+				$ls_numconnom=$row["numconnom"];
+				$ls_numconnom=$row["codofinom"];
 				$ls_tipcuecrenom=$row["tipcuecrenom"];
 				$ls_tipcuedebnom=$row["tipcuedebnom"];
+				$ls_pagtaqnom=$row["pagtaqnom"];
+				$ls_ref=$row["nroref"];
+				/* */
+				$ls_codagelph=$row["codagelph"];
+				$ls_apaposlph=$row["apaposlph"];
+				$ls_debcuelph=$row["debcuelph"];
 				$ls_numplalph=$row["numplalph"];
 				$ls_numconlph=$row["numconlph"];
 				$ls_suclph=$row["suclph"];
@@ -72,23 +81,22 @@
 				$ls_subgrulph=$row["subgrulph"];
 				$ls_conlph=$row["conlph"];
 				$ls_numactlph=$row["numactlph"];
+				/* */
 				$ls_numofifps=$row["numofifps"];
 				$ls_numfonfps=$row["numfonfps"];
 				$ls_confps=$row["confps"];
 				$ls_nroplafps=$row["nroplafps"];
-				$ls_numconnom=$row["numconnom"];
-				$ls_pagtaqnom=$row["pagtaqnom"];
-				$ls_ref=$row["nroref"];
+
+
+
 				switch ($ls_tipmet)
 				{
 					case "0";
-						$ls_metodo="Nómina";
+						$ls_metodo="N&oacute;mina";
 						break;
-	
 					case "1";
-						$ls_metodo="Ley de Política";
+						$ls_metodo="Ley de Pol&iacute;tica";
 						break;
-	
 					case "2";
 						$ls_metodo="Prestaciones Sociales";
 						break;
@@ -96,46 +104,49 @@
 				switch ($ls_pagtaqnom)
 				{
 					case "0";
-						$ls_metodo=$ls_metodo." (Depósito a Banco)";
+						$ls_metodo=$ls_metodo." (Dep&oacute;sito a Banco)";
 						break;
-	
+
 					case "1";
 						$ls_metodo=$ls_metodo." (Pago Taquilla)";
 						break;
 				}
 				switch ($as_tipo)
 				{
-					case "":				
+					case "":
 						print "<tr class=celdas-blancas>";
-						print "<td><a href=\"javascript: aceptar('$ls_codmet','$ls_desmet','$ls_tipmet','$ls_metodo');\">".$ls_codmet."</a></td>";
+						print "<td><a href=\"javascript: aceptar('$ls_codmet','$ls_desmet','$ls_tipmet','$ls_metodo',".
+							"'$ls_codempnom','$ls_numconnom','$ls_numconnom','$ls_tipcuecrenom','$ls_tipcuedebnom','$ls_pagtaqnom','$ls_ref',".
+							"'$ls_codagelph','$ls_apaposlph','$ls_debcuelph','$ls_numplalph','$ls_numconlph','$ls_suclph',".
+							"'$ls_cuelph','$ls_grulph','$ls_subgrulph','$ls_conlph','$ls_numactlph',".
+							"'$ls_numofifps','$ls_numfonfps','$ls_confps','$ls_nroplafps');\">".$ls_codmet."</a></td>";
 						print "<td>".$ls_desmet."</td>";
 						print "<td>".$ls_metodo."</td>";
-						print "</tr>";			
+						print "</tr>";
 						break;
-					
 					case "replisban":
 						print "<tr class=celdas-blancas>";
 						print "<td><a href=\"javascript: aceptarreplisban('$ls_codmet','$ls_desmet','$ls_pagtaqnom','$ls_ref');\">".$ls_codmet."</a></td>";
 						print "<td>".$ls_desmet."</td>";
 						print "<td>".$ls_metodo."</td>";
-						print "</tr>";		
-						break;	
-					
+						print "</tr>";
+						break;
+
 					case "repconlisban":
 						print "<tr class=celdas-blancas>";
 						print "<td><a href=\"javascript: aceptarrepconlisban('$ls_codmet','$ls_desmet','$ls_pagtaqnom');\">".$ls_codmet."</a></td>";
 						print "<td>".$ls_desmet."</td>";
 						print "<td>".$ls_metodo."</td>";
-						print "</tr>";		
-						break;	
-					
+						print "</tr>";
+						break;
+
 					case "replisben":
 						print "<tr class=celdas-blancas>";
 						print "<td><a href=\"javascript: aceptarreplisben('$ls_codmet','$ls_desmet','$ls_pagtaqnom');\">".$ls_codmet."</a></td>";
 						print "<td>".$ls_desmet."</td>";
 						print "<td>".$ls_metodo."</td>";
-						print "</tr>";		
-						break;	
+						print "</tr>";
+						break;
 				}
 			}
 			$io_sql->free_result($rs_data);
@@ -156,19 +167,6 @@
 <head>
 <title>Cat&aacute;logo de M&eacute;todo Banco</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-<!--
-a:link {
-	color: #006699;
-}
-a:visited {
-	color: #006699;
-}
-a:active {
-	color: #006699;
-}
--->
-</style>
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/tablas.css" rel="stylesheet" type="text/css">
@@ -229,20 +227,79 @@ a:active {
 <p>&nbsp;</p>
 </body>
 <script language="JavaScript">
-function aceptar(codmet,desmet,tipmet,metodo)
+function aceptar(codmet,desmet,tipmet,metodo,codempnom,numconnom,numconnom,tipcuecrenom,tipcuedebnom,pagtaqnom,ref,codagelph,apaposlph,debcuelph,numplalph,numconlph,suclph,cuelph,grulph,subgrulph,conlph,numactlph,numofifps,numfonfps,confps,nroplafps)
 {
 	opener.document.form1.txtcodmet.value=codmet;
 	opener.document.form1.txtcodmet.readOnly=true;
-    opener.document.form1.txtdesmet.value=desmet;
+  opener.document.form1.txtdesmet.value=desmet;
 	opener.document.form1.txtdesmet.readOnly=true;
-    opener.document.form1.txttipmet.value=tipmet;	
-	opener.document.form1.txttipmet.readOnly=true;
-    opener.document.form1.txtnomtipmet.value=metodo;	
-	opener.document.form1.txtnomtipmet.readOnly=true;
-	opener.document.form1.existe.value="TRUE";		
-  	opener.document.form1.operacion.value="BUSCAR";
-  	opener.document.form1.action="sigesp_snorh_d_metodobanco.php";
-  	opener.document.form1.submit();
+	//opener.document.form1.txttipmet.value=tipmet;
+	//opener.document.form1.txttipmet.readOnly=true;
+	switch(tipmet)
+	{
+		case '0':
+			opener.document.form1.radiotipmet[0].checked= true;
+    	opener.document.getElementById("nomina").style.display = "block";
+			opener.document.getElementById("prestaciones").style.display = "none";
+			opener.document.getElementById("politica").style.display = "none";
+
+			opener.document.form1.txtcodempnom.value=codempnom;
+			opener.document.form1.txtnumconnom.value=numconnom;
+			opener.document.form1.txtcodofinom.value=numconnom;
+			opener.document.form1.txttipcuecrenom.value=tipcuecrenom;
+			opener.document.form1.txttipcuedebnom.value=tipcuedebnom;
+			if(pagtaqnom==1){
+					opener.document.form1.chkpagtaqnom.checked= true;
+			}else
+			{
+					opener.document.form1.chkpagtaqnom.checked= false;
+			}
+			if(ref==1){
+					opener.document.form1.checkref.checked= true;
+			}else
+			{
+					opener.document.form1.checkref.checked= false;
+			}
+			break;
+		case '1':
+			opener.document.form1.radiotipmet[1].checked= true;
+			opener.document.getElementById("politica").style.display = "block";
+			opener.document.getElementById("prestaciones").style.display = "none";
+			opener.document.getElementById("nomina").style.display = "none";
+
+			opener.document.form1.txtcodagelph.value=codagelph;
+			opener.document.form1.txtapaposlph.value=apaposlph;
+			if(debcuelph==1){
+					opener.document.form1.chkdebcuelph.checked=true;
+			}else{
+					opener.document.form1.chkdebcuelph.checked=false;
+			}
+			opener.document.form1.txtnumplalph.value=numplalph;
+			opener.document.form1.txtnumconlph.value=numconlph;
+			opener.document.form1.txtsuclph.value=suclph;
+			opener.document.form1.txtcuelph.value=cuelph;
+			opener.document.form1.txtgrulph.value=grulph;
+			opener.document.form1.txtsubgrulph.value=subgrulph;
+			opener.document.form1.txtconlph.value=conlph;
+			opener.document.form1.txtnumactlph.value=numactlph;
+			break;
+		case '2':
+			opener.document.form1.radiotipmet[2].checked= true;
+			opener.document.getElementById("prestaciones").style.display = "block";
+			opener.document.getElementById("politica").style.display = "none";
+			opener.document.getElementById("nomina").style.display = "none";
+			opener.document.form1.txtnumofifps.value=numofifps;
+			opener.document.form1.txtnumfonfps.value=numfonfps;
+			opener.document.form1.txtconfps.value=confps;
+			opener.document.form1.txtnroplafps.value=nroplafps;
+			break;
+	}
+	//opener.document.form1.txtnomtipmet.value=metodo;
+	//opener.document.form1.txtnomtipmet.readOnly=true;
+	opener.document.form1.existe.value="TRUE";
+	opener.document.form1.operacion.value="BUSCAR";
+	//opener.document.form1.action="sigesp_snorh_d_metodobanco.php";
+	//opener.document.form1.submit();
 	close();
 }
 

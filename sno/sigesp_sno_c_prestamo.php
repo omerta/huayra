@@ -8,35 +8,35 @@ class sigesp_sno_c_prestamo
 	var $io_fun_nomina;
 	var $io_fecha;
 	var $io_sno;
-	var $in_cuota;	
+	var $in_cuota;
 	var $ls_codemp;
 	var $ls_codnom;
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function sigesp_sno_c_prestamo()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: sigesp_sno_c_prestamo
 		//		   Access: public (sigesp_sno_p_prestamo)
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 02/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 02/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_include.php");
 		$io_include=new sigesp_include();
 		$io_conexion=$io_include->uf_conectar();
 		require_once("../shared/class_folder/class_sql.php");
-		$this->io_sql=new class_sql($io_conexion);	
+		$this->io_sql=new class_sql($io_conexion);
 		require_once("../shared/class_folder/class_mensajes.php");
-		$this->io_mensajes=new class_mensajes();		
+		$this->io_mensajes=new class_mensajes();
 		require_once("../shared/class_folder/class_funciones.php");
-		$this->io_funciones=new class_funciones();		
+		$this->io_funciones=new class_funciones();
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$this->io_seguridad=new sigesp_c_seguridad();
 		require_once("class_folder/class_funciones_nomina.php");
 		$this->io_fun_nomina=new class_funciones_nomina();
 		require_once("../shared/class_folder/class_fecha.php");
-		$this->io_fecha=new class_fecha();		
+		$this->io_fecha=new class_fecha();
 		require_once("sigesp_sno.php");
 		$this->io_sno=new sigesp_sno();
 		require_once("sigesp_sno_c_prestamocuotas.php");
@@ -54,25 +54,25 @@ class sigesp_sno_c_prestamo
         	$this->ld_fecdesper="1900-01-01";
         	$this->ld_fechasper="1900-01-01";
 		}
-		
+
 	}// end function sigesp_sno_c_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_destructor()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_destructor
 		//		   Access: public (sigesp_sno_p_prestamo)
 		//	  Description: Destructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		unset($io_include);
 		unset($io_conexion);
-		unset($this->io_sql);	
-		unset($this->io_mensajes);		
-		unset($this->io_funciones);		
+		unset($this->io_sql);
+		unset($this->io_mensajes);
+		unset($this->io_funciones);
 		unset($this->io_seguridad);
 		unset($this->io_fun_nomina);
 		unset($this->io_fecha);
@@ -88,13 +88,13 @@ class sigesp_sno_c_prestamo
     {
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_prestamo
-		//		   Access: public 
+		//		   Access: public
 		//	    Arguments: as_campo  // Campo por medio del cual se desea filtrar
 		//	   			   as_valor  // valor del campor del que se quiere filtrar
-		//	      Returns: lb_existe True si existe ó False si no existe
-		//	  Description: Funcion que valida que ningún prestamo tenga asociada este pesonal
+		//	      Returns: lb_existe True si existe ï¿½ False si no existe
+		//	  Description: Funcion que valida que ningï¿½n prestamo tenga asociada este pesonal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
  		$lb_existe=false;
        	$ls_sql="SELECT ".$as_campo." ".
@@ -105,7 +105,7 @@ class sigesp_sno_c_prestamo
        	$rs_data=$this->io_sql->select($ls_sql);
        	if ($rs_data===false)
        	{
-        	$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_select_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+        	$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_select_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
        	}
        	else
        	{
@@ -113,9 +113,9 @@ class sigesp_sno_c_prestamo
          	{
            		$lb_existe=true;
          	}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
        	}
-		return $lb_existe;    
+		return $lb_existe;
 	}// end function uf_select_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -124,12 +124,12 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_correlativo
-		//		   Access: private (uf_guardar) 
-		//      Arguments: ai_numpre  // Nuevo número de prestamo
-		//	      Returns: lb_valido True si se ejecutó correctamente ó False si hubo algún error
-		//	  Description: Funcion que busca el correlativo del último prestamo  y genera el nuevo correlativo
+		//		   Access: private (uf_guardar)
+		//      Arguments: ai_numpre  // Nuevo nï¿½mero de prestamo
+		//	      Returns: lb_valido True si se ejecutï¿½ correctamente ï¿½ False si hubo algï¿½n error
+		//	  Description: Funcion que busca el correlativo del ï¿½ltimo prestamo  y genera el nuevo correlativo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_numpre=1;
@@ -141,7 +141,7 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_load_correlativo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_load_correlativo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -150,7 +150,7 @@ class sigesp_sno_c_prestamo
 			{
 				$ai_numpre=$row["numero"]+1;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_load_correlativo
@@ -163,26 +163,26 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_insert_prestamo
-		//		   Access: private (uf_guardar) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   as_codconc  // Código del Concepto
+		//		   Access: private (uf_guardar)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   as_codconc  // Cï¿½digo del Concepto
 		//				   ai_stapre  // Estatus del Prestamo
 		//				   ai_monpre  // Monto del Prestamo
-		//				   ai_numcuopre  // Número de Cuotas
-		//				   as_perinipre  // Período Inicial
-		//				   ai_monamopre  // Monto Amortizado 
+		//				   ai_numcuopre  // Nï¿½mero de Cuotas
+		//				   as_perinipre  // Perï¿½odo Inicial
+		//				   ai_monamopre  // Monto Amortizado
 		//				   ad_fecdesper  // Fecha Desde Periodo de Inicio del Prestamo
 		//				   ad_fechasper  // Fecha Hasta Periodo de Inicio del Prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_moncuo  // Monto de la cuota mensual
-		//				   as_configuracion  // Configuración del prestamo si es por monto ó por cuota
+		//				   as_configuracion  // Configuraciï¿½n del prestamo si es por monto ï¿½ por cuota
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el insert ó False si hubo error en el insert
+		//	      Returns: lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
 		//	  Description: Funcion que inserta el prestamo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="INSERT INTO sno_prestamos(codemp,codnom,codper,codtippre,numpre,codconc,stapre,monpre,numcuopre,perinipre,monamopre,fecpre,tipcuopre)".
@@ -193,21 +193,21 @@ class sigesp_sno_c_prestamo
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_insert_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_insert_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$this->io_sql->rollback();
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó el Prestamo nro ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-							 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Insertï¿½ el Prestamo nro ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
+							 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
 			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
-			{	
+			{
 				$lb_valido = $this->uf_generar_cuotas($as_codper,$as_codtippre,$ai_numpre,$ai_monpre,$ai_numcuopre,$as_perinipre,$ad_fecdesper,
 							  			$ad_fechasper,$ai_sueper,$ai_moncuo,$as_configuracion,$as_tipcuopre,$aa_seguridad);
 			}
@@ -216,7 +216,7 @@ class sigesp_sno_c_prestamo
 				$lb_valido = $this->io_cuota->uf_verificar_integridadcuota($as_codper,$as_codtippre,$ai_numpre);
 			}
 			if($lb_valido)
-			{	
+			{
 				$this->io_mensajes->message("El prestamo fue registrado.");
 				$this->io_sql->commit();
 			}
@@ -228,7 +228,7 @@ class sigesp_sno_c_prestamo
 			}
 		}
 		return $lb_valido;
-	}// end function uf_insert_prestamo	
+	}// end function uf_insert_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -236,12 +236,12 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_ultimoperiodo
-		//		   Access: private (uf_generar_cuotas) 
-		//	    Arguments: as_ultpernom  // Último período de la Nómina
-		//	      Returns: lb_valido True si se obtiene el último período de la nómina sin problema False si hubo error
-		//	  Description: Funcion que obtiene el último período de la nómina actual
+		//		   Access: private (uf_generar_cuotas)
+		//	    Arguments: as_ultpernom  // ï¿½ltimo perï¿½odo de la Nï¿½mina
+		//	      Returns: lb_valido True si se obtiene el ï¿½ltimo perï¿½odo de la nï¿½mina sin problema False si hubo error
+		//	  Description: Funcion que obtiene el ï¿½ltimo perï¿½odo de la nï¿½mina actual
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="SELECT codperi ".
@@ -253,7 +253,7 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_load_ultimoperiodo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_load_ultimoperiodo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -262,24 +262,24 @@ class sigesp_sno_c_prestamo
 			{
 				$as_ultpernom=$row["codperi"];
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
-	}// end function uf_load_ultimoperiodo	
+	}// end function uf_load_ultimoperiodo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_load_incremento()
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_incremento
-		//		   Access: private (uf_generar_cuotas,uf_prestamorecalcular,uf_prestamosuspender) 
-		//	      Returns: ai_incremento  // Incremento de la nómina si es semanal, quincenal, mensual ó anual
-		//	  Description: función que obtiene el tipo de nómina y determina el incremento
+		//		   Access: private (uf_generar_cuotas,uf_prestamorecalcular,uf_prestamosuspender)
+		//	      Returns: ai_incremento  // Incremento de la nï¿½mina si es semanal, quincenal, mensual ï¿½ anual
+		//	  Description: funciï¿½n que obtiene el tipo de nï¿½mina y determina el incremento
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 13/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 13/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$ai_incremento=0;			
+		$ai_incremento=0;
 		switch($_SESSION["la_nomina"]["tippernom"])
 		{
 			case 0://Semanal
@@ -304,19 +304,19 @@ class sigesp_sno_c_prestamo
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_incrementar_periodo($ai_tippernom,$ai_incremento,$as_tipcuopre,&$as_percob,&$ad_feciniper,&$ad_fecfinper)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_incrementar_periodo
-		//		   Access: private (uf_generar_cuotas,uf_prestamorecalcular,uf_prestamosuspender) 
-		//	    Arguments: ai_tippernom  // Tipo de Período de la nómina (Semanal, Quincenal, Mensual, Anual)
-		//	    		   ai_incremento  // Cantidad en cuanto se van a incrementar los días del período
-		//	    		   as_percob  // Período
-		//	    		   ad_feciniper  // Fecha de Inicio del Período
-		//	    		   ad_fecfinper  // Fecha de Finalización del Período
-		//	      Returns: ai_incremento  // Incremento de la nómina si es semanal, quincenal, mensual ó anual
-		//	  Description: función que incrementa el perído, la Fecha de inicio del período y la fecha fin del período
+		//		   Access: private (uf_generar_cuotas,uf_prestamorecalcular,uf_prestamosuspender)
+		//	    Arguments: ai_tippernom  // Tipo de Perï¿½odo de la nï¿½mina (Semanal, Quincenal, Mensual, Anual)
+		//	    		   ai_incremento  // Cantidad en cuanto se van a incrementar los dï¿½as del perï¿½odo
+		//	    		   as_percob  // Perï¿½odo
+		//	    		   ad_feciniper  // Fecha de Inicio del Perï¿½odo
+		//	    		   ad_fecfinper  // Fecha de Finalizaciï¿½n del Perï¿½odo
+		//	      Returns: ai_incremento  // Incremento de la nï¿½mina si es semanal, quincenal, mensual ï¿½ anual
+		//	  Description: funciï¿½n que incrementa el perï¿½do, la Fecha de inicio del perï¿½odo y la fecha fin del perï¿½odo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 13/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 13/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		if($as_tipcuopre=="0")
@@ -358,23 +358,23 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_generar_cuotas
-		//		   Access: private (uf_insert_prestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del Tipo de  Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
+		//		   Access: private (uf_insert_prestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del Tipo de  Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
 		//				   ai_monpre  // Monto del Prestamo
-		//				   ai_numcuopre  // Número de Cuotas
-		//				   as_perinipre  // Período Inicial
+		//				   ai_numcuopre  // Nï¿½mero de Cuotas
+		//				   as_perinipre  // Perï¿½odo Inicial
 		//				   ad_fecdesper  // Fecha Desde Periodo de Inicio del Prestamo
 		//				   ad_fechasper  // Fecha Hasta Periodo de Inicio del Prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_moncuo  // Monto de la cuota mensual
-		//				   as_configuracion  // Configuración de la cuota
+		//				   as_configuracion  // Configuraciï¿½n de la cuota
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el insert ó False si hubo error en el insert
-		//	  Description: Función que genera las cuotas del prestamo
+		//	      Returns: lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
+		//	  Description: Funciï¿½n que genera las cuotas del prestamo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$li_tippernom=$_SESSION["la_nomina"]["tippernom"];
@@ -384,8 +384,8 @@ class sigesp_sno_c_prestamo
 		{
 			$lb_valido=$this->uf_load_ultimoperiodo($ls_ultpernom);
 			if($lb_valido)
-			{			
-				$li_incremento = $this->uf_load_incremento();			
+			{
+				$li_incremento = $this->uf_load_incremento();
 				// Guardo la 1ra cuota
 				$li_numcuo = 1;
 				$ls_percob = $as_perinipre;
@@ -407,14 +407,14 @@ class sigesp_sno_c_prestamo
 					if(intval($ls_percob)==intval($ls_ultpernom))
 					{
 						$ls_percob="000";
-					}	
+					}
 					if($as_tipcuopre=="1")
 					{
 						if(intval($ls_percob)>=intval($ls_ultpernom-1))
 						{
 							$ls_percob=(intval($ls_percob)-intval($ls_ultpernom));
-						}	
-					}				
+						}
+					}
 				}
 				if($ai_numcuopre>1)
 				{
@@ -435,37 +435,37 @@ class sigesp_sno_c_prestamo
 			$this->io_mensajes->message("El monto a Pagar por prestamos del personal es mayor al 30% de su sueldo. No se puede procesar el prestamo.");
 		}
 		return $lb_valido;
-	}// end function uf_generar_cuotas	
+	}// end function uf_generar_cuotas
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_guardar($as_existe,$as_codper,$as_codtippre,$ai_numpre,$as_codconc,$ai_stapre,$ai_monpre,$ai_numcuopre,$as_perinipre,
 						$ai_monamopre,$ad_fecdesper,$ad_fechasper,$ai_sueper,$ai_moncuo,$as_configuracion,$as_tipcuopre,$aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_guardar
-		//		   Access: public (sigesp_sno_p_prestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   as_codconc  // Código del Concepto
+		//		   Access: public (sigesp_sno_p_prestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   as_codconc  // Cï¿½digo del Concepto
 		//				   ai_stapre  // Estatus del Prestamo
 		//				   ai_monpre  // Monto del Prestamo
-		//				   ai_numcuopre  // Número de Cuotas
-		//				   as_perinipre  // Período Inicial
-		//				   ai_monamopre  // Monto Amortizado 
+		//				   ai_numcuopre  // Nï¿½mero de Cuotas
+		//				   as_perinipre  // Perï¿½odo Inicial
+		//				   ai_monamopre  // Monto Amortizado
 		//				   ad_fecdesper  // Fecha Desde Periodo de Inicio del Prestamo
 		//				   ad_fechasper  // Fecha Hasta Periodo de Inicio del Prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_moncuo  // Monto de la cuota mensual
-		//				   as_configuracion  // Configuración del prestamo si es por monto ó por cuotas
+		//				   as_configuracion  // Configuraciï¿½n del prestamo si es por monto ï¿½ por cuotas
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el guardar ó False si hubo error en el guardar
-		//	  Description: función que guarda el prestamo del personal
+		//	      Returns: lb_valido True si se ejecuto el guardar ï¿½ False si hubo error en el guardar
+		//	  Description: funciï¿½n que guarda el prestamo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=false;			
+		$lb_valido=false;
 		$ai_monpre=str_replace(".","",$ai_monpre);
 		$ai_monpre=str_replace(",",".",$ai_monpre);
 		$ai_monamopre=str_replace(".","",$ai_monamopre);
@@ -473,7 +473,7 @@ class sigesp_sno_c_prestamo
 		$ai_moncuo=str_replace(".","",$ai_moncuo);
 		$ai_moncuo=str_replace(",",".",$ai_moncuo);
 		$ls_prestamo="0";
-		$ls_prestamo=$this->uf_select_config("SNO","CONFIG","VAL_TIPO_PRESTAMO",$ls_prestamo,"I");//configuraciòn para el prestamo        
+		$ls_prestamo=$this->uf_select_config("SNO","CONFIG","VAL_TIPO_PRESTAMO",$ls_prestamo,"I");//configuraciï¿½n para el prestamo
 		switch ($as_existe)
 		{
 			case "FALSE":
@@ -482,33 +482,33 @@ class sigesp_sno_c_prestamo
 				{
 				   $ls_contar=0;
 				   if ($ls_prestamo!=0)
-				   {				       
-				   		$ls_contar=$this->uf_contar_prestamos($as_codper,$as_codtippre);						
+				   {
+				   		$ls_contar=$this->uf_contar_prestamos($as_codper,$as_codtippre);
 				   }
-				   
+
 				   if (($ls_prestamo=="0")&&($ls_contar==0))
-				   {				
+				   {
 						$lb_valido=$this->uf_insert_prestamo($as_codper,$as_codtippre,$ai_numpre,$as_codconc,$ai_stapre,
 						                                     $ai_monpre,$ai_numcuopre,$as_perinipre,$ai_monamopre,$ad_fecdesper,
 															 $ad_fechasper,$ai_sueper,$ai_moncuo,$as_configuracion,
 															 $as_tipcuopre,$aa_seguridad);
 				   }
 				   elseif (($ls_prestamo=="1")&&($ls_contar==0))
-				   {   
+				   {
 				   		$lb_valido=$this->uf_insert_prestamo($as_codper,$as_codtippre,$ai_numpre,$as_codconc,$ai_stapre,
 						                                     $ai_monpre,$ai_numcuopre,$as_perinipre,$ai_monamopre,$ad_fecdesper,
 															 $ad_fechasper,$ai_sueper,$ai_moncuo,$as_configuracion,
 															 $as_tipcuopre,$aa_seguridad);
 				   }
 				   elseif (($ls_prestamo=="1")&&($ls_contar>=1))
-				   {   
+				   {
 				   		$this->io_mensajes->message("No se puede crear el prestamo, ya que posee prestamos del mismo tipo que no se han Cancelado");
 				   }
 				}
 				break;
 		}
 		return $lb_valido;
-	}// end function uf_guardar		
+	}// end function uf_guardar
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -516,15 +516,15 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_delete
-		//		   Access: public (sigesp_sno_p_prestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
+		//		   Access: public (sigesp_sno_p_prestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el delete ó False si hubo error en el delete
+		//	      Returns: lb_valido True si se ejecuto el delete ï¿½ False si hubo error en el delete
 		//	  Description: Funcion que elimina un prestamo siempre y cuando no se haya comenzado a pagar
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 08/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 08/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
         if (!$this->io_cuota->uf_existe_cuotapagada($as_codper,$as_codtippre,$ai_numpre))
@@ -549,27 +549,27 @@ class sigesp_sno_c_prestamo
 				{
 					$lb_valido=false;
 					$this->io_sql->rollback();
-					$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_delete ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+					$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_delete ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				}
 				else
 				{
-					/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+					/////////////////////////////////         SEGURIDAD               /////////////////////////////
 					$ls_evento="DELETE";
-					$ls_descripcion ="Eliminó el prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-									 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+					$ls_descripcion ="Eliminï¿½ el prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
+									 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 					$lb_valido=$this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 													$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 													$aa_seguridad["ventanas"],$ls_descripcion);
-					/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+					/////////////////////////////////         SEGURIDAD               /////////////////////////////
 					if($lb_valido)
-					{	
+					{
 						$this->io_mensajes->message("EL prestamo fue Eliminado.");
 						$this->io_sql->commit();
 					}
 					else
 					{
 						$lb_valido=false;
-						$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_delete ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+						$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_delete ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 						$this->io_sql->rollback();
 					}
 				}
@@ -578,14 +578,14 @@ class sigesp_sno_c_prestamo
 			{
 				$this->io_sql->rollback();
 			}
-		} 
+		}
 		else
 		{
 			$lb_valido=false;
 			$this->io_mensajes->message("No se puede eliminar el prestamo. Ya existen cuotas canceladas.");
-		}       
+		}
 		return $lb_valido;
-    }// end function uf_delete	
+    }// end function uf_delete
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -593,16 +593,16 @@ class sigesp_sno_c_prestamo
     {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_nrocuota_prestamo
-		//		   Access: private (uf_recalcularprestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   ai_numcuopre  // Número de cuotas en que se va a cancelar el prestamo
+		//		   Access: private (uf_recalcularprestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   ai_numcuopre  // Nï¿½mero de cuotas en que se va a cancelar el prestamo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si realizó el update ó False si no lo actualizó
-		//	  Description: Función que actualiza las cuotas en que se va a pagar un prestamo debido a un recalculo
+		//	      Returns: lb_valido True si realizï¿½ el update ï¿½ False si no lo actualizï¿½
+		//	  Description: Funciï¿½n que actualiza las cuotas en que se va a pagar un prestamo debido a un recalculo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 09/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 09/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  		$lb_valido=false;
        	$ls_sql="UPDATE sno_prestamos ".
@@ -615,20 +615,20 @@ class sigesp_sno_c_prestamo
 		$li_row=$this->io_sql->execute($ls_sql);
        	if ($li_row===false)
        	{
-        	$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_nrocuota_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+        	$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_nrocuota_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
        	}
        	else
        	{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó el número de cuotas del prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-							 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Actualizï¿½ el nï¿½mero de cuotas del prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
+							 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
        	}
-		return $lb_valido;    
+		return $lb_valido;
 	}// end function uf_update_nrocuota_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -637,16 +637,16 @@ class sigesp_sno_c_prestamo
     {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_monto_prestamo
-		//		   Access: private (uf_refinanciarrestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
+		//		   Access: private (uf_refinanciarrestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
 		//				   ai_monpre  // monto del prestamo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si realizó el update ó False si no lo actualizó
-		//	  Description: Función que actualiza el monto del prestamo y su saldo actual
+		//	      Returns: lb_valido True si realizï¿½ el update ï¿½ False si no lo actualizï¿½
+		//	  Description: Funciï¿½n que actualiza el monto del prestamo y su saldo actual
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 23/08/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 23/08/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  		$lb_valido=false;
        	$ls_sql="UPDATE sno_prestamos ".
@@ -659,20 +659,20 @@ class sigesp_sno_c_prestamo
 		$li_row=$this->io_sql->execute($ls_sql);
        	if ($li_row===false)
        	{
-        	$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_monto_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+        	$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_monto_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
        	}
        	else
        	{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Refinancio en ".$ai_monpre." el prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-							 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+							 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
        	}
-		return $lb_valido;    
+		return $lb_valido;
 	}// end function uf_update_monto_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -681,17 +681,17 @@ class sigesp_sno_c_prestamo
     {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_observacion_prestamo
-		//		   Access: private (uf_recalcularprestamo, uf_suspenderprestamo) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   as_campo  // Campo de _Observacion que se va a actualizar si es por recalcular ó por suspender
-		//				   as_observacion  // Número de cuotas en que se va a cancelar el prestamo
+		//		   Access: private (uf_recalcularprestamo, uf_suspenderprestamo)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   as_campo  // Campo de _Observacion que se va a actualizar si es por recalcular ï¿½ por suspender
+		//				   as_observacion  // Nï¿½mero de cuotas en que se va a cancelar el prestamo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si realizó el update ó False si no lo actualizó
-		//	  Description: Función que actualiza las cuotas en que se va a pagar un prestamo debido a un recalculo
+		//	      Returns: lb_valido True si realizï¿½ el update ï¿½ False si no lo actualizï¿½
+		//	  Description: Funciï¿½n que actualiza las cuotas en que se va a pagar un prestamo debido a un recalculo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 11/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 11/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  		$lb_valido=false;
        	$ls_sql="UPDATE sno_prestamos ".
@@ -704,20 +704,20 @@ class sigesp_sno_c_prestamo
 		$li_row=$this->io_sql->execute($ls_sql);
        	if ($li_row===false)
        	{
-        	$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_observacion_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));			
+        	$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_observacion_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
        	}
        	else
        	{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó la observación ".$as_campo." del prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-							 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Actualizï¿½ la observaciï¿½n ".$as_campo." del prestamo ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
+							 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
        	}
-		return $lb_valido;    
+		return $lb_valido;
 	}// end function uf_update_observacion_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -728,29 +728,29 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_prestamo
-		//		   Access: public (sigesp_sno_p_prestamo) 
-		//	    Arguments: as_codper  // código de Personal
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   as_codtippre  // Código del tipo de Prestamo
+		//		   Access: public (sigesp_sno_p_prestamo)
+		//	    Arguments: as_codper  // cï¿½digo de Personal
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
 		//				   as_nomper  // Nombre del Personal
-		//				   as_destippre  // Descripción del Tipo de Prestamo
-		//				   as_codconc  // Código de concepto
+		//				   as_destippre  // Descripciï¿½n del Tipo de Prestamo
+		//				   as_codconc  // Cï¿½digo de concepto
 		//				   as_nomcon  // Nombre de Concepto
 		//				   ai_stapre  // Estatus del Prestamo
 		//				   ai_monpre  // Monto del Prestamo
-		//				   ai_numcuopre  // Número de Cuotas del Prestamo
+		//				   ai_numcuopre  // Nï¿½mero de Cuotas del Prestamo
 		//				   as_perinipre  // Periodo Inicial del Prestamo
 		//				   ai_salactpre  // Saldo Actual del Prestamo
 		//				   ai_moncuopre  // Monto del Las cuotas del Prestamo
 		//				   ai_monamopre  // Monto Amortizado del Prestamo
-		//				   ad_fecdesper  // Fecha desde del período
-		//				   ad_fechasper  // Fecha Hasta del Período
+		//				   ad_fecdesper  // Fecha desde del perï¿½odo
+		//				   ad_fechasper  // Fecha Hasta del Perï¿½odo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_cuofal  // cuotas faltantes
-		//	      Returns: lb_valido True si se ejecuto el select ó False si hubo error en el select
-		//	  Description: Función que obtiene la información del prestamo
+		//	      Returns: lb_valido True si se ejecuto el select ï¿½ False si hubo error en el select
+		//	  Description: Funciï¿½n que obtiene la informaciï¿½n del prestamo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 10/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 10/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="SELECT sno_prestamos.codper, sno_prestamos.numpre, sno_prestamos.codtippre, sno_prestamos.codconc, sno_prestamos.monpre, ".
@@ -803,7 +803,7 @@ class sigesp_sno_c_prestamo
 		if($rs_data===false)
 		{
 			$lb_valido=false;
-        	$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_load_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));			
+        	$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_load_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -835,24 +835,24 @@ class sigesp_sno_c_prestamo
 				$ai_salactpre=$this->io_fun_nomina->uf_formatonumerico($ai_salactpre);
 				$ai_moncuopre=$this->io_fun_nomina->uf_formatonumerico($ai_moncuopre);
 			}
-			$this->io_sql->free_result($rs_data);		
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_load_prestamo
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_select_resumen($as_codper,$as_codconc)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_resumen
-		//		   Access: public (sigesp_sno_p_prestamorecalcular) 
-		//	    Arguments: as_codper  // código de Personal
-		//				   as_codconc  // Código de concepto
-		//	      Returns: lb_valido True si existe ó False si no existe
-		//	  Description: Funcion que busca en la tabla de salidas si ya se calculó este prestamo
+		//		   Access: public (sigesp_sno_p_prestamorecalcular)
+		//	    Arguments: as_codper  // cï¿½digo de Personal
+		//				   as_codconc  // Cï¿½digo de concepto
+		//	      Returns: lb_valido True si existe ï¿½ False si no existe
+		//	  Description: Funcion que busca en la tabla de salidas si ya se calculï¿½ este prestamo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 13/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 13/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_codperi=$_SESSION["la_nomina"]["peractnom"];
@@ -866,7 +866,7 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_select_resumen ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_select_resumen ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -879,7 +879,7 @@ class sigesp_sno_c_prestamo
 			{
 				$lb_valido=false;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_select_resumen
@@ -888,28 +888,28 @@ class sigesp_sno_c_prestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_recalcularprestamo($as_codper,$as_codtippre,$ai_numpre,$ai_numcuofalpre,$ai_nuemoncuopre,$ai_sueper,$ai_cuopag,
 								   $ai_salactpre,$as_obsrecpre,$ai_numcuopre,$as_configuracion,$as_tipcuopre,$aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_recalcularprestamo
-		//		   Access: public (sigesp_sno_p_prestamorecalcular) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   ai_numcuofalpre  // Número de Cuotas faltantes
+		//		   Access: public (sigesp_sno_p_prestamorecalcular)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   ai_numcuofalpre  // Nï¿½mero de Cuotas faltantes
 		//				   ai_nuemoncuopre  // Monto de las cuotas del prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_cuopag  // Cuotas que han sido canceladas
 		//				   ai_salactpre  // Saldo actual del Prestamo
-		//				   as_obsrecpre  // Observación de recalculo de las cuotas
-		//				   ai_numcuopre  // Número Inicial de Cuotas del Prestamo 
-		//				   as_configuracion  // Configuración si es por monto ó por cuota
+		//				   as_obsrecpre  // Observaciï¿½n de recalculo de las cuotas
+		//				   ai_numcuopre  // Nï¿½mero Inicial de Cuotas del Prestamo
+		//				   as_configuracion  // Configuraciï¿½n si es por monto ï¿½ por cuota
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el recalcular ó False si hubo error en el recalcular
-		//	  Description: función que recalcula las cuotas del prestamo del personal
+		//	      Returns: lb_valido True si se ejecuto el recalcular ï¿½ False si hubo error en el recalcular
+		//	  Description: funciï¿½n que recalcula las cuotas del prestamo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 09/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 09/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=true;			
+		$lb_valido=true;
 		$ai_salactpre=str_replace(".","",$ai_salactpre);
 		$ai_salactpre=str_replace(",",".",$ai_salactpre);
 		$ai_nuemoncuopre=str_replace(".","",$ai_nuemoncuopre);
@@ -935,44 +935,44 @@ class sigesp_sno_c_prestamo
 		{
 			$li_numultcuo=$li_totcuo;
 			$li_cuofin=$li_totcuo + ($ai_numcuopre-$li_totcuo);
-		}		
+		}
 		if($lb_valido)
 		{
 			$lb_valido=$this->io_cuota->uf_verificarsueldo($as_codper,$ai_nuemoncuopre,$ai_sueper,$ai_numpre);
 		}
 		$this->io_sql->begin_transaction();
 		if($lb_valido)
-		{	
+		{
 			$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
 			$li_incremento = $this->uf_load_incremento();
 			$li_cuota=$li_numpricuo;
 			$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
-			for($li_i=($li_numpricuo+1);$li_i<=$li_numultcuo;++$li_i)// Recorro las cuotas que ya está generadas y les actualizo el monto
+			for($li_i=($li_numpricuo+1);$li_i<=$li_numultcuo;++$li_i)// Recorro las cuotas que ya estï¿½ generadas y les actualizo el monto
 			{
 				$li_cuota=$li_i;
-				if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la última que se va a generar
+				if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la ï¿½ltima que se va a generar
 				{
 					$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 				}
 				$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
 			}
-			for($li_i=($li_numultcuo+1);$li_i<=$li_cuofin;++$li_i)// Recorro las restantes bien sea que generarlas ó para eliminarlas
+			for($li_i=($li_numultcuo+1);$li_i<=$li_cuofin;++$li_i)// Recorro las restantes bien sea que generarlas ï¿½ para eliminarlas
 			{
 				$li_cuota=$li_i;
-				if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas 
+				if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas
 				{
 					if(intval($ls_percob)>=intval($ls_ultpernom))
 					{
 						$ls_percob="000";
-					}			
+					}
 					if($as_tipcuopre=="1")
 					{
 						if(intval($ls_percob)>=intval($ls_ultpernom-1))
 						{
 							$ls_percob=(intval($ls_percob)-intval($ls_ultpernom));
-						}			
-					}		
-					if($li_i==$li_cuofin)// Sí es la última cuota
+						}
+					}
+					if($li_i==$li_cuofin)// Sï¿½ es la ï¿½ltima cuota
 					{
 						$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 					}
@@ -985,15 +985,15 @@ class sigesp_sno_c_prestamo
 				else// Si necesito eliminar cuotas
 				{
 					$lb_valido=$this->io_cuota->uf_delete_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"1",$aa_seguridad);
-				}		
+				}
 			}
 		}
 		if($lb_valido)
-		{	
+		{
 			$lb_valido=$this->uf_update_nrocuota_prestamo($as_codper,$as_codtippre,$ai_numpre,$li_totcuo,$aa_seguridad);
 		}
 		if($lb_valido)
-		{	
+		{
 			$lb_valido=$this->uf_update_observacion_prestamo($as_codper,$as_codtippre,$ai_numpre,"obsrecpre",$as_obsrecpre,$aa_seguridad);
 		}
 		if($lb_valido)
@@ -1001,7 +1001,7 @@ class sigesp_sno_c_prestamo
 			$lb_valido = $this->io_cuota->uf_verificar_integridadcuota($as_codper,$as_codtippre,$ai_numpre);
 		}
 		if($lb_valido)
-		{	
+		{
 			$this->io_mensajes->message("Las cuotas fueron recalculadas.");
 			$this->io_sql->commit();
 		}
@@ -1012,33 +1012,33 @@ class sigesp_sno_c_prestamo
 			$this->io_sql->rollback();
 		}
 		return $lb_valido;
-	}// end function uf_recalcularprestamo	
+	}// end function uf_recalcularprestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_suspenderprestamo($as_codper,$as_codtippre,$ai_numpre,$as_perdes,$ad_fecdes1,$ad_fechas1,$as_perhas,
 								  $ad_fecdes2,$ad_fechas2,$as_obssuspre,$as_tipcuopre,$aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_suspenderprestamo
-		//		   Access: public (sigesp_sno_p_prestamosuspender) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   as_perdes  // Período desde que se va a suspender el prestamo
+		//		   Access: public (sigesp_sno_p_prestamosuspender)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   as_perdes  // Perï¿½odo desde que se va a suspender el prestamo
 		//				   ad_fecdes1  // Fecha desde del periodo Desde
-		//				   ad_fechas1  // Fecha hasta del Període Desde
-		//				   as_perhas  // Período hasta que se va a suspender el prestamo
+		//				   ad_fechas1  // Fecha hasta del Perï¿½ode Desde
+		//				   as_perhas  // Perï¿½odo hasta que se va a suspender el prestamo
 		//				   ad_fecdes2  // Fecha desde del periodo Hasta
 		//				   ad_fechas2  // Fecha hasta del periodo Hasta
-		//				   as_obssuspre  // Observación por medio del cual se va a suspender un prestamo
+		//				   as_obssuspre  // Observaciï¿½n por medio del cual se va a suspender un prestamo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el recalcular ó False si hubo error en el recalcular
-		//	  Description: función que suspende un prestado desde un período hasta otro período y le modifica los períodos a las cuotas
+		//	      Returns: lb_valido True si se ejecuto el recalcular ï¿½ False si hubo error en el recalcular
+		//	  Description: funciï¿½n que suspende un prestado desde un perï¿½odo hasta otro perï¿½odo y le modifica los perï¿½odos a las cuotas
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 10/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 10/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=true;				
+		$lb_valido=true;
 		$ad_fecdes1=$this->io_funciones->uf_convertirdatetobd($ad_fecdes1);
 		$ad_fechas1=$this->io_funciones->uf_convertirdatetobd($ad_fechas1);
 		$li_numpricuo=0;
@@ -1055,13 +1055,13 @@ class sigesp_sno_c_prestamo
 		{
 			$lb_valido=$this->uf_load_ultimoperiodo($ls_ultpernom);
 		}
-		$this->io_sql->begin_transaction();	
+		$this->io_sql->begin_transaction();
 		if($lb_valido)
-		{	
+		{
 			if($li_numpricuo>0)// Si existen cuotas en el periodo seleccionado
 			{
 				$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
-				$li_incremento = $this->uf_load_incremento();			
+				$li_incremento = $this->uf_load_incremento();
 				$ld_fecfinperact = $this->io_funciones->uf_convertirfecmostrar($ad_fechas2);
 				$ls_percobact = $as_perhas;
 				for($li_i=$li_numpricuo;($li_i<=$li_numultcuo)&&($lb_valido);++$li_i)
@@ -1070,14 +1070,14 @@ class sigesp_sno_c_prestamo
 					if(intval($ls_percobact)>=intval($ls_ultpernom))
 					{
 						$ls_percobact="000";
-					}					
+					}
 					if($as_tipcuopre=="1")
 					{
 						if(intval($ls_percobact)>=intval($ls_ultpernom-1))
 						{
 							$ls_percobact=(intval($ls_percobact)-intval($ls_ultpernom));
-						}			
-					}		
+						}
+					}
 					$lb_valido=$this->uf_incrementar_periodo($li_tippernom,$li_incremento,$as_tipcuopre,$ls_percobact,$ld_feciniperact,$ld_fecfinperact);
 					if($lb_valido)
 					{
@@ -1085,20 +1085,20 @@ class sigesp_sno_c_prestamo
 						if(intval($ls_percobact)>=intval($ls_ultpernom))
 						{
 							$ls_percobact="000";
-						}					
+						}
 						if($as_tipcuopre=="1")
 						{
 							if(intval($ls_percobact)>=intval($ls_ultpernom-1))
 							{
 								$ls_percobact=(intval($ls_percobact)-intval($ls_ultpernom));
-							}			
-						}		
+							}
+						}
 					}
 				}
 				if($lb_valido)
-				{	
+				{
 					$lb_valido=$this->uf_update_observacion_prestamo($as_codper,$as_codtippre,$ai_numpre,"obssuspre",$as_obssuspre,$aa_seguridad);
-				}				
+				}
 				if($lb_valido)
 				{
 					$lb_valido = $this->io_cuota->uf_verificar_integridadcuota($as_codper,$as_codtippre,$ai_numpre);
@@ -1107,11 +1107,11 @@ class sigesp_sno_c_prestamo
 			else
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("No hay cuotas para el Período Inicial seleccionado.");
+				$this->io_mensajes->message("No hay cuotas para el Perï¿½odo Inicial seleccionado.");
 			}
 		}
 		if($lb_valido)
-		{	
+		{
 			$this->io_mensajes->message("Las cuotas fueron suspendidas.");
 			$this->io_sql->commit();
 		}
@@ -1121,34 +1121,34 @@ class sigesp_sno_c_prestamo
 			$this->io_sql->rollback();
 		}
 		return $lb_valido;
-	}// end function uf_suspenderprestamo		
+	}// end function uf_suspenderprestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_refinanciarprestamo($as_codper,$as_codtippre,$ai_numpre,$ai_numcuofalpre,$ai_nuemoncuopre,$ai_sueper,$ai_cuopag,
 								   $ai_salactpre,$as_obsrecpre,$ai_numcuopre,$as_configuracion,$as_tipcuopre,$ai_nuemonpre,$aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_refinanciarprestamo
-		//		   Access: public (sigesp_sno_p_prestamorefinanciar) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   ai_numcuofalpre  // Número de Cuotas faltantes
+		//		   Access: public (sigesp_sno_p_prestamorefinanciar)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   ai_numcuofalpre  // Nï¿½mero de Cuotas faltantes
 		//				   ai_nuemoncuopre  // Monto de las cuotas del prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_cuopag  // Cuotas que han sido canceladas
 		//				   ai_salactpre  // Saldo actual del Prestamo
-		//				   as_obsrecpre  // Observación de recalculo de las cuotas
-		//				   ai_numcuopre  // Número Inicial de Cuotas del Prestamo 
-		//				   as_configuracion  // Configuración si es por monto ó por cuota
+		//				   as_obsrecpre  // Observaciï¿½n de recalculo de las cuotas
+		//				   ai_numcuopre  // Nï¿½mero Inicial de Cuotas del Prestamo
+		//				   as_configuracion  // Configuraciï¿½n si es por monto ï¿½ por cuota
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el refinanciar ó False si hubo error en el refinanciar
-		//	  Description: función que refinancia el monto del prestamo
+		//	      Returns: lb_valido True si se ejecuto el refinanciar ï¿½ False si hubo error en el refinanciar
+		//	  Description: funciï¿½n que refinancia el monto del prestamo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 23/08/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 23/08/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=true;			
+		$lb_valido=true;
 		$ai_nuemonpre=str_replace(".","",$ai_nuemonpre);
 		$ai_nuemonpre=str_replace(",",".",$ai_nuemonpre);
 		$ai_salactpre=str_replace(".","",$ai_salactpre);
@@ -1176,48 +1176,48 @@ class sigesp_sno_c_prestamo
 		{
 			$li_numultcuo=$li_totcuo;
 			$li_cuofin=$li_totcuo + ($ai_numcuopre-$li_totcuo);
-		}		
+		}
 		if($lb_valido)
 		{
 			$lb_valido=$this->io_cuota->uf_verificarsueldo($as_codper,$ai_nuemoncuopre,$ai_sueper,$ai_numpre);
 		}
 		$this->io_sql->begin_transaction();
 		if($lb_valido)
-		{	
+		{
 			$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
 			$li_incremento = $this->uf_load_incremento();
 			$li_cuota=$li_numpricuo;
 			$lb_valido=$this->uf_update_monto_prestamo($as_codper,$as_codtippre,$ai_numpre,$ai_nuemonpre,$aa_seguridad);
 			if($lb_valido)
-			{	
+			{
 				$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
 			}
-			for($li_i=($li_numpricuo+1);($li_i<=$li_numultcuo)&&$lb_valido;++$li_i)// Recorro las cuotas que ya está generadas y les actualizo el monto
+			for($li_i=($li_numpricuo+1);($li_i<=$li_numultcuo)&&$lb_valido;++$li_i)// Recorro las cuotas que ya estï¿½ generadas y les actualizo el monto
 			{
 				$li_cuota=$li_i;
-				if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la última que se va a generar
+				if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la ï¿½ltima que se va a generar
 				{
 					$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 				}
 				$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
 			}
-			for($li_i=($li_numultcuo+1);($li_i<=$li_cuofin)&&$lb_valido;++$li_i)// Recorro las restantes bien sea que generarlas ó para eliminarlas
+			for($li_i=($li_numultcuo+1);($li_i<=$li_cuofin)&&$lb_valido;++$li_i)// Recorro las restantes bien sea que generarlas ï¿½ para eliminarlas
 			{
 				$li_cuota=$li_i;
-				if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas 
+				if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas
 				{
 					if(intval($ls_percob)>=intval($ls_ultpernom))
 					{
 						$ls_percob="000";
-					}			
+					}
 					if($as_tipcuopre=="1")
 					{
 						if(intval($ls_percob)>=intval($ls_ultpernom-1))
 						{
 							$ls_percob=(intval($ls_percob)-intval($ls_ultpernom));
-						}			
-					}		
-					if($li_i==$li_cuofin)// Sí es la última cuota
+						}
+					}
+					if($li_i==$li_cuofin)// Sï¿½ es la ï¿½ltima cuota
 					{
 						$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 					}
@@ -1230,15 +1230,15 @@ class sigesp_sno_c_prestamo
 				else// Si necesito eliminar cuotas
 				{
 					$lb_valido=$this->io_cuota->uf_delete_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"1",$aa_seguridad);
-				}		
+				}
 			}
 		}
 		if($lb_valido)
-		{	
+		{
 			$lb_valido=$this->uf_update_nrocuota_prestamo($as_codper,$as_codtippre,$ai_numpre,$li_totcuo,$aa_seguridad);
 		}
 		if($lb_valido)
-		{	
+		{
 			$lb_valido=$this->uf_update_observacion_prestamo($as_codper,$as_codtippre,$ai_numpre,"obsrecpre",$as_obsrecpre,$aa_seguridad);
 		}
 		if($lb_valido)
@@ -1246,7 +1246,7 @@ class sigesp_sno_c_prestamo
 			$lb_valido = $this->io_cuota->uf_verificar_integridadcuota($as_codper,$as_codtippre,$ai_numpre);
 		}
 		if($lb_valido)
-		{	
+		{
 			$this->io_mensajes->message("Las prestamo fue refinanciado.");
 			$this->io_sql->commit();
 		}
@@ -1257,7 +1257,7 @@ class sigesp_sno_c_prestamo
 			$this->io_sql->rollback();
 		}
 		return $lb_valido;
-	}// end function uf_refinanciarprestamo	
+	}// end function uf_refinanciarprestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1266,13 +1266,13 @@ class sigesp_sno_c_prestamo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_salida
 		//	       Access: private (uf_update_salida_prestamo)
-		//	    Arguments: as_codper // código de personal
-		//                 as_codconc //  codigo del concepto  
-		//                 as_tipsal  // tipo de la salida 
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//                 as_codconc //  codigo del concepto
+		//                 as_tipsal  // tipo de la salida
 		//	      Returns: li_cuantos // cuantos existen
 		//	  Description: Funcion que devuelve si exsten salidas con este concepto asociado
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 01/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 		$li_cuantos=0;
@@ -1288,7 +1288,7 @@ class sigesp_sno_c_prestamo
 		if($rs_data===false)
 		{
 		  $lb_valido=false;
-		  $this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_select_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+		  $this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_select_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -1298,9 +1298,9 @@ class sigesp_sno_c_prestamo
 			}
 			$this->io_sql->free_result($rs_data);
 		}
-		return $li_cuantos;		  
- 	}// end function uf_select_salida	
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+		return $li_cuantos;
+ 	}// end function uf_select_salida
+	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_salida($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon)
@@ -1308,16 +1308,16 @@ class sigesp_sno_c_prestamo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_insert_salida
 		//	       Access: private (uf_update_salida_prestamo)
-		//	    Arguments: as_codper // código de personal
-		//                 as_codconc //  codigo del concepto   
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//                 as_codconc //  codigo del concepto
 		//                 as_tipsal  // tipo de salida
-		//                 ad_valsal  // vlor de la salida 
-		//                 ad_monacusal  //  monto acumulado de la salida   
-		//                 ad_salsal  // saldo de la salida  
-		//	      Returns: lb_valido true si hace el insert correctamente y false en caso contrario 
+		//                 ad_valsal  // vlor de la salida
+		//                 ad_monacusal  //  monto acumulado de la salida
+		//                 ad_salsal  // saldo de la salida
+		//	      Returns: lb_valido true si hace el insert correctamente y false en caso contrario
 		//	  Description: Funcion que inserta  la salida  en la tabla
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 01/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 		$lb_valido=true;
@@ -1348,31 +1348,31 @@ class sigesp_sno_c_prestamo
 	   if($li_row===false)
 	   {
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_insert_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_insert_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	   }
-	   return $lb_valido;	
-	}// end function uf_insert_salida	
-	//-----------------------------------------------------------------------------------------------------------------------------------		
-	
+	   return $lb_valido;
+	}// end function uf_insert_salida
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_update_salida($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//		 Function : uf_update_salida
 		//	       Access : private (uf_update_salida_prestamo)
-		//	    Arguments : as_codper // código de personal
-		//                  as_codconc //  codigo del concepto   
+		//	    Arguments : as_codper // cï¿½digo de personal
+		//                  as_codconc //  codigo del concepto
 		//                  as_tipsal  // tipo de salida
-		//                  ad_valsal  // valor de la salida 
-		//                  ad_monacusal  //  monto acumulado de la salida   
-		//                  ad_salsal  // saldo de la salida  
+		//                  ad_valsal  // valor de la salida
+		//                  ad_monacusal  //  monto acumulado de la salida
+		//                  ad_salsal  // saldo de la salida
 		// 	      Returns : $lb_valido true si realizo el update correctamente   false en caso contrario
 		//	  Description : Funcion que actualiza en la tabla de sno_salida
 		//	   Creado Por : Ing. Yozelin Barragan
-		// Fecha Creación : 01/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n : 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
-		$lb_valido=true;		
+		$lb_valido=true;
 		$li_priquisal=0;
 		$li_segquisal=0;
 		switch($as_quirepcon)
@@ -1409,12 +1409,70 @@ class sigesp_sno_c_prestamo
 	   if($li_row===false)
 	   {
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_salida ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	   }
-	   return $lb_valido;	
-	}// end function uf_update_salida	
+	   return $lb_valido;
+	}// end function uf_update_salida
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+	function uf_update_salida_desincorpora($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//		 Function : uf_update_salida_desincorpora
+		//	       Access : private (uf_update_salida_prestamo)
+		//	    Arguments : as_codper // cï¿½digo de personal
+		//                  as_codconc //  codigo del concepto
+		//                  as_tipsal  // tipo de salida
+		//                  ad_valsal  // valor de la salida
+		//                  ad_monacusal  //  monto acumulado de la salida
+		//                  ad_salsal  // saldo de la salida
+		// 	      Returns : $lb_valido true si realizo el update correctamente   false en caso contrario
+		//	  Description : Funcion que actualiza en la tabla de sno_salida
+		//	   Creado Por : Ing. Yozelin Barragan
+		// Fecha Creaciï¿½n : 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
+		$lb_valido=true;
+		$li_priquisal=0;
+		$li_segquisal=0;
+		switch($as_quirepcon)
+		{
+			case '1':
+				$li_priquisal=$ad_valsal;
+				break;
+			case '2':
+				$li_segquisal=$ad_valsal;
+				break;
+			case '3':
+				$li_priquisal=round($ad_valsal/2,2);
+				$li_segquisal=round($ad_valsal/2,2);
+				if(($li_priquisal+$li_segquisal)!=$ad_valsal)
+				{
+					$ld_ajuste= $ad_valsal - ($li_priquisal+$li_segquisal);
+					$li_segquisal = $li_segquisal + $ld_ajuste;
+				}
+				break;
+		}
+		$ad_monacusal=($ad_monacusal*(-1));
+		$ls_sql="UPDATE sno_salida ".
+				"	SET valsal=(valsal+".$ad_valsal."), ".
+				"		monacusal=(monacusal+".$ad_monacusal."), ".
+		        "       salsal='".$ad_salsal."', ".
+				"		priquisal=(priquisal+".$li_priquisal."),".
+				"		segquisal=(segquisal+".$li_segquisal.") ".
+				" WHERE codemp='".$this->ls_codemp."' ".
+				"   AND codnom='".$this->ls_codnom."' ".
+				"   AND codperi='".$ls_peractnom."' ".
+				"   AND codper='".$as_codper."' ".
+				"   AND codconc='".$as_codconc."' ".
+				"   AND tipsal='".$as_tipsal."' ";
+	   $li_row=$this->io_sql->execute($ls_sql);
+	   if($li_row===false)
+	   {
+			$lb_valido=false;
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_salida_desincorpora ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+	   }
+	   return $lb_valido;
+	}// end function uf_update_salida_desincorpora
    	//-------------------------------------------------------------------------------------------------------------------------------------
 	function uf_update_salida_prestamo($as_codper,$as_codtippre,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,
 									   $ai_numcuo,$ai_numpre,$as_quirepcon)
@@ -1427,14 +1485,14 @@ class sigesp_sno_c_prestamo
 		//                 as_codconc  //  codigo del concepto
 		//                 as_tipsal  // signo del concepto
 		//                 ad_valsal  // cuota del prestamo
-		//                 ad_monacusal  // acumulado del prestamo  
-		//                 ad_salsal  //  saldo del prestamo 
-		//                 ai_numcuo  //  número de cuota que se está pagando
-		//                 ai_numpre  //  número del prestamo
-		//	      Returns: lb_valido True si se ejecuto el update correctamente ó False si hubo error en el update
+		//                 ad_monacusal  // acumulado del prestamo
+		//                 ad_salsal  //  saldo del prestamo
+		//                 ai_numcuo  //  nï¿½mero de cuota que se estï¿½ pagando
+		//                 ai_numpre  //  nï¿½mero del prestamo
+		//	      Returns: lb_valido True si se ejecuto el update correctamente ï¿½ False si hubo error en el update
 		//	  Description: Funcion que recorre los prestamos del personal y llama a los metodos deducir la cuota del pago de la nomina
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 01/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$li_cuantos=$this->uf_select_salida($as_codper,$as_codconc,$as_tipsal);
 		if($li_cuantos==0) // No existen salidas con ese concepto asociado
@@ -1446,23 +1504,53 @@ class sigesp_sno_c_prestamo
 		   $lb_valido=$this->uf_update_salida($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon);
 		}
 		return  $lb_valido;
-  	}// end function uf_update_salida_prestamo	
+  	}// end function uf_update_salida_prestamo
   	//-----------------------------------------------------------------------------------------------------------------------------------
-
-  	//-----------------------------------------------------------------------------------------------------------------------------------
-	function uf_calcular_prestamo($as_codper,&$ad_dedres,&$ad_totnom,&$ad_priquires,&$ad_segquires)
+	function uf_update_salida_prestamo_desincorpora($as_codper,$as_codtippre,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,
+									   $ai_numcuo,$ai_numpre,$as_quirepcon)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//	     Function: uf_calcular_prestamo
+		//		 Function: uf_update_salida_prestamo
+		//	       Access: private (uf_calcular_prestamo)
+		//	    Arguments: as_codper  // codigo del personal
+		//                 as_codtippre  // codigo del tipo de prestamo
+		//                 as_codconc  //  codigo del concepto
+		//                 as_tipsal  // signo del concepto
+		//                 ad_valsal  // cuota del prestamo
+		//                 ad_monacusal  // acumulado del prestamo
+		//                 ad_salsal  //  saldo del prestamo
+		//                 ai_numcuo  //  nï¿½mero de cuota que se estï¿½ pagando
+		//                 ai_numpre  //  nï¿½mero del prestamo
+		//	      Returns: lb_valido True si se ejecuto el update correctamente ï¿½ False si hubo error en el update
+		//	  Description: Funcion que recorre los prestamos del personal y llama a los metodos deducir la cuota del pago de la nomina
+		//	   Creado Por: Ing. Yozelin Barragan
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$li_cuantos=$this->uf_select_salida($as_codper,$as_codconc,$as_tipsal);
+		if($li_cuantos==0) // No existen salidas con ese concepto asociado
+		{
+		   $lb_valido=$this->uf_insert_salida($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon);
+		}
+		else
+		{
+		   $lb_valido=$this->uf_update_salida_desincorpora($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon);
+		}
+		return  $lb_valido;
+  	}// end function uf_update_salida_prestamo
+  	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_calcular_prestamo_vacaciones($as_codper,&$ad_dedres,&$ad_totnom,&$ad_priquires,&$ad_segquires,$ad_fechafinvac)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_calcular_prestamo_vacaciones
 		//	       Access: public (sigesp_sno_calcularnomina)
 		//	    Arguments: as_codper  // codigo del personal
-		//                 ad_dedres //  deducciones  del resumen 
+		//                 ad_dedres //  deducciones  del resumen
 		//                 ad_totnom  //   total de la nomina
-		//	      Returns: lb_valido True si se ejecuto  correctamente ó False si hubo error calculando los prestamos 
+		//	      Returns: lb_valido True si se ejecuto  correctamente ï¿½ False si hubo error calculando los prestamos
 		//	  Description: Funcion que recorre los prestamos del personal y busca cual es la cuota para deducirla del pago de la nomina
-		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 01/02/2006 								Fecha Última Modificación : 14/02/2006
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+		//	   Creado Por: Ing. Carlos Zambrano
+		// Fecha Creaciï¿½n: 02/03/2010         								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         $ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 		$lb_valido=true;
 		$ls_stapre="1";/* STATUS -> PRESTAMO ACTIVO*/
@@ -1472,7 +1560,96 @@ class sigesp_sno_c_prestamo
                 "  WHERE sno_prestamos.codemp='".$this->ls_codemp."' ".
                 "    AND sno_prestamos.codnom='".$this->ls_codnom."' ".
 				"	 AND sno_prestamos.codper='".$as_codper."' ".
-				"    AND sno_prestamos.stapre='".$ls_stapre."' ".  
+				"    AND sno_prestamos.stapre='".$ls_stapre."' ".
+				"    AND sno_prestamosperiodo.feciniper BETWEEN '".$this->ld_fecdesper."' AND '".$ad_fechafinvac."' ".
+	            "    AND sno_prestamos.codemp=sno_prestamosperiodo.codemp ".
+                "    AND sno_prestamos.codnom=sno_prestamosperiodo.codnom ".
+                "    AND sno_prestamos.codper=sno_prestamosperiodo.codper ".
+				"	 AND sno_prestamos.codtippre=sno_prestamosperiodo.codtippre ".
+				"	 AND sno_prestamos.numpre=sno_prestamosperiodo.numpre ".
+	            "    AND sno_prestamos.codemp=sno_concepto.codemp ".
+                "    AND sno_prestamos.codnom=sno_concepto.codnom ".
+                "    AND sno_prestamos.codconc=sno_concepto.codconc ";
+	   $rs_data=$this->io_sql->select($ls_sql);
+	   if($rs_data===false)
+	   {
+			$lb_valido=false;
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_calcular_prestamo_vacaciones ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+	   }
+	   else
+	   {
+			$li_cuenta=0;
+			while((!$rs_data->EOF)&&($lb_valido))
+			{
+				$ls_codtippre=$rs_data->fields["codtippre"];
+				$li_numcuo=$rs_data->fields["numcuo"];
+				$li_numpre=$rs_data->fields["numpre"];
+				$ld_cuopre=$rs_data->fields["moncuo"];
+				$ls_codconc=$rs_data->fields["codconc"];
+				$ld_monamopre=$rs_data->fields["monamopre"];
+				$ld_acuemp=$ld_monamopre + $ld_cuopre ;
+				$ld_monpre=$rs_data->fields["monpre"];
+				$ls_quirepcon=$rs_data->fields["quirepcon"];
+				$ld_saldo=($ld_monpre-$ld_monamopre)-$ld_acuemp;
+				if ($li_cuenta>0)
+				{
+					$ld_restando=$ld_acuemp*$li_cuenta;
+					$ld_saldo=$ld_saldo-$ld_restando;
+				}
+				$lb_valido=$this->uf_update_salida_prestamo_desincorpora($as_codper,$ls_codtippre,$ls_codconc,"D",-$ld_cuopre,$ld_acuemp,$ld_saldo,
+														 	$li_numcuo,$li_numpre,$ls_quirepcon);
+				if(($lb_valido)&&($_SESSION["la_nomina"]["divcon"]==1))
+				{
+					switch($ls_quirepcon)
+					{
+						case "1": // Primera Quincena
+							$ad_priquires=$ad_priquires-$ld_cuopre;
+							break;
+						case "2": // Segunda Quincena
+							$ad_segquires=$ad_segquires-$ld_cuopre;
+							break;
+						case "3": // Ambas Quincena
+							$ad_priquires=$ad_priquires-round($ld_cuopre/2,2);
+							$ad_segquires=$ad_segquires-round($ld_cuopre/2,2);
+							break;
+						case "-": // Ambas Quincena
+							$ad_priquires=$ad_priquires-round($ld_cuopre/2,2);
+							$ad_segquires=$ad_segquires-round($ld_cuopre/2,2);
+							break;
+					}
+				}
+				$ad_dedres=$ad_dedres + $ld_cuopre;
+				$ad_totnom=$ad_totnom - $ld_cuopre;
+				$rs_data->MoveNext();
+				$li_cuenta++;
+			}//while
+	   }//else
+	  return $lb_valido;
+	}// end function uf_calcular_prestamo
+  	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_calcular_prestamo($as_codper,&$ad_dedres,&$ad_totnom,&$ad_priquires,&$ad_segquires)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_calcular_prestamo
+		//	       Access: public (sigesp_sno_calcularnomina)
+		//	    Arguments: as_codper  // codigo del personal
+		//                 ad_dedres //  deducciones  del resumen
+		//                 ad_totnom  //   total de la nomina
+		//	      Returns: lb_valido True si se ejecuto  correctamente ï¿½ False si hubo error calculando los prestamos
+		//	  Description: Funcion que recorre los prestamos del personal y busca cual es la cuota para deducirla del pago de la nomina
+		//	   Creado Por: Ing. Yozelin Barragan
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
+		$lb_valido=true;
+		$ls_stapre="1";/* STATUS -> PRESTAMO ACTIVO*/
+		$ls_sql=" SELECT  sno_prestamos.codtippre, sno_prestamos.monpre, sno_prestamos.monamopre, sno_prestamos.numpre, ".
+                "         sno_prestamos.codconc, sno_prestamosperiodo.moncuo, sno_prestamosperiodo.numcuo, sno_concepto.quirepcon ".
+                "   FROM sno_prestamos , sno_prestamosperiodo, sno_concepto ".
+                "  WHERE sno_prestamos.codemp='".$this->ls_codemp."' ".
+                "    AND sno_prestamos.codnom='".$this->ls_codnom."' ".
+				"	 AND sno_prestamos.codper='".$as_codper."' ".
+				"    AND sno_prestamos.stapre='".$ls_stapre."' ".
 				"    AND sno_prestamosperiodo.feciniper='".$this->ld_fecdesper."' ".
 	            "    AND sno_prestamos.codemp=sno_prestamosperiodo.codemp ".
                 "    AND sno_prestamos.codnom=sno_prestamosperiodo.codnom ".
@@ -1486,10 +1663,10 @@ class sigesp_sno_c_prestamo
 	   if($rs_data===false)
 	   {
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_calcular_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_calcular_prestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	   }
 	   else
-	   {			
+	   {
 			while((!$rs_data->EOF)&&($lb_valido))
 			{
 				$ls_codtippre=$rs_data->fields["codtippre"];
@@ -1523,14 +1700,14 @@ class sigesp_sno_c_prestamo
 							$ad_segquires=$ad_segquires-round($ld_cuopre/2,2);
 							break;
 					}
-				}									 
+				}
 				$ad_dedres=$ad_dedres + $ld_cuopre;
 				$ad_totnom=$ad_totnom - $ld_cuopre;
 				$rs_data->MoveNext();
-			}//while 
+			}//while
 	   }//else
 	  return $lb_valido;
-	}// end function uf_calcular_prestamo	
+	}// end function uf_calcular_prestamo
 	//-------------------------------------------------------------------------------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------------------------------------------------------------------
@@ -1546,14 +1723,14 @@ class sigesp_sno_c_prestamo
 		//                  $as_tipsal  // signo del concepto
 		//                  $as_tipvac  // signo del concepto de vacaciones
 		//                  $ad_valsal  // cuota del prestamo
-		//                  $ad_monacusal  // acumulado del prestamo  
-		//                  $ad_salsal  //  saldo del prestamo 
-		//                  $ai_numcuo  //  número de cuota que se está pagando
-		//                  $ai_numpre  //  número del prestamo
-		//	      Returns : $lb_valido True si se ejecuto el update correctamente ó False si hubo error en el update
+		//                  $ad_monacusal  // acumulado del prestamo
+		//                  $ad_salsal  //  saldo del prestamo
+		//                  $ai_numcuo  //  nï¿½mero de cuota que se estï¿½ pagando
+		//                  $ai_numpre  //  nï¿½mero del prestamo
+		//	      Returns : $lb_valido True si se ejecuto el update correctamente ï¿½ False si hubo error en el update
 		//	  Description : Funcion que dado el prestamo del personal y llama a los metodos deducir la cuota del pago de la nomina
 		//	   Creado Por : Ing. Yesenia Moreno
-		// Fecha Creación : 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n : 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Calculo del concepto normal
 		$li_cuantos=$this->uf_select_salida($as_codper,$as_codconc,$as_tipsal);
@@ -1580,19 +1757,19 @@ class sigesp_sno_c_prestamo
 			$lb_valido=$this->uf_update_salida($as_codper,$as_codconc,$as_tipsal,$ad_valsal,$ad_monacusal,$ad_salsal,$as_quirepcon);
 		}
 		return  $lb_valido;
-  	}// end function uf_update_salida_prestamo_vac	
+  	}// end function uf_update_salida_prestamo_vac
   	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_update_amortizados()
-	{  
+	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_amortizados
-		//	       Access: public 
+		//	       Access: public
 		//	      Returns: lb_valido  true si actualizo el amortizado o false en caso contrario
-		//	  Description: Funcion que actualiza el amortizado del prestamo del personal  
+		//	  Description: Funcion que actualiza el amortizado del prestamo del personal
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 01/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n: 01/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 		$li_estcuo=1;/*- CUOTA CANCELADA O -*/
@@ -1614,7 +1791,7 @@ class sigesp_sno_c_prestamo
 	    if($li_row===false)
 	    {
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_amortizados ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_amortizados ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	    }
 		if($lb_valido)
 		{
@@ -1634,25 +1811,25 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_update_amortizados ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_update_amortizados ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
-		
+
 		}
-		
-		return $lb_valido;	
-	}// end function uf_update_amortizados	
+
+		return $lb_valido;
+	}// end function uf_update_amortizados
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
  	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_cancelar_prestamos()
-	{  
+	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_cancelar_prestamos
 		//	       Access: public (sigesp_sno_c_cierre_periodo)
 		//	      Returns: lb_valido  true si actualizo el prestamo o false si hubo un error
-		//	  Description: Función que verifica si el amorizado es igual al monto del prestamo se coloca como cancelado 
+		//	  Description: Funciï¿½n que verifica si el amorizado es igual al monto del prestamo se coloca como cancelado
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 14/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 14/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		////////////////////////////////////////////////////////////////////////////////////////////
 
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
@@ -1667,26 +1844,26 @@ class sigesp_sno_c_prestamo
 	    if($li_row===false)
 	    {
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_cancelar_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_cancelar_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	    }
-	   return $lb_valido;	
-	}// end function uf_cancelar_prestamos	
+	   return $lb_valido;
+	}// end function uf_cancelar_prestamos
     //-----------------------------------------------------------------------------------------------------------------------------------
 
  	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_suspender_prestamos()
-	{  
+	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_suspender_prestamos
-		//		   Access: private 
-		//	    Arguments: as_codper // código de personal
-		//                 as_codtippre //  codigo del tipo de prestamo   
-		//                 ai_numpre //  número del prestamo
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//                 as_codtippre //  codigo del tipo de prestamo
+		//                 ai_numpre //  nï¿½mero del prestamo
 		//	      Returns: lb_valido  true si actualizo el prestamo o false si hubo un error
-		//	  Description: Función que Si el prestamo está activo pero para el próximo período no tiene las cuotas a cancelar lo
+		//	  Description: Funciï¿½n que Si el prestamo estï¿½ activo pero para el prï¿½ximo perï¿½odo no tiene las cuotas a cancelar lo
 		//					suspende
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 14/02/2006 								Fecha Última Modificación :
+		// Fecha Creaciï¿½n: 14/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
@@ -1695,7 +1872,7 @@ class sigesp_sno_c_prestamo
 		$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
 		$li_numpernom = $_SESSION["la_nomina"]["numpernom"];
 		$li_stapre = 1; // Cuota Activa
-		$li_incremento = $this->uf_load_incremento();			
+		$li_incremento = $this->uf_load_incremento();
 		$ld_fechasper=$this->io_funciones->uf_convertirfecmostrar($ld_fechasper);
 		$lb_valido=$this->uf_incrementar_periodo($li_tippernom,$li_incremento,0,$ls_peractnom,$ld_fecdesper,$ld_fechasper);
 		if($lb_valido)
@@ -1726,27 +1903,27 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_suspender_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_suspender_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
-	   	return $lb_valido;	
-	}// end function uf_suspender_prestamos	
+	   	return $lb_valido;
+	}// end function uf_suspender_prestamos
     //-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_activar_prestamos()
-	{  
+	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_activar_prestamos
-		//		   Access: private 
-		//	    Arguments: as_codper // código de personal
-		//                 as_codtippre //  codigo del tipo de prestamo   
-		//                 ai_numpre //  número del prestamo
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//                 as_codtippre //  codigo del tipo de prestamo
+		//                 ai_numpre //  nï¿½mero del prestamo
 		//	      Returns: lb_valido  true si actualizo el prestamo o false si hubo un error
-		//	  Description: Función que Si el prestamo está suspendido pero para el próximo período ya tiene las cuotas a cancelar lo
+		//	  Description: Funciï¿½n que Si el prestamo estï¿½ suspendido pero para el prï¿½ximo perï¿½odo ya tiene las cuotas a cancelar lo
 		//					activa
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 14/02/2006
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 14/02/2006
 		////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
@@ -1754,7 +1931,7 @@ class sigesp_sno_c_prestamo
 		$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 		$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
 		$li_stapre=2; // Cuota Suspendida
-		$li_incremento=$this->uf_load_incremento();			
+		$li_incremento=$this->uf_load_incremento();
 		$ld_fechasper=$this->io_funciones->uf_convertirfecmostrar($ld_fechasper);
 		$lb_valido=$this->uf_incrementar_periodo($li_tippernom,$li_incremento,0,$ls_peractnom,$ld_fecdesper,$ld_fechasper);
 		if($lb_valido)
@@ -1781,46 +1958,46 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_activar_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_activar_prestamos ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
-	   	return $lb_valido;	
-	 }// end function uf_activar_prestamos	
+	   	return $lb_valido;
+	 }// end function uf_activar_prestamos
    //-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_amortizarprestamo($as_codper,$as_codtippre,$ai_numpre,$ai_numcuofalpre,$ai_nuemoncuopre,$ai_sueper,$ai_cuopag,
 								   $ai_salactpre,$as_obsrecpre,$ai_numcuopre,$as_configuracion,$ai_montoamortizar,$as_tipcuopre,
 								   $aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_amortizarprestamo
-		//		   Access: public (sigesp_sno_p_prestamoamortizar) 
-		//	    Arguments: as_codper  // Código del Personal
-		//				   as_codtippre  // Código del tipo de Prestamo
-		//				   ai_numpre  // Número Correlativo del Prestamo
-		//				   ai_numcuofalpre  // Número de Cuotas faltantes
+		//		   Access: public (sigesp_sno_p_prestamoamortizar)
+		//	    Arguments: as_codper  // Cï¿½digo del Personal
+		//				   as_codtippre  // Cï¿½digo del tipo de Prestamo
+		//				   ai_numpre  // Nï¿½mero Correlativo del Prestamo
+		//				   ai_numcuofalpre  // Nï¿½mero de Cuotas faltantes
 		//				   ai_nuemoncuopre  // Monto de las cuotas del prestamo
 		//				   ai_sueper  // sueldo del personal
 		//				   ai_cuopag  // Cuotas que han sido canceladas
 		//				   ai_salactpre  // Saldo actual del Prestamo
-		//				   as_obsrecpre  // Observación de recalculo de las cuotas
-		//				   ai_numcuopre  // Número Inicial de Cuotas del Prestamo 
-		//				   as_configuracion  // Configuración si es por monto ó por cuota
+		//				   as_obsrecpre  // Observaciï¿½n de recalculo de las cuotas
+		//				   ai_numcuopre  // Nï¿½mero Inicial de Cuotas del Prestamo
+		//				   as_configuracion  // Configuraciï¿½n si es por monto ï¿½ por cuota
 		//				   ai_montoamortizar  // Monto a Amortizar
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el recalcular ó False si hubo error en el recalcular
-		//	  Description: función que recalcula las cuotas del prestamo del personal
+		//	      Returns: lb_valido True si se ejecuto el recalcular ï¿½ False si hubo error en el recalcular
+		//	  Description: funciï¿½n que recalcula las cuotas del prestamo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/12/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/12/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=true;			
+		$lb_valido=true;
 		$ai_montoamortizar=str_replace(".","",$ai_montoamortizar);
 		$ai_montoamortizar=str_replace(",",".",$ai_montoamortizar);
 		$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 		$ai_numamo=0;
 		$this->io_sql->begin_transaction();
-		$lb_valido=$this->uf_load_correlativo_amortizado($ai_numpre,&$ai_numamo);
+		$lb_valido=$this->uf_load_correlativo_amortizado($ai_numpre,$ai_numamo);
 		if($lb_valido)
 		{
 			$ls_sql="INSERT INTO sno_prestamosamortizado (codemp, codnom, codper, numpre, codtippre, numamo, peramo, fecamo, ".
@@ -1830,7 +2007,7 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_amortizarprestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_amortizarprestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
 		if($lb_valido)
@@ -1846,7 +2023,7 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_amortizarprestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_amortizarprestamo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
 		if($lb_valido)
@@ -1888,43 +2065,43 @@ class sigesp_sno_c_prestamo
 				{
 					$li_numultcuo=$li_totcuo;
 					$li_cuofin=$li_totcuo + ($ai_numcuopre-$li_totcuo);
-				}		
+				}
 				if($lb_valido)
 				{
 					$lb_valido=$this->io_cuota->uf_verificarsueldo($as_codper,$ai_nuemoncuopre,$ai_sueper,$ai_numpre);
 				}
 				if($lb_valido)
-				{	
+				{
 					$li_tippernom = $_SESSION["la_nomina"]["tippernom"];
 					$li_incremento = $this->uf_load_incremento();
 					$li_cuota=$li_numpricuo;
 					$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
-					for($li_i=($li_numpricuo+1);$li_i<=$li_numultcuo;++$li_i)// Recorro las cuotas que ya está generadas y les actualizo el monto
+					for($li_i=($li_numpricuo+1);$li_i<=$li_numultcuo;++$li_i)// Recorro las cuotas que ya estï¿½ generadas y les actualizo el monto
 					{
 						$li_cuota=$li_i;
-						if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la última que se va a generar
+						if(($li_totcuo<=$ai_numcuopre)&&($li_i==$li_numultcuo))// Si voy a actualizar las y es la ï¿½ltima que se va a generar
 						{
 							$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 						}
 						$lb_valido=$this->io_cuota->uf_update_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"","","",$ai_nuemoncuopre,"2",$aa_seguridad);
 					}
-					for($li_i=($li_numultcuo+1);$li_i<=$li_cuofin;++$li_i)// Recorro las restantes bien sea que generarlas ó para eliminarlas
+					for($li_i=($li_numultcuo+1);$li_i<=$li_cuofin;++$li_i)// Recorro las restantes bien sea que generarlas ï¿½ para eliminarlas
 					{
 						$li_cuota=$li_i;
-						if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas 
+						if($li_totcuo>=$ai_numcuopre)// Si necesito generar mas cuotas
 						{
 							if(intval($ls_percob)>=intval($ls_ultpernom))
 							{
 								$ls_percob="000";
-							}					
+							}
 							if($as_tipcuopre=="1")
 							{
 								if(intval($ls_percob)>=intval($ls_ultpernom-1))
 								{
 									$ls_percob=(intval($ls_percob)-intval($ls_ultpernom));
-								}	
-							}				
-							if($li_i==$li_cuofin)// Sí es la última cuota
+								}
+							}
+							if($li_i==$li_cuofin)// Sï¿½ es la ï¿½ltima cuota
 							{
 								$ai_nuemoncuopre = ($ai_salactpre - ($ai_nuemoncuopre*($ai_numcuofalpre-1)));
 							}
@@ -1937,16 +2114,16 @@ class sigesp_sno_c_prestamo
 						else// Si necesito eliminar cuotas
 						{
 							$lb_valido=$this->io_cuota->uf_delete_cuota($as_codper,$as_codtippre,$ai_numpre,$li_cuota,"1",$aa_seguridad);
-						}		
+						}
 					}
 				}
 			}
 			if($lb_valido)
-			{	
+			{
 				$lb_valido=$this->uf_update_nrocuota_prestamo($as_codper,$as_codtippre,$ai_numpre,$li_totcuo,$aa_seguridad);
 			}
 			if($lb_valido)
-			{	
+			{
 				$lb_valido=$this->uf_update_observacion_prestamo($as_codper,$as_codtippre,$ai_numpre,"obsrecpre",$as_obsrecpre,$aa_seguridad);
 			}
 			if($lb_valido)
@@ -1956,18 +2133,18 @@ class sigesp_sno_c_prestamo
 		}
 		if($lb_valido)
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó un amortizado número ".$ai_numamo." Monto ".$ai_montoamortizar." del Prestamo nro ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
-							 "".$as_codper." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Insertï¿½ un amortizado nï¿½mero ".$ai_numamo." Monto ".$ai_montoamortizar." del Prestamo nro ".$ai_numpre." de tipo ".$as_codtippre." del personal ".
+							 "".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		}
 		if($lb_valido)
-		{	
-			$this->io_mensajes->message("El Monto del prestamo fué amortizado.");
+		{
+			$this->io_mensajes->message("El Monto del prestamo fuï¿½ amortizado.");
 			$this->io_sql->commit();
 		}
 		else
@@ -1978,7 +2155,7 @@ class sigesp_sno_c_prestamo
 		}
 
 		return $lb_valido;
-	}// end function uf_amortizarprestamo	
+	}// end function uf_amortizarprestamo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -1986,12 +2163,12 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_correlativo_amortizado
-		//		   Access: private (uf_guardar) 
-		//      Arguments: ai_numamo  // Nuevo número de amortizado
-		//	      Returns: lb_valido True si se ejecutó correctamente ó False si hubo algún error
-		//	  Description: Funcion que busca el correlativo del último prestamo  y genera el nuevo correlativo
+		//		   Access: private (uf_guardar)
+		//      Arguments: ai_numamo  // Nuevo nï¿½mero de amortizado
+		//	      Returns: lb_valido True si se ejecutï¿½ correctamente ï¿½ False si hubo algï¿½n error
+		//	  Description: Funcion que busca el correlativo del ï¿½ltimo prestamo  y genera el nuevo correlativo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 07/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 07/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_numamo=1;
@@ -2004,7 +2181,7 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_load_correlativo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_load_correlativo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -2013,7 +2190,7 @@ class sigesp_sno_c_prestamo
 			{
 				$ai_numamo=$row["numero"]+1;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_load_correlativo_amortizado
@@ -2024,12 +2201,12 @@ class sigesp_sno_c_prestamo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_delete_amortizado
-		//		   Access: private (uf_guardar) 
-		//      Arguments: ai_numamo  // Nuevo número de amortizado
-		//	      Returns: lb_valido True si se ejecutó correctamente ó False si hubo algún error
+		//		   Access: private (uf_guardar)
+		//      Arguments: ai_numamo  // Nuevo nï¿½mero de amortizado
+		//	      Returns: lb_valido True si se ejecutï¿½ correctamente ï¿½ False si hubo algï¿½n error
 		//	  Description: Funcion que elimina los amortizados de un prestamo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 13/04/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 13/04/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_numamo=1;
@@ -2043,14 +2220,14 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->execute($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Prestamo MÉTODO->uf_delete_amortizado ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Prestamo Mï¿½TODO->uf_delete_amortizado ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		return $lb_valido;
 	}// end function uf_delete_amortizado
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
-	
+
 	//--------------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo)
 	{
@@ -2058,28 +2235,28 @@ class sigesp_sno_c_prestamo
 		//	     Function: uf_insert_config
 		//		   Access: public
 		//	    Arguments: as_sistema  // Sistema al que pertenece la variable
-		//				   as_seccion  // Sección a la que pertenece la variable
+		//				   as_seccion  // Secciï¿½n a la que pertenece la variable
 		//				   as_variable  // Variable a buscar
 		//				   as_valor  // valor por defecto que debe tener la variable
 		//				   as_tipo  // tipo de la variable
-		//	      Returns: $lb_valido True si se ejecuto el insert ó False si hubo error en el insert
-		//	  Description: Función que inserta la variable de configuración
+		//	      Returns: $lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
+		//	  Description: Funciï¿½n que inserta la variable de configuraciï¿½n
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
-		$this->io_sql->begin_transaction();		
+		$this->io_sql->begin_transaction();
 		$ls_sql="DELETE ".
 				"  FROM sigesp_config ".
 				" WHERE codemp='".$this->ls_codemp."' ".
 				"   AND codsis='".$as_sistema."' ".
 				"   AND seccion='".$as_seccion."' ".
-				"   AND entry='".$as_variable."' ";		
+				"   AND entry='".$as_variable."' ";
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Report Contable MÉTODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Report Contable Mï¿½TODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$this->io_sql->rollback();
 		}
 		else
@@ -2110,7 +2287,7 @@ class sigesp_sno_c_prestamo
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Report Contable MÉTODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Report Contable Mï¿½TODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$this->io_sql->rollback();
 			}
 			else
@@ -2119,7 +2296,7 @@ class sigesp_sno_c_prestamo
 			}
 		}
 		return $lb_valido;
-	}// end function uf_insert_config	
+	}// end function uf_insert_config
 //------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
     function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo)
@@ -2128,14 +2305,14 @@ class sigesp_sno_c_prestamo
 		//	     Function: uf_select_config
 		//		   Access: public
 		//	    Arguments: as_sistema  // Sistema al que pertenece la variable
-		//				   as_seccion  // Sección a la que pertenece la variable
+		//				   as_seccion  // Secciï¿½n a la que pertenece la variable
 		//				   as_variable  // Variable nombre de la variable a buscar
 		//				   as_valor  // valor por defecto que debe tener la variable
 		//				   as_tipo  // tipo de la variable
 		//	      Returns: $ls_resultado variable buscado
-		//	  Description: Función que obtiene una variable de la tabla config
+		//	  Description: Funciï¿½n que obtiene una variable de la tabla config
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_valor="";
 		$ls_sql="SELECT value ".
@@ -2147,7 +2324,7 @@ class sigesp_sno_c_prestamo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Report Contable MÉTODO->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Report Contable Mï¿½TODO->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -2165,7 +2342,7 @@ class sigesp_sno_c_prestamo
 					$ls_valor=$this->uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo);
 				}
 			}
-			$this->io_sql->free_result($rs_data);		
+			$this->io_sql->free_result($rs_data);
 		}
 		return rtrim($ls_valor);
 	}// end function uf_select_config
@@ -2176,31 +2353,31 @@ class sigesp_sno_c_prestamo
 		//	     Function: uf_contar_prestamos
 		//		   Access: public
 		//	    Arguments: as_codper  // Sistema al que pertenece la variable
-		//				   as_tipopres  // Sección a la que pertenece la variable		
+		//				   as_tipopres  // Secciï¿½n a la que pertenece la variable
 		//	      Returns: $ls_resultado variable buscado
-		//	  Description: Función que cuenta los prestamo del mismo tipo a un personal en estado activo o suspendido
+		//	  Description: Funciï¿½n que cuenta los prestamo del mismo tipo a un personal en estado activo o suspendido
 		//	   Creado Por: Ing. Jennifer Rivero
-		// Fecha Creación: 27/08/2008								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 27/08/2008								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ls_sql=" SELECT COUNT(*) as contar            ".
 				"    FROM sno_prestamos                ".
-				"   WHERE codper='".$as_codper."'      ".	
-				"     AND codtippre='".$as_codtippre."'".				
+				"   WHERE codper='".$as_codper."'      ".
+				"     AND codtippre='".$as_codtippre."'".
 				"  	  AND (stapre=1 or stapre=2);      ";
-				
+
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("MÉTODO->uf_contar_prestamos ERROR->".
-			                            $this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("Mï¿½TODO->uf_contar_prestamos ERROR->".
+			                            $this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
-		{			
+		{
 			while($row=$this->io_sql->fetch_row($rs_data))
 			{
-				$ls_valor=$row["contar"];				
-			}			
-			$this->io_sql->free_result($rs_data);		
+				$ls_valor=$row["contar"];
+			}
+			$this->io_sql->free_result($rs_data);
 		}
 		return rtrim($ls_valor);
 	}// end uf_contar_prestamos

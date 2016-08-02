@@ -8,28 +8,28 @@ class sigesp_sno_c_constantes
 	var $io_sno;
 	var $ls_codemp;
 	var $ls_codnom;
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function sigesp_sno_c_constantes()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: sigesp_sno_c_constantes
 		//		   Access: public (sigesp_sno_d_constantes)
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_include.php");
 		$io_include=new sigesp_include();
 		$io_conexion=$io_include->uf_conectar();
 		require_once("../shared/class_folder/class_sql.php");
-		$this->io_sql=new class_sql($io_conexion);	
+		$this->io_sql=new class_sql($io_conexion);
 		require_once("../shared/class_folder/class_mensajes.php");
-		$this->io_mensajes=new class_mensajes();		
+		$this->io_mensajes=new class_mensajes();
 		require_once("../shared/class_folder/class_funciones.php");
-		$this->io_funciones=new class_funciones();		
+		$this->io_funciones=new class_funciones();
 		require_once("class_folder/class_funciones_nomina.php");
-		$this->io_fun_nomina=new class_funciones_nomina();		
+		$this->io_fun_nomina=new class_funciones_nomina();
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$this->io_seguridad= new sigesp_c_seguridad();
 		require_once("sigesp_sno.php");
@@ -44,45 +44,45 @@ class sigesp_sno_c_constantes
 		{
 			$this->ls_codnom="0000";
 		}
-		
+
 	}// end function sigesp_sno_c_constantes
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_destructor()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_destructor
 		//		   Access: public (sigesp_sno_d_constantes)
 		//	  Description: Destructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		unset($io_include);
 		unset($io_conexion);
-		unset($this->io_sql);	
-		unset($this->io_mensajes);		
-		unset($this->io_funciones);		
+		unset($this->io_sql);
+		unset($this->io_mensajes);
+		unset($this->io_funciones);
 		unset($this->io_seguridad);
 		unset($this->io_fun_nomina);
 		unset($this->io_sno);
         unset($this->ls_codemp);
         unset($this->ls_codnom);
-        
+
 	}// end function uf_destructor
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_select_valor($as_codcons)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_valor
-		//	    Arguments: as_codigo    codigo de la nomina 
+		//	    Arguments: as_codigo    codigo de la nomina
 		//	      Returns: lb_valido -> variable boolean
 		//	  Description: selecciona los datos de la nomina segun el codigo pasado por  parametros
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $ls_total=0;
 		$ls_sql="SELECT count(distinct moncon) as total ".
@@ -94,7 +94,7 @@ class sigesp_sno_c_constantes
 		if($rs_data===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_select_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_select_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -102,22 +102,22 @@ class sigesp_sno_c_constantes
 			{
 				$ls_total=$row["total"];
 			}
-		}	
+		}
 		return $ls_total;
 	}// end function uf_select_valor
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_check_seguridad($as_codcons)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_check_seguridad
-		//	    Arguments: as_codcons // Código de la Constante
+		//	    Arguments: as_codcons // Cï¿½digo de la Constante
 		//	      Returns: lb_valido -> variable boolean
-		//	  Description: verifica si la persona tiene acceso a dicha constante 
+		//	  Description: verifica si la persona tiene acceso a dicha constante
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 05/11/2007					
-		// Modificado Por: 													Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 05/11/2007
+		// Modificado Por: 													Fecha ï¿½ltima Modificaciï¿½n :
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $lb_valido=false;
 		$ls_sql="SELECT codusu ".
@@ -131,7 +131,7 @@ class sigesp_sno_c_constantes
 		if($rs_data===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_check_seguridad ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_check_seguridad ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -139,7 +139,7 @@ class sigesp_sno_c_constantes
 			{
 				 $lb_valido=true;
 			}
-		}	
+		}
 		return $lb_valido;
 	}// end function uf_select_valor
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -149,12 +149,12 @@ class sigesp_sno_c_constantes
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_constantes
-		//	    Arguments: as_codcons // código de la constante
+		//	    Arguments: as_codcons // cï¿½digo de la constante
 		//	      Returns: lb_existe -> variable boolean
 		//	  Description: selecciona los datos de la constante
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_existe=true;
 		$ls_sql="SELECT codcons ".
@@ -166,7 +166,7 @@ class sigesp_sno_c_constantes
 		if($rs_data===false)
 		{
 			$lb_existe=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_select_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_select_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -174,11 +174,11 @@ class sigesp_sno_c_constantes
 			{
 				$lb_existe=false;
 			}
-		}	
+		}
 		return $lb_existe;
 	}// end function uf_select_constantes
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_constantes($as_codcons,$as_nomcon,$as_unicon,$as_topcon,$as_valcon,$as_reicon,$as_conespseg,$as_esttopmod,$as_perenc,$aa_seguridad)
 	{
@@ -190,41 +190,41 @@ class sigesp_sno_c_constantes
 		//	    		   as_topcon // tope de la constante
 		//	    		   as_valcon // valor de la constante
 		//	    		   as_reicon // si la constante se reinicializa
-		//				   as_conespseg   // constante especial en nómina
+		//				   as_conespseg   // constante especial en nï¿½mina
 		//                 as_esttopmod     // tope modificable por persona
-		//                 as_perenc // indica si la constante pertenece a encargaduría
+		//                 as_perenc // indica si la constante pertenece a encargadurï¿½a
 		//	    		   aa_seguridad // arreglo de la variable de seguridad
 		//	      Returns: lb_valido -> variable boolean
 		//	  Description: Guarda los datos de la constante
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 01/10/2007
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 01/10/2007
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_equcon="1";
-		$ls_tipnumcon="1";			
+		$ls_tipnumcon="1";
 		$ls_sql="INSERT INTO sno_constante(codemp,codnom,codcons, nomcon,unicon,equcon,topcon,valcon,reicon ,tipnumcon,conespseg,                 esttopmod,conperenc) ".
 		        " VALUES( '".$this->ls_codemp."','".$this->ls_codnom."','".$as_codcons."', '".$as_nomcon."','".$as_unicon."', ".
 				" '".$ls_equcon."',	'".$as_topcon."',".$as_valcon.",'".$as_reicon."','".$ls_tipnumcon."','".$as_conespseg."', ".
 				" ".$as_esttopmod.", '".$as_perenc."') ";
-				
+
 		$this->io_sql->begin_transaction();
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
 			$lb_valido=false;
 			$this->io_sql->rollback();
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_insert_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_insert_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó la constante ".$as_codcons." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Insertï¿½ la constante ".$as_codcons." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
 			{
 				$lb_valido=$this->uf_insert_const_personal($as_codcons,$as_valcon,$aa_seguridad);
@@ -238,13 +238,13 @@ class sigesp_sno_c_constantes
 			{
 				$lb_valido=false;
 				$this->io_sql->rollback();
-				$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_insert_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_insert_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
 		return $lb_valido;
 	}// end function uf_insert_constantes
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_const_personal($as_codcons,$as_moncon,$aa_seguridad)
 	{
@@ -256,8 +256,8 @@ class sigesp_sno_c_constantes
 		//	      Returns: lb_valido -> variable boolean
 		//	  Description: inserto la constanste a cada personal
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="INSERT INTO sno_constantepersonal (codemp,codnom,codper,codcons,moncon) ".
@@ -269,22 +269,22 @@ class sigesp_sno_c_constantes
 		if($li_row===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_insert_const_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_insert_const_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó la constantepersonal constante ".$as_codcons."  asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Insertï¿½ la constantepersonal constante ".$as_codcons."  asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		}
 		return $lb_valido;
 	}// end function uf_insert_const_personal
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_update_constantes($as_codcons,$as_nomcon,$as_unicon,$as_topcon,$as_valcon,$as_reicon,$as_conespseg,$as_esttopmod,$as_perenc,$aa_seguridad)
 	{
@@ -296,15 +296,15 @@ class sigesp_sno_c_constantes
 		//	    		   as_topcon // tope de la constante
 		//	    		   as_valcon // valor de la constante
 		//	    		   as_reicon // si la constante se reinicializa
-		//				   as_conespseg   // constante especial en nómina
+		//				   as_conespseg   // constante especial en nï¿½mina
 		//                 as_esttopmod // tope modificable por persona
-		//                 as_perenc // indica si la constante pertenece a encargaduría
+		//                 as_perenc // indica si la constante pertenece a encargadurï¿½a
 		//	    		   aa_seguridad // arreglo de la variable de seguridad
 		//   	  Returns: lb_valido -> variable boolean
 		//	  Description: Actualiza los datos de la constante
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_equcon="1";
@@ -329,17 +329,17 @@ class sigesp_sno_c_constantes
 		{
 			$lb_valido=false;
 			print $this->io_sql->message;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_update_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_update_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó la constante ".$as_codcons." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Actualizï¿½ la constante ".$as_codcons." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
 			{
 				$this->io_mensajes->message("La Constante fue actualizada.");
@@ -349,7 +349,7 @@ class sigesp_sno_c_constantes
 			{
 				$lb_valido=false;
 				$this->io_sql->rollback();
-				$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_update_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_update_constantes ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 		}
 		return $lb_valido;
@@ -363,23 +363,23 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_guardar
 		//		   Access: public (sigesp_sno_d_constante)
-		//	    Arguments: as_codcons  // código de la constante						as_nomcon  // Nombre
+		//	    Arguments: as_codcons  // cï¿½digo de la constante						as_nomcon  // Nombre
 		//				   as_unicon  // Unidad											ad_topcon  // Tope
 		//				   ad_valcon  // valor 										    as_reicon  // si se reinicializa
-		//				   as_conespseg   // constante especial en nómina
+		//				   as_conespseg   // constante especial en nï¿½mina
 		//                 as_esttopmod // tope modificacble por personal
 		//                 as_perenc // indica si la constante pertenece a encargaduria
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el guardar ó False si hubo error en el guardar
+		//	      Returns: lb_valido True si se ejecuto el guardar ï¿½ False si hubo error en el guardar
 		//	  Description: Funcion que guarda la constante
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=false;				
+		$lb_valido=false;
 		$ad_topcon=str_replace(".","",$ad_topcon);
-		$ad_topcon=str_replace(",",".",$ad_topcon);				
+		$ad_topcon=str_replace(",",".",$ad_topcon);
 		$ad_valcon=str_replace(".","",$ad_valcon);
-		$ad_valcon=str_replace(",",".",$ad_valcon);				
+		$ad_valcon=str_replace(",",".",$ad_valcon);
 		switch ($as_existe)
 		{
 			case "FALSE":
@@ -404,9 +404,9 @@ class sigesp_sno_c_constantes
 				}
 				break;
 		}
-		
+
 		return $lb_valido;
-	}// end function uf_guardar		
+	}// end function uf_guardar
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -416,10 +416,10 @@ class sigesp_sno_c_constantes
 		//	     Function: uf_delete_constantepersonal
 		//	    Arguments: as_codcons   codigo del constante
 		// 	      Returns: lb_valido -> variable boolean
-		//	  Description: Elimina las constantes del personal en la tabla sno_constantepersonal  
+		//	  Description: Elimina las constantes del personal en la tabla sno_constantepersonal
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="DELETE ".
@@ -431,7 +431,7 @@ class sigesp_sno_c_constantes
 		if($li_row===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_delete_constantepersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_delete_constantepersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		return $lb_valido;
 	}// end function uf_delete_constantepersonal
@@ -443,55 +443,55 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_delete_constante
 		//		   Access: public (sigesp_sno_d_constante)
-		//	    Arguments: as_codcons  // código de constante
+		//	    Arguments: as_codcons  // cï¿½digo de constante
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el delete ó False si hubo error en el delete
+		//	      Returns: lb_valido True si se ejecuto el delete ï¿½ False si hubo error en el delete
 		//	  Description: Funcion que elimina el concepto
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$this->io_sql->begin_transaction();
 		$lb_valido=$this->uf_delete_constantepersonal($as_codcons,$aa_seguridad);
 		if($lb_valido)
-		{			
+		{
 			$ls_sql="DELETE ".
 					"  FROM sno_constante ".
 					" WHERE codemp='".$this->ls_codemp."' ".
 					"   AND codnom='".$this->ls_codnom."' ".
 					"   AND codcons='".$as_codcons."' ";
-					
+
 			$li_row=$this->io_sql->execute($ls_sql);
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_delete_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_delete_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$this->io_sql->rollback();
 			}
 			else
 			{
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="DELETE";
-				$ls_descripcion ="Eliminó la constante  ".$as_codcons." asociada a la nómina ".$this->ls_codnom;
+				$ls_descripcion ="Eliminï¿½ la constante  ".$as_codcons." asociada a la nï¿½mina ".$this->ls_codnom;
 				$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				if($lb_valido)
-				{	
+				{
 					$this->io_mensajes->message("La Constante fue Eliminada.");
 					$this->io_sql->commit();
 				}
 				else
 				{
 					$lb_valido=false;
-					$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_delete_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+					$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_delete_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 					$this->io_sql->rollback();
 				}
 			}
 		}
 		return $lb_valido;
-    }// end function uf_delete_constante	
+    }// end function uf_delete_constante
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -500,14 +500,14 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_constantepersonal
 		//		   Access: public (sigesp_sno_d_constpersonal)
-		//	    Arguments: as_codcons // código de constante
+		//	    Arguments: as_codcons // cï¿½digo de constante
 		//				   ai_totrows  // total de filas del detalle
 		//				   ao_object  // objetos del detalle
 		//                 as_esttopmod  // tope modificable por persona
-		//	      Returns: $lb_valido True si se ejecuto el buscar ó False si hubo error en el buscar
+		//	      Returns: $lb_valido True si se ejecuto el buscar ï¿½ False si hubo error en el buscar
 		//	  Description: Funcion que obtiene todo el personalconstante asociado a un concepto
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_orden="";
@@ -540,11 +540,11 @@ class sigesp_sno_c_constantes
 			break;
 			case "POSTGRES":
 				$ls_pag= " LIMIT ".$ai_registros." OFFSET ".$ai_inicio."";
-			
+
 			break;
 			case "INFORMIX":
 				$ls_pag1= " SKIP  ".$ai_inicio." FIRST ".$ai_registros;
-			
+
 			break;
 		}
 		$ls_sql="SELECT ".$ls_pag1." sno_constantepersonal.codper, sno_constantepersonal.codcons, sno_constantepersonal.moncon, ".
@@ -565,10 +565,15 @@ class sigesp_sno_c_constantes
 			    "   AND sno_personalnomina.codemp=sno_personal.codemp ".
 				$ls_orden.
 				$ls_pag;
+
+
+			//	echo $ls_sql;
+			//	die();
+
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Concepto MÉTODO->uf_load_constantepersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Concepto Mï¿½TODO->uf_load_constantepersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -578,7 +583,7 @@ class sigesp_sno_c_constantes
 			{
 				$ai_totrows=$ai_totrows+1;
 				$li_total=$row["total"];
-				$ls_codper=$row["codper"];  
+				$ls_codper=$row["codper"];
 				$ls_minorguniadm=$row["minorguniadm"];
 				$ls_ofiuniadm=$row["ofiuniadm"];
 				$ls_uniuniadm=$row["uniuniadm"];
@@ -592,13 +597,13 @@ class sigesp_sno_c_constantes
 				$ls_topcon=number_format($row["montopcon"],2,",",".");
 				if ((trim($as_esttopmod)==1))
 				{
-		
+
 					$ao_object[$ai_totrows][1]="<input type=text name=txtcodper".$ai_totrows." value=".$ls_codper." class=sin-borde  size=20 style=text-align:center readonly><input name=codper".$ai_totrows." type=hidden id=codper value='$ls_codper'>";
 					$ao_object[$ai_totrows][2]="<input type=text name=txtuniadm".$ai_totrows." value=".$ls_uniadm." size=30 class=sin-borde style=text-align:center readonly >";
 					$ao_object[$ai_totrows][3]="<input type=text name=txtnombre".$ai_totrows." class=sin-borde value='".$ls_nombre."' size=50  style=text-align:left readonly>";
 					$ao_object[$ai_totrows][4]="<input type=text name=txttopcon".$ai_totrows." onKeyPress=return(ue_formatonumero(this,'.',',',event)) value=".$ls_topcon." class=sin-borde size=15 style=text-align:right >";
 					$ao_object[$ai_totrows][5]="<input type=text name=txtmoncon".$ai_totrows." onKeyPress=return(ue_formatonumero(this,'.',',',event)) onBlur=javascript:uf_mayor_tope(this,".$ai_totrows.") value=".$ls_moncon." class=sin-borde size=15 style=text-align:right >";
-					
+
 			  }
 			  else
 			   {
@@ -606,31 +611,31 @@ class sigesp_sno_c_constantes
 					$ao_object[$ai_totrows][2]="<input type=text name=txtuniadm".$ai_totrows." value=".$ls_uniadm." size=30 class=sin-borde style=text-align:center readonly >";
 					$ao_object[$ai_totrows][3]="<input type=text name=txtnombre".$ai_totrows." class=sin-borde value='".$ls_nombre."' size=50  style=text-align:left readonly>";
 					$ao_object[$ai_totrows][4]="<input type=text name=txtmoncon".$ai_totrows." onKeyPress=return(ue_formatonumero(this,'.',',',event)) onBlur=javascript:uf_mayor(this) value=".$ls_moncon." class=sin-borde size=20 style=text-align:right >";
-			   
+
 			   }
-				
+
 			}
 			$this->io_sql->free_result($rs_data);
-			$ai_totpag = ceil($li_total / $ai_registros); 
+			$ai_totpag = ceil($li_total / $ai_registros);
 		}
 		return $lb_valido;
 	}// end function uf_load_constantepersonal
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_constantepersonal($as_codper,$as_codcons,&$ai_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_constantepersonal
 		//		   Access: public
-		//	    Arguments: as_codper // código de personal
-		//				   as_codcons // código de la constante
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_codcons // cï¿½digo de la constante
 		//				   ai_valor // valor de la constante
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y concepto busca el concepto asociado al personal
-		//				   esta función se llama desde la clase evaluadora		
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y concepto busca el concepto asociado al personal
+		//				   esta funciï¿½n se llama desde la clase evaluadora
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2006 								
+		// Fecha Creaciï¿½n: 15/02/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="SELECT sno_constantepersonal.moncon ".
@@ -659,7 +664,7 @@ class sigesp_sno_c_constantes
 			{
 				$lb_valido=false;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_constantepersonal
@@ -673,31 +678,92 @@ class sigesp_sno_c_constantes
 		//	    Arguments: as_codcons //  codigo de la constante
 		//	    		   as_moncon  // monto de la constante
 		//                 as_topcon  // tope de la constante
-		//	    		   as_codper  // código de personal
+		//	    		   as_codper  // cï¿½digo de personal
 		//	      Returns: lb_valido -> variable boolean
-		//	  Description: selecciono el personal asigando a la nomina  
+		//	  Description: selecciono el personal asigando a la nomina
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="UPDATE sno_constantepersonal ".
-				"   SET moncon=".$as_moncon.", ".
-				"       montopcon=".$as_topcon." ".
+				"   SET moncon='".$as_moncon."', ".
+				"       montopcon='".$as_topcon."' ".
 	            " WHERE codemp='".$this->ls_codemp."' ".
 				"   AND codnom='".$this->ls_codnom."' ".
 				"   AND codper='".$as_codper."' ".
 				"   AND codcons='".$as_codcons."' ";
 		$li_row=$this->io_sql->execute($ls_sql);
-		if($li_row===false)
-		{
+		if($li_row===false){
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->update_const_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->update_const_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
-		
+
 		return $lb_valido;
 	}// end function update_const_personal
 	//-----------------------------------------------------------------------------------------------------------------------------------
+
+
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	function update_const_personal_importados($as_codcons,$as_moncon,$as_topcon,$as_codper)
+	{
+		////////////////////////////////////////////////////////////////
+		//	     Function: update_const_personal_importados
+		//	    Arguments: as_codcons //  codigo de la constante
+		//	    		   as_moncon  // monto de la constante
+		//                 as_topcon  // tope de la constante
+		//	    		   as_codper  // cï¿½digo de personal
+		//	      Returns: lb_valido -> variable boolean
+		//	  Description: selecciono el personal asigando a la nomina
+		//	   Creado Por: Ing. Yozelin Barragan
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		$evaluador = new sigesp_sno_c_evaluador();
+		$evaluador->uf_valor_nomina($codper,'DHABILESMES',$as_diashabilesmes);
+		//conection mysql:
+		$link = mysqli_connect("localhost","root","cnu4874","control_acceso") or die("Error " . mysqli_error($link));
+		$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
+		$ld_meshas=substr($ld_fechas,5,2);
+		//consultation:
+		$query = "SELECT COUNT(c.dia), lpad(cedula,10,'0') as cedula , mes from(
+					SELECT
+					 DISTINCT(EXTRACT(DAY FROM fecha)) as dia, cedula,EXTRACT(MONTH FROM fecha) as mes
+					FROM control_acceso
+					GROUP BY
+					cedula,
+					date(fecha)
+					) as c
+					where c.mes = '".$ld_meshas."'
+					GROUP BY c.cedula" or die("Error in the consult.." . mysqli_error($link));
+		//execute the query.
+		$result = $link->query($query);
+
+		//display information:
+		while($row = $result->fetch_assoc()) {
+
+				   $as_diasasistencia = $row["nrodia"]."<br>";
+				if ($as_diashabilesmes==$as_diasasistencia){
+					$as_nrodiasct=30;
+				}
+				else {
+
+					 $as_nrodiasct=(30-($as_diashabilesmes-$as_diasasistencia));
+				}
+
+					$lb_valido = $this->update_const_personal($_REQUEST["txtcodcons"],$as_nrodiasct,'0',$row["cedula"]);
+					if($lb_valido===False){
+						return $lb_valido;
+					}
+					echo $_REQUEST["txtcodcons"]."-".$moncon."-".'30'."-".$row["cedula"]."<br>";
+		}
+
+		return  $lb_valido;
+	}// end update_const_personal_importados
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_load_constante(&$as_existe,&$as_codcons,&$as_nomcon,&$as_unicon,&$ad_topcon,&$ad_valcon,&$as_reicon,&$as_conespseg,
@@ -713,12 +779,12 @@ class sigesp_sno_c_constantes
 		//	    		   as_reicon // si la constante se reinicializa
 		//				   as_conespseg // Constante especial de seguridad
 		//                 as_esttopmod // Tope modificable por personal
-		//                 as_perenc // indica si la constante pertenece a encargaduría
+		//                 as_perenc // indica si la constante pertenece a encargadurï¿½a
 		//	      Returns: lb_valido -> variable boolean
 		//	  Description: selecciona los datos de la constante
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 01/10/2007
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 01/10/2007
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		 $ls_sql="SELECT codcons, nomcon, unicon, equcon, topcon, valcon, reicon, tipnumcon, conespseg,esttopmod,conperenc ".
@@ -729,7 +795,7 @@ class sigesp_sno_c_constantes
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Concepto MÉTODO->uf_load_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Concepto Mï¿½TODO->uf_load_constante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -765,14 +831,14 @@ class sigesp_sno_c_constantes
 		//	      Returns: lb_valido -> variable boolean
 		//	  Description: inserto la constanste a cada personal
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creación: 15/02/2006 								
-		// Modificado Por: Ing. Yesenia Moreno						Fecha Última Modificación : 30/05/2006
+		// Fecha Creaciï¿½n: 15/02/2006
+		// Modificado Por: Ing. Yesenia Moreno						Fecha ï¿½ltima Modificaciï¿½n : 30/05/2006
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_moncon=str_replace(".","",$ai_moncon);
-		$ai_moncon=str_replace(",",".",$ai_moncon);	
+		$ai_moncon=str_replace(",",".",$ai_moncon);
 		$ai_topcon=str_replace(".","",$ai_topcon);
-		$ai_topcon=str_replace(",",".",$ai_topcon);				
+		$ai_topcon=str_replace(",",".",$ai_topcon);
 		$ls_sql="UPDATE sno_constantepersonal ".
 				"   SET moncon=".$ai_moncon.", ".
 				"       montopcon=".$ai_topcon." ".
@@ -784,28 +850,28 @@ class sigesp_sno_c_constantes
 		if($li_row===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_aplicar_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_aplicar_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="actualizó la constantepersonal constante ".$as_codcons." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="actualizï¿½ la constantepersonal constante ".$as_codcons." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 		}
 		if($lb_valido)
-		{	
+		{
 			$this->io_mensajes->message("La Constante fue aplicada.");
 			$this->io_sql->commit();
 		}
 		else
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_aplicar_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_aplicar_valor ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$this->io_sql->rollback();
 		}
 		return $lb_valido;
@@ -818,15 +884,16 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_constantes_x_personal
 		//		   Access: public (sigesp_sno_d_persxconst.php)
-		//	    Arguments: as_codper  // Código de personañ
+		//	    Arguments: as_codper  // Cï¿½digo de personaï¿½
 		//				   ai_totrows  // Total de Filas
 		//				   aa_object  //  Arreglo de objectos que se van a imprimir
-		//	      Returns: $lb_valido True si se ejecuto el select ó False si hubo error en el select
-		//	  Description: Función que obtiene el sueldo de un personal dado un ó sueldo
+		//	      Returns: $lb_valido True si se ejecuto el select ï¿½ False si hubo error en el select
+		//	  Description: Funciï¿½n que obtiene el sueldo de un personal dado un ï¿½ sueldo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 16/02/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 16/02/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
+		$lb_especial=true;
 		$ls_sql="SELECT sno_constante.codcons, sno_constante.nomcon, sno_constantepersonal.moncon, ".
 				"  sno_constante.conespseg, sno_constante.esttopmod,sno_constantepersonal.montopcon ".
 				"  FROM sno_constante, sno_constantepersonal ".
@@ -840,7 +907,7 @@ class sigesp_sno_c_constantes
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_load_constantes_x_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_load_constantes_x_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -849,8 +916,7 @@ class sigesp_sno_c_constantes
 			while($row=$this->io_sql->fetch_row($rs_data))
 			{
 				$ai_totrows=$ai_totrows+1;
-				$lb_especial=true;
-				$ls_codcons=$row["codcons"];  
+				$ls_codcons=$row["codcons"];
 				$ls_nomcon=$row["nomcon"];
 				$li_topcon=$this->io_fun_nomina->uf_formatonumerico($row["montopcon"]);
 				$li_moncon=$this->io_fun_nomina->uf_formatonumerico($row["moncon"]);
@@ -860,11 +926,12 @@ class sigesp_sno_c_constantes
 				{
 					$lb_especial=$this->uf_check_seguridad($ls_codcons);
 				}
+
 				$aa_object[$ai_totrows][1]="<input type=text name=txtcod".$ai_totrows." value='".$ls_codcons."' class=sin-borde  size=20 readonly>";
 				$aa_object[$ai_totrows][2]="<input type=text name=txtnom".$ai_totrows." value='".$ls_nomcon."' size=40 class=sin-borde readonly >";
 				if ($lb_especial)
 				{
-					
+
 					if ($ls_esttopmod=='1')
 					{
 						$aa_object[$ai_totrows][3]="<input type=text name=txttopcon".$ai_totrows." value='".$li_topcon."' class=sin-borde size=15 onKeyPress=return(ue_formatonumero(this,'.',',',event)) style=text-align:right>";
@@ -873,21 +940,23 @@ class sigesp_sno_c_constantes
 					{
 						$aa_object[$ai_totrows][3]="<input type=text name=txttopcon".$ai_totrows." value='".$li_topcon."' class=sin-borde size=15 readonly style=text-align:right>";
 					}
-					
+
 					$aa_object[$ai_totrows][4]="<input type=text name=txtmon".$ai_totrows." value='".$li_moncon."' class=sin-borde size=15 onKeyPress=return(ue_formatonumero(this,'.',',',event)) onBlur=javascript:uf_mayor(".$ai_totrows.") style=text-align:right>";
+
 				}
 				else
 				{
 					$aa_object[$ai_totrows][3]="<input type=text name=txttopcon".$ai_totrows." value='".$li_topcon."' class=sin-borde size=15 readonly style=text-align:right>";
 					$aa_object[$ai_totrows][4]="<input type=text name=txtmon".$ai_totrows." value='".$li_moncon."' class=sin-borde size=15 readonly style=text-align:right>";
-				} 	
-			   
+
+				}
+
 			}
-			$this->io_sql->free_result($rs_data);		
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
-	}// end function uf_load_constantes_x_personal	
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+	}// end function uf_load_constantes_x_personal
+	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_update_constantes_x_personal($as_codcons,$as_codper,$ai_moncon,$ai_topcon,$aa_seguridad)
@@ -895,20 +964,20 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_constantes_x_personal
 		//		   Access: public (sigesp_sno_d_persxconst.php)
-		//	    Arguments: as_codcons  // código de constante
-		//				   as_codper  // código de personal
+		//	    Arguments: as_codcons  // cï¿½digo de constante
+		//				   as_codper  // cï¿½digo de personal
 		//				   ai_moncon  // monto de la constante
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el update ó False si hubo error en el update
+		//	      Returns: lb_valido True si se ejecuto el update ï¿½ False si hubo error en el update
 		//    Description: Funcion que actualiza en la tabla de constante por personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 04/07/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 04/07/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_moncon=str_replace(".","",$ai_moncon);
 		$ai_moncon=str_replace(",",".",$ai_moncon);
 		$ai_topcon=str_replace(".","",$ai_topcon);
-		$ai_topcon=str_replace(",",".",$ai_topcon);				
+		$ai_topcon=str_replace(",",".",$ai_topcon);
 		$ls_sql="UPDATE sno_constantepersonal ".
 				"   SET moncon = ".$ai_moncon.", ".
 				"       montopcon = ".$ai_topcon." ".
@@ -920,19 +989,19 @@ class sigesp_sno_c_constantes
 		if($li_row===false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_update_constantes_x_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
-		} 
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_update_constantes_x_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////					
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó la constante ".$as_codcons." del personal ".$as_codper." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Actualizï¿½ la constante ".$as_codcons." del personal ".$as_codper." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////	
-		
-		}		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
+		}
 		return $lb_valido;
 	}// end function uf_update_constantes_x_personal
 	//-----------------------------------------------------------------------------------------------------------------------------------
@@ -941,11 +1010,11 @@ class sigesp_sno_c_constantes
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_constantesencargaduria
 		//		   Access: private
-		//	    Arguments: as_codconc  // código de concepto
-		//	      Returns: lb_existe True si existe ó False si no existe
+		//	    Arguments: as_codconc  // cï¿½digo de concepto
+		//	      Returns: lb_existe True si existe ï¿½ False si no existe
 		//	  Description: Funcion que selecciona en lote los conceptos que pertenecen a las encargadurias
-		//	   Creado Por: Ing. María Beatriz Unda
-		// Fecha Creación: 24/12/2008 								Fecha Última Modificación : 
+		//	   Creado Por: Ing. Marï¿½a Beatriz Unda
+		// Fecha Creaciï¿½n: 24/12/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
  		$lb_valido=true;
        	$ls_sql="SELECT codcons, nomcon, conperenc ".
@@ -956,8 +1025,8 @@ class sigesp_sno_c_constantes
        	$rs_data=$this->io_sql->select($ls_sql);
        	if ($rs_data===false)
        	{
-        	$this->io_mensajes->message("CLASE->Constante Nómina MÉTODO->uf_load_constantesencargaduria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
-			$lb_valido=false; 
+        	$this->io_mensajes->message("CLASE->Constante Nï¿½mina Mï¿½TODO->uf_load_constantesencargaduria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$lb_valido=false;
        	}
        	else
        	{
@@ -966,7 +1035,7 @@ class sigesp_sno_c_constantes
 			{
 				$ai_totrows=$ai_totrows+1;
 				$ls_codcon=$row["codcons"];
-				$ls_nomcon=$row["nomcon"];			
+				$ls_nomcon=$row["nomcon"];
 				$li_aplcon=$row["conperenc"];
 				if($li_aplcon=="1")
 				{
@@ -976,15 +1045,15 @@ class sigesp_sno_c_constantes
 				{
 					$ls_aplica="";
 				}
-				
+
 				$ao_object[$ai_totrows][1]="<input name=txtcodcon".$ai_totrows." type=text id=txcodcon".$ai_totrows." value=".$ls_codcon." size=13 class=sin-borde readonly>";
-				$ao_object[$ai_totrows][2]="<input name=txtnomcon".$ai_totrows." type=text id=txtxtnomcon".$ai_totrows." value='".$ls_nomcon."' size=67 class=sin-borde readonly>";				
+				$ao_object[$ai_totrows][2]="<input name=txtnomcon".$ai_totrows." type=text id=txtxtnomcon".$ai_totrows." value='".$ls_nomcon."' size=67 class=sin-borde readonly>";
 				$ao_object[$ai_totrows][3]="<input name=chkaplcon".$ai_totrows." type=checkbox id=chkaplcon".$ai_totrows." value='1' ".$ls_aplica.">";
-				
+
 			}
 			$this->io_sql->free_result($rs_data);
        	}
-		return $lb_valido;    
+		return $lb_valido;
 	}// end function uf_load_constantesencargaduria
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_guardar_constantesencargaduria($as_codconc,$as_perenc,$aa_seguridad)
@@ -992,12 +1061,12 @@ class sigesp_sno_c_constantes
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_guardar_constantesencargaduria
 		//		   Access: private
-		//	    Arguments: as_codconc  // código de concepto							
-		//				   as_titcon  // Título										
-		//	      Returns: lb_valido True si se ejecuto el update ó False si hubo error en el update
-		//	  Description: Funcion que actualiza la constante seleccionada por encargaduría
-		//	   Creado Por: Ing. María Beatriz Unda
-		// Fecha Creación: 29/12/2008 								Fecha Última Modificación : 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	    Arguments: as_codconc  // cï¿½digo de concepto
+		//				   as_titcon  // Tï¿½tulo
+		//	      Returns: lb_valido True si se ejecuto el update ï¿½ False si hubo error en el update
+		//	  Description: Funcion que actualiza la constante seleccionada por encargadurï¿½a
+		//	   Creado Por: Ing. Marï¿½a Beatriz Unda
+		// Fecha Creaciï¿½n: 29/12/2008 								Fecha ï¿½ltima Modificaciï¿½n : 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="UPDATE sno_constante ".
 				"   SET  conperenc='".$as_perenc."' ".
@@ -1009,9 +1078,9 @@ class sigesp_sno_c_constantes
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Constante MÉTODO->uf_guardar_constantesencargaduria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
-			
-		}	
+			$this->io_mensajes->message("CLASE->Constante Mï¿½TODO->uf_guardar_constantesencargaduria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+
+		}
 		return $lb_valido;
 	}// end function uf_guardar_constantesencargaduria
 	//-----------------------------------------------------------------------------------------------------------------------------------

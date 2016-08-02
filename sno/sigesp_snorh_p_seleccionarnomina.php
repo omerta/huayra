@@ -41,6 +41,7 @@
 				" WHERE sno_nomina.codemp='".$ls_codemp."'".
 				"   AND sno_nomina.peractnom<>'000'".
 				"   AND sss_permisos_internos.codsis='SNO'".
+				"   AND sss_permisos_internos.enabled=1".
 				"   AND sss_permisos_internos.codusu='".$_SESSION["la_logusr"]."'".
 				"   AND sno_nomina.codemp = sss_permisos_internos.codemp ".
 				"   AND sno_nomina.codnom = sss_permisos_internos.codintper ".

@@ -17,27 +17,26 @@ class sigesp_sno_c_evaluador
 	var	$ls_codemp;
 	var $ls_codnom;
 	var $io_fecha;
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
 	function sigesp_sno_c_evaluador()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: sigesp_sno_c_evaluador
-		//		   Access: public 
+		//		   Access: public
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_include.php");
 		$io_include=new sigesp_include();
 		$io_conexion=$io_include->uf_conectar();
 		require_once("../shared/class_folder/class_sql.php");
-		$this->io_sql=new class_sql($io_conexion);	
+		$this->io_sql=new class_sql($io_conexion);
 		require_once("../shared/class_folder/class_mensajes.php");
-		$this->io_mensajes=new class_mensajes();		
+		$this->io_mensajes=new class_mensajes();
 		require_once("../shared/class_folder/class_funciones.php");
-		$this->io_funciones=new class_funciones();		
+		$this->io_funciones=new class_funciones();
 		require_once("sigesp_sno.php");
 		$this->io_sno=new sigesp_sno();
 		require_once("../shared/class_folder/evaluate_formula.php");
@@ -50,25 +49,26 @@ class sigesp_sno_c_evaluador
 		$this->io_concepto=new sigesp_sno_c_concepto();
 		require_once("sigesp_sno_c_constantes.php");
 		$this->io_constante=new sigesp_sno_c_constantes();
-		require_once("sigesp_sno_c_primaconcepto.php");		
+		require_once("sigesp_sno_c_primaconcepto.php");
 		$this->io_primaconcepto=new sigesp_sno_c_primaconcepto();
-		require_once("sigesp_snorh_c_diaferiado.php");		
+		require_once("sigesp_snorh_c_diaferiado.php");
 		$this->io_feriado=new sigesp_snorh_c_diaferiado();
-		require_once("sigesp_snorh_c_permiso.php");		
+		require_once("sigesp_snorh_c_permiso.php");
 		$this->io_permiso=new sigesp_snorh_c_permiso();
-		require_once("sigesp_snorh_c_ct_met.php");		
+		require_once("sigesp_snorh_c_ct_met.php");
 		$this->io_cestaticket=new sigesp_snorh_c_ct_met();
 		require_once("../srh/class_folder/dao/sigesp_srh_c_tipodeduccion.php");
 		$this->io_tipodeduccion=new sigesp_srh_c_tipodeduccion("../");
-		require_once("sigesp_sno_c_registrarencargaduria.php");		
-		$this->io_encargaduria=new sigesp_sno_c_registrarencargaduria();		
-		require_once("sigesp_snorh_c_nominas.php");		
-		$this->io_nomina=new sigesp_snorh_c_nominas();			
+		require_once("sigesp_sno_c_registrarencargaduria.php");
+		$this->io_encargaduria=new sigesp_sno_c_registrarencargaduria();
+		require_once("sigesp_snorh_c_nominas.php");
+		$this->io_nomina=new sigesp_snorh_c_nominas();
 		require_once("sigesp_snorh_c_beneficiario.php");
-		$this->io_beneficiario=new sigesp_snorh_c_beneficiario();			
+		$this->io_beneficiario=new sigesp_snorh_c_beneficiario();
 		require_once("../shared/class_folder/class_fecha.php");
-		$this->io_fecha=new class_fecha();	
-		
+		$this->io_fecha=new class_fecha();
+		require_once("sigesp_sno_c_hojatiempo.php");
+		$this->io_hojatiempo=new sigesp_sno_c_hojatiempo();
         $this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
 		if(array_key_exists("la_nomina",$_SESSION))
 		{
@@ -79,22 +79,22 @@ class sigesp_sno_c_evaluador
 			$this->ls_codnom="0000";
 		}
 		require_once("class_folder/class_personal.php");
-		$this->personal=new class_personal();			
+		$this->personal=new class_personal();
 	}// end function sigesp_sno_c_evaluador
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_config_session($as_codper)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_config_session
-		//		   Access: public 
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se crearon las variable sesion ó False si no se crearon
-		//	  Description: función que dado el código de personal y el código del concetpo crea las variables session necesarias
+		//		   Access: public
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se crearon las variable sesion ï¿½ False si no se crearon
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y el cï¿½digo del concetpo crea las variables session necesarias
 		//				   para el calculo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		if($lb_valido)
@@ -115,16 +115,16 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_crear_personalnomina($as_codper)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_crear_personalnomina
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal crea una variable session con todos los datos
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal crea una variable session con todos los datos
 		//				   de personal nomina
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="SELECT codper, sueper, sueproper, horper, staper, fecculcontr, nivacaper, fecingper, cedper, nomper, apeper, sexper, ".
@@ -139,14 +139,14 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_crear_personalnomina ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_crear_personalnomina ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
 		{
 			if(!$rs_data->EOF)
 			{
-				$this->personal=new class_personal();			
+				$this->personal=new class_personal();
 				$this->personal->codper=$rs_data->fields["codper"];
 				$this->personal->sueper=number_format($rs_data->fields["sueper"],2,".","");
 				$this->personal->sueproper=number_format($rs_data->fields["sueproper"],2,".","");
@@ -161,7 +161,7 @@ class sigesp_sno_c_evaluador
 				$this->personal->anoservpreper=$rs_data->fields["anoservpreper"];
 				$this->personal->codtabvac=$rs_data->fields["codtabvac"];
 				$this->personal->cajahoper=$rs_data->fields["cajahoper"];
-				$this->personal->porcajahoper=$rs_data->fields["porcajahoper"];	
+				$this->personal->porcajahoper=$rs_data->fields["porcajahoper"];
 				$this->personal->suebasper=number_format($rs_data->fields["suebasper"],2,".","");
 				$this->personal->priespper=number_format($rs_data->fields["priespper"],2,".","");
 				$this->personal->pritraper=number_format($rs_data->fields["pritraper"],2,".","");
@@ -185,9 +185,10 @@ class sigesp_sno_c_evaluador
 				$this->personal->fecingnom=$this->io_funciones->uf_formatovalidofecha($rs_data->fields["fecingnom"]);
 				$this->personal->fecingadmpubper=$this->io_funciones->uf_formatovalidofecha($rs_data->fields["fecingadmpubper"]);
 				$this->personal->mettabvac=$this->io_sno->uf_select_config("SNO","CONFIG","METODO_VACACIONES","0","C");
-				
+
 				$ai_sueldointegral=0;
 				$ai_salarionormal=0;
+				$ai_salarionormalobrero=0;
 				$ai_totalarc=0;
 				$lb_valido=$this->uf_obtener_sueldointegral($as_codper,$ai_sueldointegral);
 				if($lb_valido)
@@ -204,12 +205,19 @@ class sigesp_sno_c_evaluador
 				{
 					$this->personal->salarionormal=number_format($ai_salarionormal,2,".","");
 				}
+				///////
+				$lb_valido=$this->uf_obtener_salarionormal_obrero($as_codper,$ai_salarionormalobrero);
+				if($lb_valido)
+				{
+					$this->personal->salarionormalobrero=number_format($ai_salarionormalobrero,2,".","");
+				}
+				/////////
 			}
 			else
 			{
 				$lb_valido=false;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_crear_personalnomina
@@ -217,21 +225,21 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_sueldointegral($as_codper,&$ai_sueldointegral)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_sueldointegral
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene la suma de todos los 
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene la suma de todos los
 		//				   conceptos que pertenecen al sueldo integral
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_sueldointegral=0;
 		$ls_sql="SELECT codemp, codnom, codper, codconc, nomcon, titcon, sigcon, forcon, glocon, acumaxcon, valmincon, valmaxcon, concon, cueprecon, cueconcon, ".
-				"		aplisrcon, sueintcon, intprocon, codpro, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
+				"		aplisrcon, sueintcon, intprocon, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
 				"		valminpatcon, valmaxpatcon, codprov, cedben, conprenom, sueintvaccon, aplarccon, aplcon, valcon, acuemp, ".
 				"  		acuiniemp, acupat, acuinipat, quirepcon ".
 				"  FROM calculo_conceptospersonal ".
@@ -244,7 +252,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_sueldointegral ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldointegral ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -268,36 +276,36 @@ class sigesp_sno_c_evaluador
 				$li_valmaxcon=$rs_data->fields["valmaxcon"];
 				if($li_glocon==1)// si el concepto es global
 				{
-					if(!(trim($ls_concon)==""))// si tiene condición
+					if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 					{
 						$lb_filtro=false;
 						$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-						if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+						if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 						{
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 					else
 					{
-						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 					}
 				}
 				else
 				{
 					if($li_aplcon==1)// si se aplica el concepto
 					{
-						if(!(trim($ls_concon)==""))// si tiene condición
+						if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 						{
 							$lb_filtro=false;
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-							if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+							if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 							{
 								$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 							}
 						}
 						else
 						{
-							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 				}
@@ -319,7 +327,7 @@ class sigesp_sno_c_evaluador
 				unset($_SESSION["la_conceptopersonal"]);
 				$rs_data->MoveNext();
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_sueldointegral
@@ -327,21 +335,21 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_montoarc($as_codper,&$ai_totalarc)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_montoarc
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene la suma de todos los 
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene la suma de todos los
 		//				   conceptos que pertenecen al arc
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 18/09/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 18/09/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_totalarc=0;
 		$ls_sql="SELECT codemp, codnom, codper, codconc, nomcon, titcon, sigcon, forcon, glocon, acumaxcon, valmincon, valmaxcon, concon, cueprecon, cueconcon, ".
-				"		aplisrcon, sueintcon, intprocon, codpro, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
+				"		aplisrcon, sueintcon, intprocon, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
 				"		valminpatcon, valmaxpatcon, codprov, cedben, conprenom, sueintvaccon, aplarccon, aplcon, valcon, acuemp, ".
 				"  		acuiniemp, acupat, acuinipat, quirepcon ".
 				"  FROM calculo_conceptospersonal ".
@@ -354,7 +362,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_montoarc ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_montoarc ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -376,39 +384,39 @@ class sigesp_sno_c_evaluador
 				$ls_quirepcon=$rs_data->fields["quirepcon"];
 				$li_valmincon=$rs_data->fields["valmincon"];
 				$li_valmaxcon=$rs_data->fields["valmaxcon"];
-				
+
 				if($li_glocon==1)// si el concepto es global
 				{
-					if(!(trim($ls_concon)==""))// si tiene condición
+					if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 					{
 						$lb_filtro=false;
 						$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-						if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+						if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 						{
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 					else
 					{
-						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 					}
 				}
 				else
 				{
 					if($li_aplcon==1)// si se aplica el concepto
 					{
-						if(!(trim($ls_concon)==""))// si tiene condición
+						if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 						{
 							$lb_filtro=false;
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-							if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+							if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 							{
 								$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 							}
 						}
 						else
 						{
-							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 				}
@@ -430,7 +438,7 @@ class sigesp_sno_c_evaluador
 				unset($_SESSION["la_conceptopersonal"]);
 				$rs_data->MoveNext();
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_montoarc
@@ -438,23 +446,21 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_salarionormal($as_codper,&$ai_salarionormal)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_salarionormal
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene la suma de todos los 
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene la suma de todos los
 		//				   conceptos que pertenecen al salario normal
-		//	   Creado Por: Ing. María Beatriz Unda
-		// Fecha Creación: 18/11/2008					Fecha Última Modificación : 		
+		//	   Creado Por: Ing. Marï¿½a Beatriz Unda
+		// Fecha Creaciï¿½n: 18/11/2008					Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_salarionormal=0;
-		
-		/* Modificación de la sentencia
 		$ls_sql="SELECT codemp, codnom, codper, codconc, nomcon, titcon, sigcon, forcon, glocon, acumaxcon, valmincon, valmaxcon, concon, cueprecon, cueconcon, ".
-				"		aplisrcon, sueintcon, intprocon, codpro, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
+				"		aplisrcon, sueintcon, intprocon, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
 				"		valminpatcon, valmaxpatcon, codprov, cedben, conprenom, sueintvaccon, aplarccon, aplcon, valcon, acuemp, ".
 				"  		acuiniemp, acupat, acuinipat, quirepcon ".
 				"  FROM calculo_conceptospersonal ".
@@ -462,23 +468,12 @@ class sigesp_sno_c_evaluador
 				"   AND codnom='".$this->ls_codnom."' ".
 				"   AND codper='".$as_codper."' ".
 				"   AND (sigcon='A' OR sigcon='R')".
-				"   AND persalnor=1".
-				" ORDER BY codemp, codnom, codper"; */
-		$ls_sql="SELECT codemp, codnom, codper, codconc, nomcon, titcon, sigcon, forcon, glocon, acumaxcon, valmincon, valmaxcon, concon, cueprecon, cueconcon, ".
-				"		aplisrcon, sueintcon, intprocon, codpro, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
-				"		valminpatcon, valmaxpatcon, codprov, cedben, conprenom, sueintvaccon, aplarccon, aplcon, valcon, acuemp, ".
-				"  		acuiniemp, acupat ".
-				"  FROM calculo_conceptospersonal ".
-				" WHERE codemp='".$this->ls_codemp."' ".
-				"   AND codnom='".$this->ls_codnom."' ".
-				"   AND codper='".$as_codper."' ".
-				"   AND (sigcon='A' OR sigcon='R')".
+				"   AND persalnor='1'".
 				" ORDER BY codemp, codnom, codper";
-		//print $ls_sql;
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_salarionormal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_salarionormal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -497,41 +492,41 @@ class sigesp_sno_c_evaluador
 				$ls_forpatcon=$rs_data->fields["forpatcon"];
 				$ls_acuemp=$rs_data->fields["acuemp"];
 				$ls_acupat=$rs_data->fields["acupat"];
-				//$ls_quirepcon=$rs_data->fields["quirepcon"];
+				$ls_quirepcon=$rs_data->fields["quirepcon"];
 				$li_valmincon=$rs_data->fields["valmincon"];
 				$li_valmaxcon=$rs_data->fields["valmaxcon"];
 				if($li_glocon==1)// si el concepto es global
 				{
-					if(!(trim($ls_concon)==""))// si tiene condición
+					if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 					{
 						$lb_filtro=false;
 						$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-						if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+						if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 						{
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 					else
 					{
-						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 					}
 				}
 				else
 				{
 					if($li_aplcon==1)// si se aplica el concepto
 					{
-						if(!(trim($ls_concon)==""))// si tiene condición
+						if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
 						{
 							$lb_filtro=false;
 							$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
-							if(($lb_filtro)&&($lb_valido)) // si la condición es válida
+							if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
 							{
 								$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 							}
 						}
 						else
 						{
-							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);					
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
 						}
 					}
 				}
@@ -553,24 +548,139 @@ class sigesp_sno_c_evaluador
 				unset($_SESSION["la_conceptopersonal"]);
 				$rs_data->MoveNext();
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_salarionormal
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
+
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_obtener_salarionormal_obrero($as_codper,&$ai_salarionormalobrero)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_obtener_sueldointegral
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene la suma de todos los
+		//				   conceptos que pertenecen al sueldo integral
+		//	   Creado Por: Ing. Yesenia Moreno
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$lb_valido=true;
+		$ai_salarionormalobrero=0;
+		$ls_sql="SELECT codemp, codnom, codper, codconc, nomcon, titcon, sigcon, forcon, glocon, acumaxcon, valmincon, valmaxcon, concon, cueprecon, cueconcon, ".
+				"		aplisrcon, sueintcon, intprocon, forpatcon, cueprepatcon, cueconpatcon, titretempcon, titretpatcon, ".
+				"		valminpatcon, valmaxpatcon, codprov, cedben, conprenom, sueintvaccon, aplarccon, aplcon, valcon, acuemp, ".
+				"  		acuiniemp, acupat, acuinipat, quirepcon ".
+				"  FROM calculo_conceptospersonal ".
+				" WHERE codemp='".$this->ls_codemp."' ".
+				"   AND codnom='".$this->ls_codnom."' ".
+				"   AND codper='".$as_codper."' ".
+				"   AND (sigcon='A' OR sigcon='R')".
+				"   AND glocon='1'".
+				" ORDER BY codemp, codnom, codper";
+		$rs_data=$this->io_sql->select($ls_sql); //echo $ls_sql;
+		if($rs_data===false)
+		{
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldonormal_obrero ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$lb_valido=false;
+		}
+		else
+		{
+			while ((!$rs_data->EOF)&&($lb_valido))
+			{
+				$ls_codconc=$rs_data->fields["codconc"];
+				$_SESSION["la_conceptopersonal"]["codconc"]=$ls_codconc;
+				$li_sueldo=0;
+				$ls_concon=$rs_data->fields["concon"];
+				$ls_codconc=$rs_data->fields["codconc"];
+				$li_glocon=$rs_data->fields["glocon"];
+				$li_aplcon=$rs_data->fields["aplcon"];
+				$ls_forcon=$rs_data->fields["forcon"];
+				$ls_sigcon=$rs_data->fields["sigcon"];
+				$ls_forpatcon=$rs_data->fields["forpatcon"];
+				$ls_acuemp=$rs_data->fields["acuemp"];
+				$ls_acupat=$rs_data->fields["acupat"];
+				$ls_quirepcon=$rs_data->fields["quirepcon"];
+				$li_valmincon=$rs_data->fields["valmincon"];
+				$li_valmaxcon=$rs_data->fields["valmaxcon"];
+				if($li_glocon==1)// si el concepto es global
+				{
+					if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
+					{
+						$lb_filtro=false;
+						$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
+						if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
+						{
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
+						}
+					}
+					else
+					{
+						$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
+					}
+				}
+				else
+				{
+					if($li_aplcon==1)// si se aplica el concepto
+					{
+						if(!(trim($ls_concon)==""))// si tiene condiciï¿½n
+						{
+							$lb_filtro=false;
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_concon,$lb_filtro);
+							if(($lb_filtro)&&($lb_valido)) // si la condiciï¿½n es vï¿½lida
+							{
+								$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
+							}
+						}
+						else
+						{
+							$lb_valido=$this->uf_evaluar($as_codper,$ls_forcon,$li_sueldo);
+						}
+					}
+				}
+				if($li_valmincon>0)
+				{
+					if($li_sueldo<$li_valmincon)
+					{
+						$li_sueldo=$li_valmincon;
+					}
+				}
+				if($li_valmaxcon>0)
+				{
+					if($li_sueldo>$li_valmaxcon)
+					{
+						$li_sueldo=$li_valmaxcon;
+					}
+				}
+				$ai_salarionormalobrero=$ai_salarionormalobrero+$li_sueldo;
+				//echo $ai_salarionormalobrero."<br>";
+				unset($_SESSION["la_conceptopersonal"]);
+				$rs_data->MoveNext();
+			}
+			$this->io_sql->free_result($rs_data);
+		}
+		return $lb_valido;
+	}// end function uf_obtener_sueldointegral_obrero
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_crear_vacacionpersonal($as_codper)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_crear_vacacionpersonal
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal crea una variable session con todos los datos
-		//				   de vacación personal
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal crea una variable session con todos los datos
+		//				   de vacaciï¿½n personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_metodovacaciones=trim($this->personal->mettabvac);
@@ -579,19 +689,19 @@ class sigesp_sno_c_evaluador
 			case "1": //METODO #0
 				$ld_desde_s=$this->io_funciones->uf_convertirfecmostrar($_SESSION["la_nomina"]["fechasper"]);
 				$ld_desde_s=$this->io_sno->uf_suma_fechas($ld_desde_s,1);
-				$ld_desde_s=$this->io_funciones->uf_convertirdatetobd($ld_desde_s);	
+				$ld_desde_s=$this->io_funciones->uf_convertirdatetobd($ld_desde_s);
 				switch($_SESSION["la_nomina"]["tippernom"])
 				{
-					case "0": // Nóminas Semanales
+					case "0": // Nï¿½minas Semanales
 						$li_dias=7;
 						break;
-					case "1": // Nóminas Quincenales
+					case "1": // Nï¿½minas Quincenales
 						$li_dias=15;
 						break;
-					case "2": // Nóminas Mensuales
+					case "2": // Nï¿½minas Mensuales
 						$li_dias=30;
 						break;
-					case "3": // Nóminas Anuales
+					case "3": // Nï¿½minas Anuales
 						$li_dias=365;
 						break;
 				}
@@ -601,16 +711,16 @@ class sigesp_sno_c_evaluador
 				$ls_mes=substr($ld_hasta_s,3,2);
 				$ls_ano=substr($ld_hasta_s,6,4);
 				while(checkdate($ls_mes,$ls_dia,$ls_ano)==false)
-				{ 
-				   $ls_dia=$ls_dia-1; 
+				{
+				   $ls_dia=$ls_dia-1;
 				   break;
-				} 
+				}
 				$ld_hasta_s=$ls_dia."/".$ls_mes."/".$ls_ano;
 				$ld_hasta_s=$this->io_funciones->uf_convertirdatetobd($ld_hasta_s);
 				$ld_desde_r=$_SESSION["la_nomina"]["fecdesper"];
-				$ld_hasta_r=$_SESSION["la_nomina"]["fechasper"];				
+				$ld_hasta_r=$_SESSION["la_nomina"]["fechasper"];
 				$ls_sql="SELECT codvac, sueintbonvac, sueintvac, fecdisvac, fecreivac, diavac, diabonvac, diaadibon, diaadivac, ".
-						"		diafer, sabdom, quisalvac, quireivac ".
+						"		diafer, sabdom, quisalvac, quireivac, profueper ".
 						"  FROM sno_vacacpersonal ".
 						" WHERE codemp='".$this->ls_codemp."'".
 						"   AND codper='".$as_codper."' ".
@@ -619,7 +729,7 @@ class sigesp_sno_c_evaluador
 						"   AND pagpersal='0' ".
 						"UNION ".
 						"SELECT codvac, sueintbonvac, sueintvac, fecdisvac, fecreivac, diavac, diabonvac, diaadibon, diaadivac, ".
-						"		diafer, sabdom, quisalvac, quireivac ".
+						"		diafer, sabdom, quisalvac, quireivac, profueper ".
 						"  FROM sno_vacacpersonal ".
 						" WHERE codemp='".$this->ls_codemp."'".
 						"   AND codper='".$as_codper."' ".
@@ -628,7 +738,7 @@ class sigesp_sno_c_evaluador
 						"   AND pagpersal='1'".
 						"UNION ".
 						"SELECT codvac, sueintbonvac, sueintvac, fecdisvac, fecreivac, diavac, diabonvac, diaadibon, diaadivac, ".
-						"		diafer, sabdom, quisalvac, quireivac ".
+						"		diafer, sabdom, quisalvac, quireivac, profueper ".
 						"  FROM sno_vacacpersonal ".
 						" WHERE codemp='".$this->ls_codemp."'".
 						"   AND codper='".$as_codper."' ".
@@ -642,14 +752,14 @@ class sigesp_sno_c_evaluador
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data==false)
 			{
-				$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_crear_vacacionpersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_crear_vacacionpersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
 			{
 				if($row=$this->io_sql->fetch_row($rs_data))
 				{
-					$la_vacacionpersonal=$row;   
+					$la_vacacionpersonal=$row;
 					$_SESSION["la_vacacionpersonal"]=$la_vacacionpersonal;
 					$ld_fecdisvac=$_SESSION["la_vacacionpersonal"]["fecdisvac"];
 					$ld_fecreivac=$_SESSION["la_vacacionpersonal"]["fecreivac"];
@@ -681,23 +791,23 @@ class sigesp_sno_c_evaluador
 				}
 			}
 			$this->io_sql->free_result($rs_data);
-		}	
+		}
 		return $lb_valido;
 	}// end function uf_crear_vacacionpersonal
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_crear_tablasueldo($as_codper)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_crear_tablasueldo
 		//		   Access: private
-		//   	Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal crea una variable session con todos los datos
+		//   	Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal crea una variable session con todos los datos
 		//				   de sueldo que tiene asociado
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="SELECT codtab, codgra, codpas, monsalgra, moncomgra, monto_primas ".
@@ -709,47 +819,47 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_crear_tablasueldo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_crear_tablasueldo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
 		{
 			if($row=$this->io_sql->fetch_row($rs_data))
 			{
-				$la_tablasueldo=$row;   
+				$la_tablasueldo=$row;
 				$_SESSION["la_tablasueldo"]=$la_tablasueldo;
 			}
 			else
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_crear_tablasueldo ERROR->Verifique el Tabulador ó grados asociados al personal ".$as_codper);
+				$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_crear_tablasueldo ERROR->Verifique el Tabulador ï¿½ grados asociados al personal ".$as_codper);
 			}
-			$this->io_sql->free_result($rs_data);	
-		}		
+			$this->io_sql->free_result($rs_data);
+		}
 		return $lb_valido;
 	}// end function uf_crear_tablasueldo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_evaluar($as_codper,$as_formula,&$as_valor)
-	{	
+	{
 	  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_evaluar
 		//		   Access: public
-		//	    Arguments: as_codper // código de personal
-		//				   as_formula // fórmula del concepto
-		//				   as_valor // valor que se obtiene de la fórmula
-		//	      Returns: lb_valido True si se evalua correctamente la fórmula ó False si hubo error 
-		//	  Description: función que dado una formula de devuelve el valor que arroja
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_formula // fï¿½rmula del concepto
+		//				   as_valor // valor que se obtiene de la fï¿½rmula
+		//	      Returns: lb_valido True si se evalua correctamente la fï¿½rmula ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado una formula de devuelve el valor que arroja
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_formula=trim($as_formula);
 		$as_formula=strtoupper(trim($as_formula));
 		if($lb_valido)
 		{
-			// Variables de Nómina
+			// Variables de Nï¿½mina
 			$lb_valido=$this->uf_sustituir($as_codper,"FN[",$as_formula);
 		}
 		if($lb_valido)
@@ -770,12 +880,12 @@ class sigesp_sno_c_evaluador
 		if($lb_valido)
 		{
 			// Variables de Constantes
-			$lb_valido=$this->uf_sustituir($as_codper,"CT[",$as_formula);	
-				
+			$lb_valido=$this->uf_sustituir($as_codper,"CT[",$as_formula);
+
 		}
 		if($lb_valido)
 		{
-			// Evaluar la Fórmula
+			// Evaluar la Fï¿½rmula
 			$lb_valido=$this->io_eval->uf_evaluar_nomina($as_formula,$as_valor);
 			$as_valor=round($as_valor,2);
 		}
@@ -785,17 +895,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_sustituir($as_codper,$as_exp,&$as_formula)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_sustituir
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//				   as_exp // Expresión que me identifica que tipo de valor se va a buscar
-		//				   as_formula // fórmula del concepto
-		//	      Returns: lb_valido True si se sustituye correctamente la fórmula ó False si hubo error 
-		//	  Description: función que dado una formula sustituye los valores que son de la nómina
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_exp // Expresiï¿½n que me identifica que tipo de valor se va a buscar
+		//				   as_formula // fï¿½rmula del concepto
+		//	      Returns: lb_valido True si se sustituye correctamente la fï¿½rmula ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado una formula sustituye los valores que son de la nï¿½mina
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_formula=trim($as_formula);
@@ -820,10 +930,10 @@ class sigesp_sno_c_evaluador
 			$ls_token=substr($as_formula,(strlen($as_exp)+$li_pos),($li-strlen($as_exp)-$li_pos));
 			switch ($as_exp)
 			{
-				case "FN["://Valor de Nómina
+				case "FN["://Valor de Nï¿½mina
 					$lb_valido=$this->uf_valor_nomina($as_codper,$ls_token,$ls_valor);
 					break;
-					
+
 				case "PS["://Valor de Personal
 					$lb_valido=$this->uf_valor_personal($as_codper,$ls_token,$ls_valor);
 					break;
@@ -853,7 +963,7 @@ class sigesp_sno_c_evaluador
 					if($li_pos===false)
 					{
 						$li_pos=-1;
-					}				
+					}
 				}
 				else
 				{
@@ -867,22 +977,22 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_valor_nomina($as_codper,$as_token,&$as_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_valor_nomina
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_token // token que va a ser reemplazado
 		//				   as_valor // valor del token
-		//	      Returns: lb_valido True si se sustituye correctamente el valor ó False si hubo error 
-		//	  Description: función que dado un token se sutituye por su valor respectivo de la nómina
+		//	      Returns: lb_valido True si se sustituye correctamente el valor ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado un token se sutituye por su valor respectivo de la nï¿½mina
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$as_valor="";
 		$lb_valido=true;
 		$as_token=trim($as_token);
-		switch ($as_token) 
+		switch ($as_token)
 		{
 			case "NRO_SEMANA": // Semana en la que se encuentra el periodo
 				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
@@ -906,7 +1016,7 @@ class sigesp_sno_c_evaluador
 							case 2: //si es martes
 								$li_resto=6;
 							break;
-							case 3: //si es miércoles
+							case 3: //si es miï¿½rcoles
 								$li_resto=5;
 							break;
 							case 4: //si es jueves
@@ -915,20 +1025,20 @@ class sigesp_sno_c_evaluador
 							case 5: //si es viernes
 								$li_resto=3;
 							break;
-							case 6: //si es sábado
+							case 6: //si es sï¿½bado
 								$li_resto=2;
 							break;
 							case 0: //si es domingo
 								$li_resto=1;
-							break;							
+							break;
 					   }
-					   
+
 					}
 					else
 					{
 						$li_resto=0;
 					}
-					
+
 					if (($ld_dia_comparar <= intval($ld_dia)) && (intval($ld_dia) <= ($ld_dia_comparar+7-$li_resto)))
 				   {
 						$lb_encontro=true;
@@ -938,7 +1048,7 @@ class sigesp_sno_c_evaluador
 				   {
 						$ld_dia_comparar=$ld_dia_comparar+7-$li_resto;
 				   }
-					
+
 				} //fin del while
 				break;
 
@@ -963,14 +1073,14 @@ class sigesp_sno_c_evaluador
 					$as_valor=0;
 				}
 				break;
-				
-			case "NRO_LUNES": // Número de lunes que tiene el período
+
+			case "NRO_LUNES": // Nï¿½mero de lunes que tiene el perï¿½odo
 				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
 				$as_valor=$this->io_sno->uf_nro_lunes($ld_fecdes,$ld_fechas);
 				break;
 
-			case "NRO_LUNESMES": // Número de lunes que tiene el mes
+			case "NRO_LUNESMES": // Nï¿½mero de lunes que tiene el mes
 				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
 				$ld_diahasta=strftime("%d",mktime(0,0,0,(substr($ld_fecdes,5,2)+1),0,substr($ld_fecdes,0,4)));
@@ -979,11 +1089,11 @@ class sigesp_sno_c_evaluador
 				$as_valor=$this->io_sno->uf_nro_lunes($ld_desde,$ld_hasta);
 				break;
 
-			case "NRO_DIAS_BV_S": // Número de días de bono vacacional 
+			case "NRO_DIAS_BV_S": // Nï¿½mero de dï¿½as de bono vacacional
 				$as_valor=intval($_SESSION["la_nomina"]["diabonvacnom"]);
 				break;
 
-			case "NRO_DIAS_BV_R": // Número de días de reintegro
+			case "NRO_DIAS_BV_R": // Nï¿½mero de dï¿½as de reintegro
 				$as_valor=intval($_SESSION["la_nomina"]["diareivacnom"]);
 				break;
 
@@ -993,7 +1103,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=$this->io_sno->uf_fin_mes($ld_fecdes,$ld_fechas);
 				break;
 
-			case "DIF_DIA_FIN_PERIODO": // Día del Fin del período
+			case "DIF_DIA_FIN_PERIODO": // Dï¿½a del Fin del perï¿½odo
 				$ai_diafin=intval(substr($_SESSION["la_nomina"]["fechasper"],8,2));
 				$as_valor=30-$ai_diafin;
 				if($as_valor<0)
@@ -1002,7 +1112,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "DHABILES": // Días Hábiles que tuvo el periodo
+			case "DHABILES": // Dï¿½as Hï¿½biles que tuvo el periodo
 				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_sabdom=$this->io_sno->uf_nro_sabydom($ld_fecdesper,$ld_fechasper);
@@ -1016,7 +1126,24 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor-$li_sabdom);
 				break;
 
-			case "VALOR_CT": // Monto del cesta ticket según la nómina
+			case "DHABILESMES": // Dï¿½as Hï¿½biles que tuvo el mes
+				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
+				$ld_diahasta=strftime("%d",mktime(0,0,0,(substr($ld_fecdes,5,2)+1),0,substr($ld_fecdes,0,4)));
+				$ld_fecdesper=substr($ld_fecdes,0,8)."01";
+				$ld_fechasper=substr($ld_fecdes,0,8).$ld_diahasta;
+				$li_sabdom=$this->io_sno->uf_nro_sabydom($ld_fecdesper,$ld_fechasper);
+				$ld_diades=substr($ld_fecdesper,8,2);
+				$ld_mesdes=substr($ld_fecdesper,5,2);
+				$ld_anodes=substr($ld_fecdesper,0,4);
+				$ld_diahas=substr($ld_fechasper,8,2);
+				$ld_meshas=substr($ld_fechasper,5,2);
+				$ld_anohas=substr($ld_fechasper,0,4);
+				$as_valor=((mktime(0,0,0,$ld_meshas,$ld_diahas,$ld_anohas) - mktime(0,0,0,$ld_mesdes,$ld_diades,$ld_anodes))/86400)+1;
+				$as_valor=round($as_valor-$li_sabdom);
+				break;
+
+			case "VALOR_CT": // Monto del cesta ticket segï¿½n la nï¿½mina
 				$ls_codnom=$_SESSION["la_nomina"]["codnom"];
 				$as_valor=$this->io_cestaticket->uf_select_valor_ct($ls_codnom);
 				break;
@@ -1028,12 +1155,12 @@ class sigesp_sno_c_evaluador
 					$li_ano=substr($_SESSION["la_empresa"]["periodo"],0,4);
 				}
 				$as_valor=0;
-				$lb_valido=$this->uf_obtener_unidadtributaria($li_ano,&$as_valor);
+				$lb_valido=$this->uf_obtener_unidadtributaria($li_ano,$as_valor);
 				break;
-			
+
 
 			default: // si el token no existe
-				$this->io_mensajes->message("ERROR->NOMINA FN[".$as_token."] Nó Válido.");			
+				$this->io_mensajes->message("ERROR->NOMINA FN[".$as_token."] Nï¿½ Vï¿½lido.");
 				$lb_valido=false;
 				break;
 		}
@@ -1046,20 +1173,20 @@ class sigesp_sno_c_evaluador
 	{			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_valor_personal
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_token // valor que va a ser reemplazado
 		//				   as_valor // valor del token
-		//	      Returns: lb_valido True si se sustituye correctamente el valor ó False si hubo error 
-		//	  Description: función que dado un token se sutituye por su valor respectivo del personal
+		//	      Returns: lb_valido True si se sustituye correctamente el valor ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado un token se sutituye por su valor respectivo del personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$as_valor="";
 		$lb_valido=true;
 		$as_token=trim($as_token);
 		switch ($as_token)
 		{
-			case "DIAS_LABORADO": // Número de días laborados por la persona desde que llegó a la institución
+			case "DIAS_LABORADO": // Nï¿½mero de dï¿½as laborados por la persona desde que llegï¿½ a la instituciï¿½n
 				$ld_fechatope=$this->io_funciones->uf_convertirdatetobd($this->io_sno->uf_select_config("SNO","ANTIGUEDAD","FECHA_TOPE","1900-01-01","C"));
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_diades=substr($ld_fecingper,8,2);
@@ -1082,7 +1209,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor);
 				break;
 
-			case "MESES_LABORADO": // Número de meses laborados por la persona desde que llegó
+			case "MESES_LABORADO": // Nï¿½mero de meses laborados por la persona desde que llegï¿½
 				$ld_fechatope=$this->io_funciones->uf_convertirdatetobd($this->io_sno->uf_select_config("SNO","ANTIGUEDAD","FECHA_TOPE","1900-01-01","C"));
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_diades=substr($ld_fecingper,8,2);
@@ -1109,14 +1236,23 @@ class sigesp_sno_c_evaluador
 				$as_valor=$this->personal->sueper;
 				break;
 
-			case "SUELDO_MIN_GRADO": // Sueldo Mínimo según el grado que tenga el obrero
+			case "GUARDERIA": // Monto de la Guarderia
+				$li_montoguarderia=0;
+				$lb_valido=$this->uf_obtener_montoguarderia($as_codper,$li_montoguarderia);
+				if($lb_valido)
+				{
+					$as_valor=$li_montoguarderia;
+				}
+				break;
+
+			case "SUELDO_MIN_GRADO": // Sueldo Mï¿½nimo segï¿½n el grado que tenga el obrero
 				$as_valor=$this->personal->suemingra;
 				break;
 
-			case "DIF_SUELDOMIN": //  Diferencia del sueldo Mínimo con respecto al sueldo base
+			case "DIF_SUELDOMIN": //  Diferencia del sueldo Mï¿½nimo con respecto al sueldo base
 				$as_valor=0;
 				$li_sueldominimo=0;
-			    $lb_valido=$this->uf_obtener_sueldominimo(&$li_sueldominimo);
+			    $lb_valido=$this->uf_obtener_sueldominimo($li_sueldominimo);
 				if($lb_valido)
 				{
 					$li_diferencia=number_format($li_sueldominimo-$this->personal->suemingra,2,".","");
@@ -1127,7 +1263,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "COMPENSACION_OBRERO": // Monto de la Compensación para las nóminas de obreros con clasificación
+			case "COMPENSACION_OBRERO": // Monto de la Compensaciï¿½n para las nï¿½minas de obreros con clasificaciï¿½n
 				$as_valor=$this->personal->sueper-$this->personal->suemingra;
 				if($as_valor<0)
 				{
@@ -1159,7 +1295,7 @@ class sigesp_sno_c_evaluador
 						$ls_ano=$ls_ano-1;
 					}
 				}
-				$lb_valido=$this->uf_obtener_sueldo_ante($as_codper,$ls_mes,$ls_ano,&$as_sueldo);
+				$lb_valido=$this->uf_obtener_sueldo_ante($as_codper,$ls_mes,$ls_ano,$as_sueldo);
 				if($lb_valido)
 				{
 					$as_valor=$as_sueldo;
@@ -1182,21 +1318,21 @@ class sigesp_sno_c_evaluador
 						case 0://Semanal
 							$ls_perant='052';
 							break;
-			
+
 						case 1://Quincenal
 							$ls_perant='024';
 							break;
-			
+
 						case 2://Mensual
 							$ls_perant='012';
 							break;
-			
+
 						case 3://Anual
 							$ls_perant='001';
 							break;
 					}
 				}
-				$lb_valido=$this->uf_obtener_sueldo_quincena_ante($as_codper,$ls_perant,$ls_ano,&$as_sueldo);
+				$lb_valido=$this->uf_obtener_sueldo_quincena_ante($as_codper,$ls_perant,$ls_ano,$as_sueldo);
 				if($lb_valido)
 				{
 					$as_valor=$as_sueldo;
@@ -1215,14 +1351,14 @@ class sigesp_sno_c_evaluador
 				$as_valor="'".$this->personal->sexper."'";
 				break;
 
-			case "NRO_HIJOS": // Número de Hijos de la persona
+			case "NRO_HIJOS": // Nï¿½mero de Hijos de la persona
 				$as_valor=$this->personal->numhijper;
 				break;
-				
-			case "A_SERVICIO": // Años de Servicios previos de la persona
+
+			case "A_SERVICIO": // Aï¿½os de Servicios previos de la persona
 				$as_valor=$this->personal->anoservpreper;
 				break;
-				
+
 			case "EDAD": // Edad de la persona
 				$ld_fechas=substr($_SESSION["la_nomina"]["fechasper"],0,4);
 				$ld_fecnacper=substr($this->personal->fecnacper,0,4);
@@ -1244,11 +1380,11 @@ class sigesp_sno_c_evaluador
 					}
 				}
 				break;
-				
+
 			case "SUELDO_INTEGRAL": // Sueldo Integral de la persona
 				$as_valor=$this->personal->sueldointegral;
 				break;
-				
+
 			case "ESTATUS": // Estatus de la persona
 				$ls_staper=$this->personal->staper;
 				switch ($ls_staper)
@@ -1266,7 +1402,7 @@ class sigesp_sno_c_evaluador
 						break;
 				}
 				break;
-				
+
 			case "V_PRIMERA_QUINCENA": // si es la primera quincena de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["primera_quincena"];
 				break;
@@ -1275,15 +1411,15 @@ class sigesp_sno_c_evaluador
 				$as_valor=$_SESSION["la_vacacionpersonal"]["segunda_quincena"];
 				break;
 
-			case "V_DIASBONO": // Días de bono vacacional de la persona
+			case "V_DIASBONO": // Dï¿½as de bono vacacional de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diabonvac"];
 				break;
 
-			case "V_DIASBONO_ADIC": // Días adicionales de bono vacacional de la persona
+			case "V_DIASBONO_ADIC": // Dï¿½as adicionales de bono vacacional de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diaadibon"];
 				break;
 
-			case "V_NRO_DIAS": // número de días hábiles de vacaciones de la persona
+			case "V_NRO_DIAS": // nï¿½mero de dï¿½as hï¿½biles de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diavac"];
 				break;
 
@@ -1291,11 +1427,11 @@ class sigesp_sno_c_evaluador
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diaadivac"];
 				break;
 
-			case "NRO_LUNES_S": // número de días lunes de salida de vacaciones de la persona
+			case "NRO_LUNES_S": // nï¿½mero de dï¿½as lunes de salida de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["nrolunes_s"];
 				break;
 
-			case "NRO_LUNES_R": // número de días lunes de reingreso de vacaciones de la persona
+			case "NRO_LUNES_R": // nï¿½mero de dï¿½as lunes de reingreso de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["nrolunes_r"];
 				break;
 
@@ -1315,7 +1451,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=$_SESSION["la_vacacionpersonal"]["sueintbonvac"];
 				break;
 
-			case "NRO_DIAS_CALEN_S": // número de días calendario de salida de vacaciones de la persona
+			case "NRO_DIAS_CALEN_S": // nï¿½mero de dï¿½as calendario de salida de vacaciones de la persona
 				$ld_fecreivac=$_SESSION["la_vacacionpersonal"]["fecreivac"];
 				$ld_fecdisvac=$_SESSION["la_vacacionpersonal"]["fecdisvac"];
 				$ld_diades=substr($ld_fecdisvac,8,2);
@@ -1328,7 +1464,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor);
 				break;
 
-			case "NRO_DIAS_CALEN_R": // número de días calendario de reingreso de vacaciones de la persona
+			case "NRO_DIAS_CALEN_R": // nï¿½mero de dï¿½as calendario de reingreso de vacaciones de la persona
 				$ld_fecreivac=$_SESSION["la_vacacionpersonal"]["fecreivac"];
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$ld_diades=substr($ld_fecreivac,8,2);
@@ -1341,15 +1477,15 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor);
 				break;
 
-			case "NRO_DIAS_HABILES": // número de días hábiles de vacaciones de la persona
+			case "NRO_DIAS_HABILES": // nï¿½mero de dï¿½as hï¿½biles de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diavac"];
 				break;
 
-			case "NRO_DIAS_FERIADOS": // número de días feriados de vacaciones de la persona
+			case "NRO_DIAS_FERIADOS": // nï¿½mero de dï¿½as feriados de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["diafer"];
 				break;
 
-			case "NRO_DIAS_SABYDOM": // número de días sabados y domingos de vacaciones de la persona
+			case "NRO_DIAS_SABYDOM": // nï¿½mero de dï¿½as sabados y domingos de vacaciones de la persona
 				$as_valor=$_SESSION["la_vacacionpersonal"]["sabdom"];
 				break;
 
@@ -1397,10 +1533,10 @@ class sigesp_sno_c_evaluador
 							$as_valor=$li_valpri;
 						}
 					}
-				}				
+				}
 				break;
 
-			case "COMPENSACION": // Monto Compensación del grado de la persona
+			case "COMPENSACION": // Monto Compensaciï¿½n del grado de la persona
 				$as_valor=$_SESSION["la_tablasueldo"]["moncomgra"];
 				break;
 
@@ -1408,7 +1544,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=$_SESSION["la_tablasueldo"]["monto_primas"];
 				break;
 
-			case substr($as_token,0,12)=="ANTIGUEDAD_A": // Antiguedad en años de la persona
+			case substr($as_token,0,12)=="ANTIGUEDAD_A": // Antiguedad en aï¿½os de la persona
 				$li_ano=intval(substr($as_token,13,4));
 				if($li_ano==0)
 				{
@@ -1438,7 +1574,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "ANTIGUEDAD_MESPERIODO_A": // Antiguedad en años de la persona pero del mes del perido
+			case "ANTIGUEDAD_MESPERIODO_A": // Antiguedad en aï¿½os de la persona pero del mes del perido
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_fechasper=substr($_SESSION["la_nomina"]["fechasper"],0,4);
 				$ld_fecing=substr($ld_fecingper,0,4);
@@ -1450,7 +1586,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "ANTIG_DC": // Antiguedad en días de la persona
+			case "ANTIG_DC": // Antiguedad en dï¿½as de la persona
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_diades=substr($ld_fecingper,8,2);
@@ -1466,82 +1602,82 @@ class sigesp_sno_c_evaluador
 			case "ANTIGUEDAD_M": // Antiguedad en meses de la persona
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
-				$ld_diahas = substr($ld_fechasper, 8, 2);  
-				$ld_meshas = substr($ld_fechasper, 5, 2);  
-				$ld_anohas = substr($ld_fechasper, 0, 4); 
-				$ld_diades = substr($ld_fecingper, 8, 2);  
-				$ld_mesdes = substr($ld_fecingper, 5, 2);  
-				$ld_anodes = substr($ld_fecingper, 0, 4);  
-				$b = 0;  
-				$mes = $ld_mesdes-1; 				  
+				$ld_diahas = substr($ld_fechasper, 8, 2);
+				$ld_meshas = substr($ld_fechasper, 5, 2);
+				$ld_anohas = substr($ld_fechasper, 0, 4);
+				$ld_diades = substr($ld_fecingper, 8, 2);
+				$ld_mesdes = substr($ld_fecingper, 5, 2);
+				$ld_anodes = substr($ld_fecingper, 0, 4);
+				$b = 0;
+				$mes = $ld_mesdes-1;
 				if($mes==2)
-				{  
+				{
 					if(($ld_anohas%4==0 && $ld_anohas%100!=0) || $ld_anohas%400==0)
-					{  
-						$b = 29;  
+					{
+						$b = 29;
 					}
 					else
-					{  
-						$b = 28;  
-					}  
-				}  
+					{
+						$b = 28;
+					}
+				}
 				else if($mes<=7)
-				{  
+				{
 					if($mes==0)
-					{  
-						$b = 31;  
-					}  
+					{
+						$b = 31;
+					}
 					else if($mes%2==0)
-					{  
-						$b = 30;  
-					}  
+					{
+						$b = 30;
+					}
 				   else
-				   {  
-						$b = 31;  
-				   }  
-				}  
+				   {
+						$b = 31;
+				   }
+				}
 				else if($mes>7)
-				{  
+				{
 				   if($mes%2==0)
-				   {  
-						$b = 31;  
-				   }  
-				   else
-				   {  
-						$b = 30;  
-				   }  
-				}  
-				if($ld_mesdes <= $ld_meshas)
-				{  
-				   $anios = $ld_anohas - $ld_anodes;  
-				   if($ld_diades <= $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes;  
-						$dies = $ld_diahas - $ld_diades;  
+				   {
+						$b = 31;
 				   }
 				   else
-				   {  
+				   {
+						$b = 30;
+				   }
+				}
+				if($ld_mesdes <= $ld_meshas)
+				{
+				   $anios = $ld_anohas - $ld_anodes;
+				   if($ld_diades <= $ld_diahas)
+				   {
+						$meses = $ld_meshas - $ld_mesdes;
+						$dies = $ld_diahas - $ld_diades;
+				   }
+				   else
+				   {
 						if($ld_meshas == $ld_mesdes)
-						{  
-							$anios = $anios - 1;  
-						}  
-						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;  
-						$dies = $b-($ld_diades-$ld_diahas);  
-				   }  
+						{
+							$anios = $anios - 1;
+						}
+						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;
+						$dies = $b-($ld_diades-$ld_diahas);
+				   }
 				}
 				else
-				{  
-				   $anios = $ld_anohas - $ld_anodes - 1;  
+				{
+				   $anios = $ld_anohas - $ld_anodes - 1;
 				   if($ld_diades > $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes -1 +12;  
-						$dies = $b - ($ld_diades-$ld_diahas);  
+				   {
+						$meses = $ld_meshas - $ld_mesdes -1 +12;
+						$dies = $b - ($ld_diades-$ld_diahas);
 				   }
 				   else
-				   {  
-						$meses = $ld_meshas - $ld_mesdes + 12;  
-						$dies = $ld_diahas - $ld_diades;  
-				   }  
+				   {
+						$meses = $ld_meshas - $ld_mesdes + 12;
+						$dies = $ld_diahas - $ld_diades;
+				   }
 				}
 				 $total_mes=($anios*12)+$meses+($dies/30);
 				 $as_valor=round($total_mes,2);
@@ -1550,88 +1686,88 @@ class sigesp_sno_c_evaluador
 			case "ANTIGUEDAD_M_ENTERO": // Antiguedad en meses de la persona pero en valores enteros
 				$ld_fecingper=$this->personal->fecingper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
-				$ld_diahas = substr($ld_fechasper, 8, 2);  
-				$ld_meshas = substr($ld_fechasper, 5, 2);  
-				$ld_anohas = substr($ld_fechasper, 0, 4); 
-				$ld_diades = substr($ld_fecingper, 8, 2);  
-				$ld_mesdes = substr($ld_fecingper, 5, 2);  
-				$ld_anodes = substr($ld_fecingper, 0, 4);  
-				$b = 0;  
-				$mes = $ld_mesdes-1; 				  
+				$ld_diahas = substr($ld_fechasper, 8, 2);
+				$ld_meshas = substr($ld_fechasper, 5, 2);
+				$ld_anohas = substr($ld_fechasper, 0, 4);
+				$ld_diades = substr($ld_fecingper, 8, 2);
+				$ld_mesdes = substr($ld_fecingper, 5, 2);
+				$ld_anodes = substr($ld_fecingper, 0, 4);
+				$b = 0;
+				$mes = $ld_mesdes-1;
 				if($mes==2)
-				{  
+				{
 					if(($ld_anohas%4==0 && $ld_anohas%100!=0) || $ld_anohas%400==0)
-					{  
-						$b = 29;  
+					{
+						$b = 29;
 					}
 					else
-					{  
-						$b = 28;  
-					}  
-				}  
+					{
+						$b = 28;
+					}
+				}
 				else if($mes<=7)
-				{  
+				{
 					if($mes==0)
-					{  
-						$b = 31;  
-					}  
+					{
+						$b = 31;
+					}
 					else if($mes%2==0)
-					{  
-						$b = 30;  
-					}  
+					{
+						$b = 30;
+					}
 				   else
-				   {  
-						$b = 31;  
-				   }  
-				}  
+				   {
+						$b = 31;
+				   }
+				}
 				else if($mes>7)
-				{  
+				{
 				   if($mes%2==0)
-				   {  
-						$b = 31;  
-				   }  
-				   else
-				   {  
-						$b = 30;  
-				   }  
-				}  
-				if($ld_mesdes <= $ld_meshas)
-				{  
-				   $anios = $ld_anohas - $ld_anodes;  
-				   if($ld_diades <= $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes;  
-						$dies = $ld_diahas - $ld_diades;  
+				   {
+						$b = 31;
 				   }
 				   else
-				   {  
+				   {
+						$b = 30;
+				   }
+				}
+				if($ld_mesdes <= $ld_meshas)
+				{
+				   $anios = $ld_anohas - $ld_anodes;
+				   if($ld_diades <= $ld_diahas)
+				   {
+						$meses = $ld_meshas - $ld_mesdes;
+						$dies = $ld_diahas - $ld_diades;
+				   }
+				   else
+				   {
 						if($ld_meshas == $ld_mesdes)
-						{  
-							$anios = $anios - 1;  
-						}  
-						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;  
-						$dies = $b-($ld_diades-$ld_diahas);  
-				   }  
+						{
+							$anios = $anios - 1;
+						}
+						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;
+						$dies = $b-($ld_diades-$ld_diahas);
+				   }
 				}
 				else
-				{  
-				   $anios = $ld_anohas - $ld_anodes - 1;  
+				{
+				   $anios = $ld_anohas - $ld_anodes - 1;
 				   if($ld_diades > $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes -1 +12;  
-						$dies = $b - ($ld_diades-$ld_diahas);  
+				   {
+						$meses = $ld_meshas - $ld_mesdes -1 +12;
+						$dies = $b - ($ld_diades-$ld_diahas);
 				   }
 				   else
-				   {  
-						$meses = $ld_meshas - $ld_mesdes + 12;  
-						$dies = $ld_diahas - $ld_diades;  
-				   }  
+				   {
+						$meses = $ld_meshas - $ld_mesdes + 12;
+						$dies = $ld_diahas - $ld_diades;
+				   }
 				}
 				 $total_mes= (($anios*12)+$meses);
 				 $as_valor=$total_mes;
 				break;
 
-			case substr($as_token,0,7)=="MENORES": // Número de Hijos Menores de la persona
+			case substr($as_token,0,7)=="MENORES": // Nï¿½mero de Hijos Menores de la persona
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edad=intval(substr($as_token,8,2));
@@ -1642,12 +1778,12 @@ class sigesp_sno_c_evaluador
 				$lb_valido=$this->io_familiar->uf_load_hijosmenores($ls_codper,$li_edad,$ld_fechasper,$as_valor);
 				break;
 
-			case substr($as_token,0,16)=="ESTUDIANTE_MENOR": // Número de Hijos Menores de la persona
+			case substr($as_token,0,16)=="ESTUDIANTE_MENOR": // Nï¿½mero de Hijos Menores de la persona
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edaddesde=intval(substr($as_token,17,2));
 				$li_edadhasta=intval(substr($as_token,20,2));
-				$lb_valido=$this->io_familiar->uf_load_hijosmenores_estudiantes($ls_codper,$li_edaddesde,$li_edadhasta,$ld_fechasper,&$as_valor);
+				$lb_valido=$this->io_familiar->uf_load_hijosmenores_estudiantes($ls_codper,$li_edaddesde,$li_edadhasta,$ld_fechasper,$as_valor);
 				break;
 
 			case "AR-C": // Monto de ISR del mes en curso de la persona
@@ -1656,7 +1792,7 @@ class sigesp_sno_c_evaluador
 				$lb_valido=$this->io_isr->uf_load_isrpersonal($ls_codper,$ls_mes,$as_valor);
 				break;
 
-			case substr($as_token,0,3)=="VTC": // Total a Cobrar 
+			case substr($as_token,0,3)=="VTC": // Total a Cobrar
 				$ls_codconc=str_pad(substr($as_token,4,3),10,"0",0);
 				$ls_codper=$this->personal->codper;
 				$as_valor=0;
@@ -1668,7 +1804,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case substr($as_token,0,3)=="VCA": // Total del Concepto en un período anterior
+			case substr($as_token,0,3)=="VCA": // Total del Concepto en un perï¿½odo anterior
 				$ls_codconc=str_pad(substr($as_token,4,10),10,"0",0);
 				$ls_codper=$this->personal->codper;
 				$as_valor=0;
@@ -1692,19 +1828,19 @@ class sigesp_sno_c_evaluador
 				$ls_codper=$this->personal->codper;
 				$as_valor=0;
 				$li_monto=0;
-				$lb_valido=$this->uf_obtener_montoanterior($ls_codper,$ls_tipsal,$li_meses,&$li_monto);
+				$lb_valido=$this->uf_obtener_montoanterior($ls_codper,$ls_tipsal,$li_meses,$li_monto);
 				if($lb_valido)
 				{
 					$as_valor=$li_monto;
 				}
 				break;
 
-			case "DHABILES": // Días Hábiles que tuvo el mes sin los feriados, sin los días de permiso que tuvo el personal
+			case "DHABILES": // Dï¿½as Hï¿½biles que tuvo el mes sin los feriados, sin los dï¿½as de permiso que tuvo el personal
 				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_sabdom=$this->io_sno->uf_nro_sabydom($ld_fecdesper,$ld_fechasper);
-				$li_diafer=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fechasper);
-				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper);
+				$li_diafer=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fechasper,$_SESSION["la_nomina"]["codnom"],$as_codper,0);
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1','');
 				$ld_diades=substr($ld_fecdesper,8,2);
 				$ld_mesdes=substr($ld_fecdesper,5,2);
 				$ld_anodes=substr($ld_fecdesper,0,4);
@@ -1715,7 +1851,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor-($li_sabdom+$li_diafer+$li_diaper));
 				break;
 
-			case "DHABILES_CONTRATADOS": // Días Hábiles que laboro el personal contratado en el período actual
+			case "DHABILES_CONTRATADOS": // Dï¿½as Hï¿½biles que laboro el personal contratado en el perï¿½odo actual
 				$ld_fecculcontr=$this->personal->fecculcontr;
 				$as_valor=0;
 				if(substr($ld_fecculcontr,0,10)!="1900-01-01")
@@ -1731,14 +1867,14 @@ class sigesp_sno_c_evaluador
 					if((($ld_diahas>=$ld_diades)&&($ld_diahas<=$ld_dia))&&($ld_mesdes==$ld_meshas)&&($ld_anodes==$ld_anohas))
 					{
 						$li_sabdom=$this->io_sno->uf_nro_sabydom($ld_fecdesper,$ld_fecculcontr);
-						$li_diafer=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fecculcontr);
+						$li_diafer=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fecculcontr,$_SESSION["la_nomina"]["codnom"],$as_codper,0);
 						$as_valor=((mktime(0,0,0,$ld_meshas,$ld_diahas,$ld_anohas) - mktime(0,0,0,$ld_mesdes,$ld_diades,$ld_anodes))/86400)+1;
-						$as_valor=round($as_valor-($li_sabdom+$li_diafer));					
+						$as_valor=round($as_valor-($li_sabdom+$li_diafer));
 					}
 				}
 				break;
 
-			case "DCALENDARIO_CONTRATADOS": // Días Hábiles que laboro el personal contratado en el período actual
+			case "DCALENDARIO_CONTRATADOS": // Dï¿½as Hï¿½biles que laboro el personal contratado en el perï¿½odo actual
 				$ld_fecculcontr=$this->personal->fecculcontr;
 				$as_valor=0;
 				if(substr($ld_fecculcontr,0,10)!="1900-01-01")
@@ -1754,12 +1890,12 @@ class sigesp_sno_c_evaluador
 					if((($ld_diahas>=$ld_diades)&&($ld_diahas<=$ld_dia))&&($ld_mesdes==$ld_meshas)&&($ld_anodes==$ld_anohas))
 					{
 						$as_valor=((mktime(0,0,0,$ld_meshas,$ld_diahas,$ld_anohas) - mktime(0,0,0,$ld_mesdes,$ld_diades,$ld_anodes))/86400)+1;
-						$as_valor=round($as_valor);					
+						$as_valor=round($as_valor);
 					}
 				}
 				break;
-				
-			case "CUMP_ORGV": // Si en este período cumple año en el organismo
+
+			case "CUMP_ORGV": // Si en este perï¿½odo cumple aï¿½o en el organismo
 				$ls_tipo = $_SESSION["la_nomina"]["tippernom"];
 				$li_anoact = intval(substr($_SESSION["la_nomina"]["fechasper"],0,4));
 				$li_mesact = intval(substr($_SESSION["la_nomina"]["fechasper"],5,2));
@@ -1772,7 +1908,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=0;
 				if($li_anoact > $li_anoper)
 				{
-					if($ls_tipo==0) // es una nómina Semanal
+					if($ls_tipo==0) // es una nï¿½mina Semanal
 					{
 						if($li_mesdes==$li_mesact)
 						{
@@ -1814,8 +1950,8 @@ class sigesp_sno_c_evaluador
 					}
 				}
 				break;
-				
-			case "CUMP_ORGV_MES": // Si en el mes cumple año en el organismo
+
+			case "CUMP_ORGV_MES": // Si en el mes cumple aï¿½o en el organismo
 				$ls_tipo = $_SESSION["la_nomina"]["tippernom"];
 				$li_anoact = intval(substr($_SESSION["la_nomina"]["fechasper"],0,4));
 				$li_mesact = intval(substr($_SESSION["la_nomina"]["fechasper"],5,2));
@@ -1828,7 +1964,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=0;
 				if($li_anoact > $li_anoper)
 				{
-					if($ls_tipo==0) // es una nómina Semanal
+					if($ls_tipo==0) // es una nï¿½mina Semanal
 					{
 						if($li_mesdes==$li_mesact)
 						{
@@ -1859,7 +1995,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "ANT_INST": // antiguedad en la institución
+			case "ANT_INST": // antiguedad en la instituciï¿½n
 				$ld_fecingper=substr($this->personal->fecingper,0,4);
 				$ld_fechasper=substr($_SESSION["la_nomina"]["fechasper"],0,4);
 				$as_valor=$ld_fechasper-$ld_fecingper;
@@ -1881,7 +2017,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "ANT_ADMP": // Antiguedad en la Intitucion desde Personal + Años de Servicio 
+			case "ANT_ADMP": // Antiguedad en la Intitucion desde Personal + Aï¿½os de Servicio
 				$li_anoprev=$this->personal->anoservpreper;
 				$ld_fecingper=substr($this->personal->fecingadmpubper,0,4);
 				$ld_fechasper=substr($_SESSION["la_nomina"]["fechasper"],0,4);
@@ -1904,8 +2040,8 @@ class sigesp_sno_c_evaluador
 				}
 				$as_valor=$as_valor+$li_anoprev;
 				break;
-				
-			case "ANT_ADMP_DIAS": // Antiguedad en la Intitucion en días 
+
+			case "ANT_ADMP_DIAS": // Antiguedad en la Intitucion en dï¿½as
 				$ld_fecingper=$this->personal->fecingadmpubper;
 				$ld_diades=substr($ld_fecingper,8,2);
 				$ld_mesdes=substr($ld_fecingper,5,2);
@@ -1917,7 +2053,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=((mktime(0,0,0,$ld_meshas,$ld_diahas,$ld_anohas) - mktime(0,0,0,$ld_mesdes,$ld_diades,$ld_anodes))/86400)+1;
 				$as_valor=round($as_valor);
 				break;
-					
+
 			case "PRIMAS_ANTE": // Valor del sueldo integral de vacaciones del mes anterior al calculo
 				$ls_codper=$this->personal->codper;
 				$as_valor=0;
@@ -1936,8 +2072,8 @@ class sigesp_sno_c_evaluador
 					$as_valor=$li_prima;
 				}
 				break;
-				
-			case "ANT_EDU": // Devuelve la antiguedad de los educadores 
+
+			case "ANT_EDU": // Devuelve la antiguedad de los educadores
 				$as_valor=0;
 				$ld_fecingper=substr($this->personal->fecingper,0,4);
 				$ld_fechasper=substr($_SESSION["la_nomina"]["fechasper"],0,4);
@@ -1983,11 +2119,11 @@ class sigesp_sno_c_evaluador
 					$as_valor=0.30;
 				}
 				break;
-				
-			case "MONTOARC": // total de los conceptos que tienen ARC 
+
+			case "MONTOARC": // total de los conceptos que tienen ARC
 				$as_valor=$this->personal->totalarc;
 				break;
-				
+
 			case "MONTOARC_MENSUAL": // total de los conceptos que tienen ARC pero en el mes
 				$ls_codper=$this->personal->codper;
 				$as_valor=0;
@@ -1997,8 +2133,8 @@ class sigesp_sno_c_evaluador
 					$as_valor=$as_valor+$this->personal->totalarc;
 				}
 				break;
-				
-			case "ANTIG_REINGRESO": // antiguedad em fecha de Reingreso en días
+
+			case "ANTIG_REINGRESO": // antiguedad em fecha de Reingreso en dï¿½as
 				$as_valor=0;
 				$ld_fecculcontr=$this->personal->fecculcontr;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
@@ -2014,8 +2150,8 @@ class sigesp_sno_c_evaluador
 					$as_valor=round($as_valor);
 				}
 				break;
-				
-			case "CAPITALIZA_ANT_COMP": // si Capitaliza antiguedad complementaria 1 sino 0 
+
+			case "CAPITALIZA_ANT_COMP": // si Capitaliza antiguedad complementaria 1 sino 0
 				$as_valor=$this->personal->capantcom;
 				switch($as_valor)
 				{
@@ -2081,7 +2217,7 @@ class sigesp_sno_c_evaluador
 				$lb_valido=$this->io_familiar->uf_load_hcmfamiliar($ls_codper,'C',$as_valor);
 				break;
 
-			case substr($as_token,0,13)=="EDAD_CONYUGUE": // Número de Conyugues comprendidos en un rango de edades
+			case substr($as_token,0,13)=="EDAD_CONYUGUE": // Nï¿½mero de Conyugues comprendidos en un rango de edades
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edaddesde=intval(substr($as_token,14,2));
@@ -2090,7 +2226,7 @@ class sigesp_sno_c_evaluador
 																	 $as_valor);
 				break;
 
-			case substr($as_token,0,9)=="EDAD_HIJO": // Número de Hijos comprendidos en un rango de edades
+			case substr($as_token,0,9)=="EDAD_HIJO": // Nï¿½mero de Hijos comprendidos en un rango de edades
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edaddesde=intval(substr($as_token,10,2));
@@ -2099,7 +2235,7 @@ class sigesp_sno_c_evaluador
 																	 $as_valor);
 				break;
 
-			case substr($as_token,0,15)=="EDAD_PROGENITOR": // Número de Progenitores comprendidos en un rango de edades
+			case substr($as_token,0,15)=="EDAD_PROGENITOR": // Nï¿½mero de Progenitores comprendidos en un rango de edades
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edaddesde=intval(substr($as_token,16,2));
@@ -2108,7 +2244,7 @@ class sigesp_sno_c_evaluador
 																	 $as_valor);
 				break;
 
-			case substr($as_token,0,12)=="EDAD_HERMANO": // Número de Hermanos comprendidos en un rango de edades
+			case substr($as_token,0,12)=="EDAD_HERMANO": // Nï¿½mero de Hermanos comprendidos en un rango de edades
 				$ls_codper=$this->personal->codper;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
 				$li_edaddesde=intval(substr($as_token,13,2));
@@ -2116,8 +2252,8 @@ class sigesp_sno_c_evaluador
 				$lb_valido=$this->io_familiar->uf_load_totalfamiliar($ls_codper,'E',$li_edaddesde,$li_edadhasta,$ld_fechasper,
 																	 $as_valor);
 				break;
-					
-			case substr($as_token,0,6)=="CN_ANT": // Verifica si el concepto fue cobrado por el personal los 3 períodos Anteriores
+
+			case substr($as_token,0,6)=="CN_ANT": // Verifica si el concepto fue cobrado por el personal los 3 perï¿½odos Anteriores
 				$ls_codper=$this->personal->codper;
 				$as_valor=false;
 				$li_anocurnom=intval($_SESSION["la_nomina"]["anocurnom"]);
@@ -2151,7 +2287,7 @@ class sigesp_sno_c_evaluador
 						$ls_criterio=" AND (sno_hsalida.anocur='".$li_anoantnom."' AND (sno_hsalida.codperi='".$li_numpernom."' ".
 									 "  OR sno_hsalida.codperi='".$li_numperant."' OR sno_hsalida.codperi='".$li_numperant2."'))";
 						break;
-						
+
 					default:
 						$li_numperant2=$li_peractnom-3;
 						$li_numperant=$li_peractnom-2;
@@ -2194,7 +2330,7 @@ class sigesp_sno_c_evaluador
 				}
 				break;
 
-			case "DIAS_BONO_TABVAC": // Días Tabla de vacaciones según el personal
+			case "DIAS_BONO_TABVAC": // Dï¿½as Tabla de vacaciones segï¿½n el personal
 				$as_valor=0;
 				$ls_codtabvac=$this->personal->codtabvac;
 				$li_anoservpreper=$this->personal->anoservpreper;
@@ -2217,10 +2353,10 @@ class sigesp_sno_c_evaluador
 						}
 					}
 				}
-				$lb_valido=$this->uf_obtener_dias_tabla_vacacion($ls_codtabvac,$li_anios,$li_anoservpreper,&$as_valor);
+				$lb_valido=$this->uf_obtener_dias_tabla_vacacion($ls_codtabvac,$li_anios,$li_anoservpreper,$as_valor);
 				break;
 
-			case "DIAS_BONO_TABVAC_MES": // Días Tabla de vacaciones según el personal
+			case "DIAS_BONO_TABVAC_MES": // Dï¿½as Tabla de vacaciones segï¿½n el personal
 				$as_valor=0;
 				$ls_codtabvac=$this->personal->codtabvac;
 				$li_anoservpreper=$this->personal->anoservpreper;
@@ -2233,14 +2369,14 @@ class sigesp_sno_c_evaluador
 				{
 					$li_anios=$li_anios-1;
 				}
-				$lb_valido=$this->uf_obtener_dias_tabla_vacacion($ls_codtabvac,$li_anios,$li_anoservpreper,&$as_valor);
+				$lb_valido=$this->uf_obtener_dias_tabla_vacacion($ls_codtabvac,$li_anios,$li_anoservpreper,$as_valor);
 				break;
 
 			case "CAJA_AHORRO": // Si el personal tiene caja de ahorro
 				$as_valor=intval($this->personal->cajahoper);
 				break;
 
-			case "SUELDO_BAS_PENSION": // Sueldo Básico para los pensionados
+			case "SUELDO_BAS_PENSION": // Sueldo Bï¿½sico para los pensionados
 				$as_valor=number_format($this->personal->suebasper,2,".","");
 				break;
 
@@ -2252,7 +2388,7 @@ class sigesp_sno_c_evaluador
 				$as_valor=number_format($this->personal->pridesper,2,".","");
 				break;
 
-			case "PRIMA_SERVICIO_PENSION": // Prima años de servicio para los pensionados
+			case "PRIMA_SERVICIO_PENSION": // Prima aï¿½os de servicio para los pensionados
 				$as_valor=number_format($this->personal->prianoserper,2,".","");
 				break;
 
@@ -2275,12 +2411,12 @@ class sigesp_sno_c_evaluador
 			case "PORCENTAJE_PENSION": // Porcentaje de la pension para los pensionados
 				$as_valor=number_format($this->personal->porpenper,2,".","");
 				break;
-			
-		   case substr(trim ($as_token),0,9)=="DEDUCCION": // Deducciones personales	
-			   	$ls_codper=$this->personal->codper; // código del personal
-				$ls_codtipded=substr($as_token,10,10);  // código del tipo de deducción	
-				$ls_codtipded=str_pad($ls_codtipded,10,"0","LEFT");
-				$ls_sueldo=$this->personal->sueper; // Sueldo del personal					
+
+		   case substr(trim ($as_token),0,9)=="DEDUCCION": // Deducciones personales
+			   	$ls_codper=$this->personal->codper; // cï¿½digo del personal
+				$ls_codtipded=substr($as_token,10,10);  // cï¿½digo del tipo de deducciï¿½n
+				$ls_codtipded=str_pad($ls_codtipded,10,"0",STR_PAD_LEFT);
+				$ls_sueldo=$this->personal->sueper; // Sueldo del personal
 				// ---------------------------- Para calcular la edad de la persona-----------------------------------------
 				$ld_fechas=substr($_SESSION["la_nomina"]["fechasper"],0,4);
 				$ld_fecnacper=substr($this->personal->fecnacper,0,4);
@@ -2300,23 +2436,23 @@ class sigesp_sno_c_evaluador
 							$ls_edad=$ls_edad-1;
 						}
 					}
-				}	
-				///----------------------fin del calculo de la edad de la persona----------------------------------------------			
+				}
+				///----------------------fin del calculo de la edad de la persona----------------------------------------------
 				$ls_sexo="'".$this->personal->sexper."'"; // Sexo de la persona
-				
+
 				$lb_valido=$this->io_tipodeduccion->uf_srh_buscar_deduccion($ls_codper,$ls_codtipded,'1', $ls_sueldo, $ls_edad,
 				                                                            $ls_sexo,$as_valor);
 				if ($as_valor=="")
 				{
 					$as_valor=0;
 				}
-																			
+
 				break;
-				
+
 				case substr(trim ($as_token),0,14)=="DEDUC_FAMILIAR": // Deducciones de los familiares
-					$ls_codper=$this->personal->codper; // código del personal
-					$ls_codtipded=substr($as_token,15,10); // código del tipo de deducción						
-					$ls_codtipded=str_pad($ls_codtipded,10,"0","LEFT");												
+					$ls_codper=$this->personal->codper; // cï¿½digo del personal
+					$ls_codtipded=substr($as_token,15,10); // cï¿½digo del tipo de deducciï¿½n
+					$ls_codtipded=str_pad($ls_codtipded,10,"0",STR_PAD_LEFT);
 					$ls_sueldo=$this->personal->sueper; // Sueldo del personal
 					$ld_fecha_hasta=$_SESSION["la_nomina"]["fechasper"]; /// fecha hasta del lapso de la nomina
 					$lb_valido=$this->io_tipodeduccion->uf_srh_buscar_deduccion_familiar($ls_codper,$ls_codtipded,'1',$ls_sueldo,
@@ -2326,11 +2462,11 @@ class sigesp_sno_c_evaluador
 						$as_valor=0;
 					}
 				break;
-				
+
 			   case substr(trim ($as_token),0,16)=="PATRON_DEDUCCION": // Aporte del Patrono para las deducciones personales
-			        $ls_codper=$this->personal->codper; // código del personal
-					$ls_codtipded=substr($as_token,17,10); // código del tipo de deducción	
-					$ls_codtipded=str_pad($ls_codtipded,10,"0","LEFT");															
+			        $ls_codper=$this->personal->codper; // cï¿½digo del personal
+					$ls_codtipded=substr($as_token,17,10); // cï¿½digo del tipo de deducciï¿½n
+					$ls_codtipded=str_pad($ls_codtipded,10,"0","LEFT");
 					$ls_sueldo=$this->personal->sueper; // Sueldo del personal
 					// ---------------------------- Para calcular la edad de la persona-----------------------------------
 					$ld_fechas=substr($_SESSION["la_nomina"]["fechasper"],0,4);
@@ -2354,20 +2490,20 @@ class sigesp_sno_c_evaluador
 					}
 					// ------------------------------fin del calculo de la persona-----------------------------------------
 					$ls_sexo="'".$this->personal->sexper."'"; // Sexo de la persona
-				
+
 					$lb_valido=$this->io_tipodeduccion->uf_srh_buscar_deduccion($ls_codper,$ls_codtipded,'2',$ls_sueldo, $ls_edad,
-				                                                            $ls_sexo, $as_valor);	
+				                                                            $ls_sexo, $as_valor);
 					if ($as_valor=="")
 					{
 						$as_valor=0;
-					}			
+					}
 				break;
-							
+
 			case substr(trim($as_token),0,21)=="DEDUC_PATRON_FAMILIAR": //Aporte del Patrono para las deducciones de los familiares
-			    
-				$ls_codper=$this->personal->codper; // código del personal
-				$ls_codtipded=substr($as_token,22,10); // código del tipo de deducción
-				$ls_codtipded=str_pad($ls_codtipded,10,"0","LEFT");											
+
+				$ls_codper=$this->personal->codper; // cï¿½digo del personal
+				$ls_codtipded=substr($as_token,22,10); // cï¿½digo del tipo de deducciï¿½n
+				$ls_codtipded=str_pad($ls_codtipded,10,"0",STR_PAD_LEFT);
 				$ls_sueldo=$this->personal->sueper; // Sueldo del personal
 				$ld_fecha_hasta=$_SESSION["la_nomina"]["fechasper"]; /// fecha hasta del lapso de la nomina
 				$lb_valido=$this->io_tipodeduccion->uf_srh_buscar_deduccion_familiar($ls_codper,$ls_codtipded,'2',$ls_sueldo,
@@ -2375,28 +2511,28 @@ class sigesp_sno_c_evaluador
 				if ($as_valor=="")
 				{
 					$as_valor=0;
-				}				
+				}
 				break;
             //-------------------------------------------------------FIN DE LAS DEDUCCIONES CONFIGURABLES-------------------
 
-			case "DEDICACION": // Código de la dedicación del personal
+			case "DEDICACION": // Cï¿½digo de la dedicaciï¿½n del personal
 				$as_valor=$this->personal->codded;
 				break;
-            
-			case "TIP_PERSONAL": // Código del tipo de personal
+
+			case "TIP_PERSONAL": // Cï¿½digo del tipo de personal
 				$as_valor=$this->personal->codtipper;
 				break;
-            
-			case "CLASIFICACION_DOC": // Código de la dedicación del personal
+
+			case "CLASIFICACION_DOC": // Cï¿½digo de la dedicaciï¿½n del personal
 				$as_valor=$this->personal->codcladoc;
 				break;
-            
-			case "ESCALA_DOC": // Código del tipo de personal
+
+			case "ESCALA_DOC": // Cï¿½digo del tipo de personal
 				$as_valor=$this->personal->codescdoc;
-				break;	 
-				
+				break;
+
 			//---------------------------------------------------------------------------------------------------
-			case "NRO_LUNES": // Número de lunes que tiene el período			
+			case "NRO_LUNES": // Nï¿½mero de lunes que tiene el perï¿½odo
 				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
 				$ls_fechaI=$this->personal->fecingper;
@@ -2405,10 +2541,10 @@ class sigesp_sno_c_evaluador
 				{
 				 	$ld_fecdes=$ls_fechaI;
 				}
-				$as_valor=$this->io_sno->uf_nro_lunes($ld_fecdes,$ld_fechas); 
+				$as_valor=$this->io_sno->uf_nro_lunes($ld_fecdes,$ld_fechas);
 				break;
 
-			case "NRO_LUNESMES": // Número de lunes que tiene el mes
+			case "NRO_LUNESMES": // Nï¿½mero de lunes que tiene el mes
 				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
 				$ls_fechaI=$this->personal->fecingper;
@@ -2419,7 +2555,7 @@ class sigesp_sno_c_evaluador
 					$ls_valido2=$this->io_fecha->uf_comparar_fecha($ls_fecha,$ls_fechaI);
 					if ($ls_valido2==true)
 					{
-					  	$ld_desde=substr($ls_fechaI,0,8).substr($ls_fechaI,8,10);				
+					  	$ld_desde=substr($ls_fechaI,0,8).substr($ls_fechaI,8,10);
 					}
 					else
 					{
@@ -2430,10 +2566,10 @@ class sigesp_sno_c_evaluador
 				{
 					$ld_fecdes=$ls_fechaI;
 				    $ld_desde=substr($ld_fecdes,0,8).substr($ld_fecdes,8,10);
-					 
+
 				}
 				$ld_diahasta=strftime("%d",mktime(0,0,0,(substr($ld_fecdes,5,2)+1),0,substr($ld_fecdes,0,4)));
-				 
+
 				$ld_hasta=substr($ld_fecdes,0,8).$ld_diahasta;
 				$as_valor=$this->io_sno->uf_nro_lunes($ld_desde,$ld_hasta);
 				break;
@@ -2447,40 +2583,46 @@ class sigesp_sno_c_evaluador
 				$li_porc=$this->personal->porcajahoper/100;
 				$as_valor=$li_porc;
 				break;
-			//--------------------------------------------------------------------------------------------------	
+			//--------------------------------------------------------------------------------------------------
 			case "HIJO_ESPECIAL": // Cantidad de hijos especiales que tiene la persona
 				$ls_codper=$this->personal->codper;
 				$as_valor=$this->io_familiar->uf_select_hijos_especiales($ls_codper);
 				break;
-			//--------------------------------------------------------------------------------------------------	
+			//--------------------------------------------------------------------------------------------------
 			case "SALARIO_NORMAL": // Salario Normal de la persona
 				$as_valor=$this->personal->salarionormal;
 				break;
+
 			//--------------------------------------------------------------------------------------------------
-			case substr(trim($as_token),0,23)=="DIAS_TOTAL_ENCARGADURIA": // Número de días totales de la Encargaduría
-			     $ls_codenc=substr($as_token,24,10); // código de la encargaduría	
-				 $ls_codenc=str_pad($ls_codenc,10,"0","LEFT");
-				 $ls_codnomenc=substr($as_token,35,4); // código de nómina de la encargaduría	
-				 $ls_codnomenc=str_pad($ls_codnomenc,4,"0","LEFT");	
+			case "SALARIO_NORMAL_OBRERO": //Salario Normal de la persona obreros
+				$as_valor=$this->personal->salarionormalobrero;
+				break;
+
+			//--------------------------------------------------------------------------------------------------
+			case substr(trim($as_token),0,23)=="DIAS_TOTAL_ENCARGADURIA": // Nï¿½mero de dï¿½as totales de la Encargadurï¿½a
+			     $ls_codenc=substr($as_token,24,10); // cï¿½digo de la encargadurï¿½a
+				 $ls_codenc=str_pad($ls_codenc,10,"0",STR_PAD_LEFT);
+				 $ls_codnomenc=substr($as_token,35,4); // cï¿½digo de nï¿½mina de la encargadurï¿½a
+				 $ls_codnomenc=str_pad($ls_codnomenc,4,"0",STR_PAD_LEFT);
 				 $lb_valido=$this->io_encargaduria->uf_calcular_dias_encargaduria($ls_codenc,$ls_codnomenc,$ls_dias);
 				 if (!$lb_valido)
 				 {
-				 	$this->io_mensajes->message("ERROR->ENCARGADURIA ".$ls_codenc."  NO TIENE FECHA DE FINALIZACIÓN.");
+				 	$this->io_mensajes->message("ERROR->ENCARGADURIA ".$ls_codenc."  NO TIENE FECHA DE FINALIZACIï¿½N.");
 				 }
 				 $as_valor=$ls_dias;
 				break;
 			//--------------------------------------------------------------------------------------------------
-			case substr(trim($as_token),0,21)=="DIF_DIAS_ENCARGADURIA": // Diferencia de Días entre la fecha final
-			                                                             // de la Encargaduría y la fecha final del periodo 
-				 $ls_codenc=substr($as_token,22,10); // código de la encargaduría	
-				 $ls_codenc=str_pad($ls_codenc,10,"0","LEFT");
-				 $ls_codnomenc=substr($as_token,34,4); // código de nómina de la encargaduría	
-				 $ls_codnomenc=str_pad($ls_codnomenc,4,"0","LEFT");					
-				 $ld_fechas=$_SESSION["la_nomina"]["fechasper"];											 
+			case substr(trim($as_token),0,21)=="DIF_DIAS_ENCARGADURIA": // Diferencia de Dï¿½as entre la fecha final
+			                                                             // de la Encargadurï¿½a y la fecha final del periodo
+				 $ls_codenc=substr($as_token,22,10); // cï¿½digo de la encargadurï¿½a
+				 $ls_codenc=str_pad($ls_codenc,10,"0",STR_PAD_LEFT);
+				 $ls_codnomenc=substr($as_token,34,4); // cï¿½digo de nï¿½mina de la encargadurï¿½a
+				 $ls_codnomenc=str_pad($ls_codnomenc,4,"0",STR_PAD_LEFT);
+				 $ld_fechas=$_SESSION["la_nomina"]["fechasper"];
 				 $lb_valido=$this->io_encargaduria->uf_calcular_diferencia_dias_encargaduria($ls_codenc,$ls_codnomenc,$ld_fechas,$ls_dias);
 				 if (!$lb_valido)
 				 {
-				 	$this->io_mensajes->message("ERROR->ENCARGADURIA ".$ls_codenc."  NO TIENE FECHA DE FINALIZACIÓN.");
+				 	$this->io_mensajes->message("ERROR->ENCARGADURIA ".$ls_codenc."  NO TIENE FECHA DE FINALIZACIï¿½N.");
 				 }
 				 $as_valor=$ls_dias;
 				break;
@@ -2488,44 +2630,44 @@ class sigesp_sno_c_evaluador
 			case "FIN_ENCARGADO": // Indica si la persona finaliza el rol de encargado en el periodo actual de la nomina
 			    $ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
-				$ls_codper=$this->personal->codper; // código del personal
-				$as_valor=$this->io_encargaduria->uf_verficar_encargado($ls_codper,$ld_fecdes,$ld_fechas);				
-				break;	
+				$ls_codper=$this->personal->codper; // cï¿½digo del personal
+				$as_valor=$this->io_encargaduria->uf_verficar_encargado($ls_codper,$ld_fecdes,$ld_fechas);
+				break;
 			//--------------------------------------------------------------------------------------------------
-			case "FIN_ENCARGADURIA": // Indica si la persona finaliza una encargaduría en el periodo actual de la nomina
+			case "FIN_ENCARGADURIA": // Indica si la persona finaliza una encargadurï¿½a en el periodo actual de la nomina
 				$ld_fecdes=$_SESSION["la_nomina"]["fecdesper"];
 				$ld_fechas=$_SESSION["la_nomina"]["fechasper"];
-				$ls_codper=$this->personal->codper; // código del personal
+				$ls_codper=$this->personal->codper; // cï¿½digo del personal
 				$as_valor=$this->io_encargaduria->uf_verficar_encargaduria($ls_codper,$ld_fecdes,$ld_fechas);
-				break;	
+				break;
 			//--------------------------------------------------------------------------------------------------
-			case "VAC_PROX_PER": // Indica si la persona sale de vacaciones en el proximo periodo de la nómina
-				$ls_codper=$this->personal->codper;				
+			case "VAC_PROX_PER": // Indica si la persona sale de vacaciones en el proximo periodo de la nï¿½mina
+				$ls_codper=$this->personal->codper;
 				$li_numpernom=intval($_SESSION["la_nomina"]["numpernom"]);
 				$li_peractnom=intval($_SESSION["la_nomina"]["peractnom"]);
-				$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];				
+				$ls_peractnom=$_SESSION["la_nomina"]["peractnom"];
 				$ls_codnom=$_SESSION["la_nomina"]["codnom"];
-				$ls_tippernom=$_SESSION["la_nomina"]["tippernom"];							
-				$as_valor=0;//false;	
+				$ls_tippernom=$_SESSION["la_nomina"]["tippernom"];
+				$as_valor=0;//false;
 				if(($li_numpernom>$li_peractnom)&&($li_peractnom!=0))
 				{
 					$ls_perpronom=$li_peractnom+1;
-					$ls_perpronom=str_pad($ls_perpronom,3,"0","LEFT");	
+					$ls_perpronom=str_pad($ls_perpronom,3,"0",STR_PAD_LEFT);
 					$lb_valido=$this->io_nomina->uf_buscar_prox_periodo($ls_codnom,$ls_perpronom,$ld_fecdespro,$ld_fechaspro);
 					$ls_fecingper=$this->personal->fecingper;
 					$ls_diames=substr($ls_fecingper,4,9);
-					$ls_ano=substr($_SESSION["la_empresa"]["periodo"],0,4);					
-					$ls_fecha=$ls_ano.$ls_diames; 									
+					$ls_ano=substr($_SESSION["la_empresa"]["periodo"],0,4);
+					$ls_fecha=$ls_ano.$ls_diames;
 					$ls_fecha=$this->io_funciones->uf_convertirfecmostrar($ls_fecha);
-					
+
 					if (($this->io_fecha->uf_comparar_fecha($ld_fecdespro,$ls_fecha))&&
 					    ($this->io_fecha->uf_comparar_fecha($ls_fecha,$ld_fechaspro)))
 					{
-						$as_valor=1;  //true												
+						$as_valor=1;  //true
 					}
 					else
 					{
-						$as_valor=0;  //false					
+						$as_valor=0;  //false
 					}
 				}
 				elseif($li_numpernom==$li_peractnom)
@@ -2533,23 +2675,23 @@ class sigesp_sno_c_evaluador
 					$lb_valido=$this->io_nomina->uf_seleccionar_periodoadicional($ls_codnom,$ls_tippernom,$ls_codperi,$ld_fecdespro,$ld_fechaspro);
 					$ls_fecingper=$this->personal->fecingper;
 					$ls_diames=substr($ls_fecingper,4,9);
-					$ls_ano=substr($_SESSION["la_empresa"]["periodo"],0,4);					
-					$ls_fecha=$ls_ano.$ls_diames; 									
+					$ls_ano=substr($_SESSION["la_empresa"]["periodo"],0,4);
+					$ls_fecha=$ls_ano.$ls_diames;
 					$ls_fecha=$this->io_funciones->uf_convertirfecmostrar($ls_fecha);
-										
+
 					if (($this->io_fecha->uf_comparar_fecha($ld_fecdespro,$ls_fecha))&&
 					    ($this->io_fecha->uf_comparar_fecha($ls_fecha,$ld_fechaspro)))
-					{	
-						$as_valor=1; // true												
+					{
+						$as_valor=1; // true
 					}
 					else
 					{
 						$as_valor=0;  // false
-					}							
-				}							
-				break;			
+					}
+				}
+				break;
 			//------------------------------------------------------------------------------------------------------------
-				case "DIAS_LABORADO_NOM": // Número de días laborados por la persona desde que seincluyo en la nomina
+				case "DIAS_LABORADO_NOM": // Nï¿½mero de dï¿½as laborados por la persona desde que seincluyo en la nomina
 				$ld_fechatope=$this->io_funciones->uf_convertirdatetobd($this->io_sno->uf_select_config("SNO","ANTIGUEDAD","FECHA_TOPE","1900-01-01","C"));
 				$ld_fecingnom=$this->personal->fecingnom;
 				$ld_diades=substr($ld_fecingnom,8,2);
@@ -2572,92 +2714,92 @@ class sigesp_sno_c_evaluador
 				$as_valor=round($as_valor);
 				break;
 			//--------------------------------------------------------------------------------------------------
-			case "MESES_LABORADO_NOM": // Número de meses laborados por la persona desde que se incluyo en la nomina
+			case "MESES_LABORADO_NOM": // Nï¿½mero de meses laborados por la persona desde que se incluyo en la nomina
 				$ld_fecingnom=$this->personal->fecingnom;
 				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
-				$ld_diahas = substr($ld_fechasper, 8, 2);  
-				$ld_meshas = substr($ld_fechasper, 5, 2);  
-				$ld_anohas = substr($ld_fechasper, 0, 4); 
-				$ld_diades = substr($ld_fecingnom, 8, 2);  
-				$ld_mesdes = substr($ld_fecingnom, 5, 2);  
-				$ld_anodes = substr($ld_fecingnom, 0, 4);  
-				$b = 0;  
-				$mes = $ld_mesdes-1; 				  
+				$ld_diahas = substr($ld_fechasper, 8, 2);
+				$ld_meshas = substr($ld_fechasper, 5, 2);
+				$ld_anohas = substr($ld_fechasper, 0, 4);
+				$ld_diades = substr($ld_fecingnom, 8, 2);
+				$ld_mesdes = substr($ld_fecingnom, 5, 2);
+				$ld_anodes = substr($ld_fecingnom, 0, 4);
+				$b = 0;
+				$mes = $ld_mesdes-1;
 				if($mes==2)
-				{  
+				{
 					if(($ld_anohas%4==0 && $ld_anohas%100!=0) || $ld_anohas%400==0)
-					{  
-						$b = 29;  
+					{
+						$b = 29;
 					}
 					else
-					{  
-						$b = 28;  
-					}  
-				}  
+					{
+						$b = 28;
+					}
+				}
 				else if($mes<=7)
-				{  
+				{
 					if($mes==0)
-					{  
-						$b = 31;  
-					}  
+					{
+						$b = 31;
+					}
 					else if($mes%2==0)
-					{  
-						$b = 30;  
-					}  
+					{
+						$b = 30;
+					}
 				   else
-				   {  
-						$b = 31;  
-				   }  
-				}  
+				   {
+						$b = 31;
+				   }
+				}
 				else if($mes>7)
-				{  
+				{
 				   if($mes%2==0)
-				   {  
-						$b = 31;  
-				   }  
-				   else
-				   {  
-						$b = 30;  
-				   }  
-				}  
-				if($ld_mesdes <= $ld_meshas)
-				{  
-				   $anios = $ld_anohas - $ld_anodes;  
-				   if($ld_diades <= $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes;  
-						$dies = $ld_diahas - $ld_diades;  
+				   {
+						$b = 31;
 				   }
 				   else
-				   {  
+				   {
+						$b = 30;
+				   }
+				}
+				if($ld_mesdes <= $ld_meshas)
+				{
+				   $anios = $ld_anohas - $ld_anodes;
+				   if($ld_diades <= $ld_diahas)
+				   {
+						$meses = $ld_meshas - $ld_mesdes;
+						$dies = $ld_diahas - $ld_diades;
+				   }
+				   else
+				   {
 						if($ld_meshas == $ld_mesdes)
-						{  
-							$anios = $anios - 1;  
-						}  
-						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;  
-						$dies = $b-($ld_diades-$ld_diahas);  
-				   }  
+						{
+							$anios = $anios - 1;
+						}
+						$meses = ($ld_meshas - $ld_mesdes - 1 + 12) % 12;
+						$dies = $b-($ld_diades-$ld_diahas);
+				   }
 				}
 				else
-				{  
-				   $anios = $ld_anohas - $ld_anodes - 1;  
+				{
+				   $anios = $ld_anohas - $ld_anodes - 1;
 				   if($ld_diades > $ld_diahas)
-				   {  
-						$meses = $ld_meshas - $ld_mesdes -1 +12;  
-						$dies = $b - ($ld_diades-$ld_diahas);  
+				   {
+						$meses = $ld_meshas - $ld_mesdes -1 +12;
+						$dies = $b - ($ld_diades-$ld_diahas);
 				   }
 				   else
-				   {  
-						$meses = $ld_meshas - $ld_mesdes + 12;  
-						$dies = $ld_diahas - $ld_diades;  
-				   }  
+				   {
+						$meses = $ld_meshas - $ld_mesdes + 12;
+						$dies = $ld_diahas - $ld_diades;
+				   }
 				}
 				 $total_mes=($anios*12)+$meses+($dies/30);
 				 $as_valor=round($total_mes,2);
 				break;
 			///-------------------------------------------------------------------------------------------------------
 			case "ANT_NOMINA": // antiguedad en la NOMINA
-			    $ld_fecingnom=$this->personal->fecingnom;// fecha de ingreso en la institucióm
+			    $ld_fecingnom=$this->personal->fecingnom;// fecha de ingreso en la instituciï¿½m
 				$ld_fecingnom=substr($ld_fecingnom,0,4);
 				$ld_fechasper=substr($_SESSION["la_nomina"]["fechasper"],0,4);
 				$as_valor=$ld_fechasper-$ld_fecingnom;
@@ -2678,18 +2820,18 @@ class sigesp_sno_c_evaluador
 					}
 				}
 				break;
-			
+
 			//---------------------------------------------------------------------------------------------------------
 				case "SOBREVIVIENTE": // Indica el tipo de pension del personal
 				  $ls_tipjub=$this->personal->tipjub;
 				  if($ls_tipjub=="1")
 				  {
-					$as_valor=1;	
+					$as_valor=1;
 				  }
                   else
 				  {
-					$as_valor=0;	
-				  }				  
+					$as_valor=0;
+				  }
 				break;
 			//--------------------------------------------------------------------------------------------------
 			case "PORCENTAJE_BENEFICIARIO": // Porcentaje del Beneficiario
@@ -2698,20 +2840,25 @@ class sigesp_sno_c_evaluador
 					$as_valor=number_format($as_valor,2,".","");
 				break;
 			//--------------------------------------------------------------------------------------------------
-			case substr(trim($as_token),0,10)=="MONTO_CONC": // Monto del Concepto en un periodo			
-			     $ls_codconc=substr($as_token,11,10); // código del concepto
-				 $ls_codconc=str_pad($ls_codconc,10,"0","LEFT");
-				 $ls_codperi=substr($as_token,23,3); // código del periodo
-				 $ls_codperi=str_pad($ls_codperi,3,"0","LEFT");				 
+			case "PORCENTAJE_JUDICIAL_ALIMENTARIA": // Porcentaje DE MEDIDA JUDICIAL
+			        $ls_codper=$this->personal->codper;
+					$as_valor=$this->io_beneficiario->uf_select_porcentaje_judicial_alimentaria($ls_codper);
+					$as_valor=number_format($as_valor,2,".","");
+				break;
+			//--------------------------------------------------------------------------------------------------
+			case substr(trim($as_token),0,10)=="MONTO_CONC": // Monto del Concepto en un periodo
+			     $ls_codconc=substr($as_token,11,10); // cï¿½digo del concepto
+				 $ls_codconc=str_pad($ls_codconc,10,"0",STR_PAD_LEFT);
+				 $ls_codperi=substr($as_token,23,3); // cï¿½digo del periodo
+				 $ls_codperi=str_pad($ls_codperi,3,"0",STR_PAD_LEFT);
 				 $ls_codper=$this->personal->codper;
-				 $li_anocurnom=intval($_SESSION["la_nomina"]["anocurnom"]);				 								
-				 $as_valor=$this->io_concepto->uf_buscar_valor_periodo($ls_codconc,$ls_codperi,$ls_codper,$li_anocurnom);	
-					 							
+				 $li_anocurnom=intval($_SESSION["la_nomina"]["anocurnom"]);
+				 $as_valor=$this->io_concepto->uf_buscar_valor_periodo($ls_codconc,$ls_codperi,$ls_codper,$li_anocurnom);
 				 break;
 			//--------------------------------------------------------------------------------------------------
 			case substr($as_token,0,14)=="ACU_MONTO_CONC": // Monto Acumulado del Concepto en un numero de periodos
-				$ls_codconc=substr($as_token,15,10); // código del concepto
-				$ls_codconc=str_pad($ls_codconc,10,"0","LEFT");
+				$ls_codconc=substr($as_token,15,10); // cï¿½digo del concepto
+				$ls_codconc=str_pad($ls_codconc,10,"0",STR_PAD_LEFT);
 				$li_numper=substr($as_token,26,2);
 				$li_numper=intval($li_numper);
 				$ls_codper=$this->personal->codper;
@@ -2722,26 +2869,30 @@ class sigesp_sno_c_evaluador
 				if ((intval($li_peractnom)-$li_numper)>0)
 				{
 					$ls_codperides=intval($li_peractnom)-$li_numper;
-					$ls_codperides=str_pad($ls_codperides,3,"0","LEFT");
+					$ls_codperides=str_pad($ls_codperides,3,"0",STR_PAD_LEFT);
 					$ls_codperihas=intval($li_peractnom)-1;
-					$ls_codperihas=str_pad($ls_codperihas,3,"0","LEFT");
+					$ls_codperihas=str_pad($ls_codperihas,3,"0",STR_PAD_LEFT);
 					$ls_criterio=" AND sno_hsalida.anocur='".$li_anocurnom."' ".
 								 " AND sno_hsalida.codperi BETWEEN '".$ls_codperides."' AND '".$ls_codperihas."' ";
-					
+
 				}
 				else
 				{
 					$ls_codperihas1=intval($li_peractnom)-1;
-					$ls_codperihas1=str_pad($ls_codperihas1,3,"0","LEFT");
+					$ls_codperihas1=str_pad($ls_codperihas1,3,"0",STR_PAD_LEFT);
 					$li_codperides1=$li_numpernom - ($li_numper-intval($li_peractnom));
-					$li_codperides1=str_pad($li_codperides1,3,"0","LEFT");
-					$li_codperides2=str_pad($li_numpernom,3,"0","LEFT");
+					$li_codperides1=str_pad($li_codperides1,3,"0",STR_PAD_LEFT);
+					$li_codperides2=str_pad($li_numpernom,3,"0",STR_PAD_LEFT);
 					$ls_criterio=" AND ((sno_hsalida.anocur='".$li_anocurnom."' ".
 								 " AND  sno_hsalida.codperi BETWEEN '001' AND '".$ls_codperihas1."') ".
 								 "	OR (sno_hsalida.anocur='".$li_anoantnom."' ".
 								 " AND  sno_hsalida.codperi BETWEEN '".$li_codperides1."' AND '".$li_codperides2."'))";
-				}					
+				}
 				$lb_valido=$this->io_concepto->uf_buscar_valor_acumulado_periodo($ls_codper,$ls_codconc,$ls_criterio,$ld_monto);
+				if($ld_monto===0)//Modificado por Carlos Zambrano
+				{
+					$lb_valido=true;
+				}//Modificado por Carlos Zambrano
 				if($lb_valido)
 				{
 					$as_valor=$ld_monto;
@@ -2753,11 +2904,11 @@ class sigesp_sno_c_evaluador
 				$as_valor=$this->io_familiar->uf_select_hijos_bono_juguetes($ls_codper);
 				break;
 
-			case "SUELDO_DOCENTE": // Monto del sueldo de la Clasificación docente que tiene
+			case "SUELDO_DOCENTE": // Monto del sueldo de la Clasificaciï¿½n docente que tiene
 				$ls_codper=$this->personal->codper;
 				$ai_sueldo=0;
 				$as_valor=0;
-				$lb_valido=$this->uf_obtener_sueldo_docente($ls_codper,&$ai_sueldo);
+				$lb_valido=$this->uf_obtener_sueldo_docente($ls_codper,$ai_sueldo);
 				if($lb_valido)
 				{
 					$as_valor=$ai_sueldo;
@@ -2769,7 +2920,7 @@ class sigesp_sno_c_evaluador
 				$ai_monto=0;
 				$as_valor=0;
 				$tipo_prima="0";
-				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,&$ai_monto);
+				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,$ai_monto);
 				if($lb_valido)
 				{
 					$as_valor=$ai_monto;
@@ -2781,62 +2932,336 @@ class sigesp_sno_c_evaluador
 				$ai_monto=0;
 				$as_valor=0;
 				$tipo_prima="1";
-				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,&$ai_monto);
+				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,$ai_monto);
 				if($lb_valido)
 				{
 					$as_valor=$ai_monto;
 				}
 				break;
-				
+
 			case "PRIMA_DOC_HOGAR": // Monto de la prima docente de Hogar
 				$ls_codper=$this->personal->codper;
 				$ai_monto=0;
 				$as_valor=0;
 				$tipo_prima="2";
-				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,&$ai_monto);
+				$lb_valido=$this->uf_obtener_prima_docente($ls_codper,$tipo_prima,$ai_monto);
 				if($lb_valido)
 				{
 					$as_valor=$ai_monto;
 				}
 				break;
-				
+
 			case "CATEGORIA_MILITAR": // Monto de la prima docente de Hogar
 				$ls_codper=$this->personal->codper;
 				$as_valor="";
 				$as_categoria='';
-				$lb_valido=$this->uf_obtener_categoria_militar($ls_codper,&$as_categoria);
+				$lb_valido=$this->uf_obtener_categoria_militar($ls_codper,$as_categoria);
 				if($lb_valido)
 				{
 					$as_valor="".$as_categoria."";
 				}
 				break;
-				
+
 			case "ES_PERSONAL": // DEVUELVE TRUE SI LA PERSONA ES PERSONAL
 				$ls_codper=$this->personal->codper;
 				$ls_cedper=$this->personal->cedper;
 				$as_valor=0;
 				$ab_pensionado=0;
-				$lb_valido=$this->uf_verificar_personal($ls_codper,$ls_cedper,&$ab_pensionado);
+				$lb_valido=$this->uf_verificar_personal($ls_codper,$ls_cedper,$ab_pensionado);
 				if($lb_valido)
 				{
 					$as_valor=$ab_pensionado;
 				}
 				break;
-				
+
 			case "ES_BENEFICIARIO": // DEVUELVE TRUE SI LA PERSONA ES BENEFICIARIO
 				$ls_codper=$this->personal->codper;
 				$ls_cedper=$this->personal->cedper;
 				$as_valor=0;
 				$ab_pensionado=0;
-				$lb_valido=$this->uf_verificar_beneficiario($ls_codper,$ls_cedper,&$ab_pensionado);
+				$lb_valido=$this->uf_verificar_beneficiario($ls_codper,$ls_cedper,$ab_pensionado);
 				if($lb_valido)
 				{
 					$as_valor=$ab_pensionado;
 				}
 				break;
-			//--------------------------------------------------------------------------------------------------
+
+			case "ANTIGUEDAD_COMPLEMENTARIA": // Monto total de la Antiguedad Complementaria para cada persona
+				$as_valor=0;
+				$lb_valido = true;
+				$as_valor=$this->uf_antiguedad_complementaria($this->personal->codper);
+				break;
+
+			case "NETO_PRESTACION_ANTIGUEDAD": // Monto Neto de la prestaciï¿½n antiguedad Acumulada
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_prestacionantiguedad($this->personal->codper,"0",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "NETO_INTERESES_PRESTACION": // Monto Neto de los intereses de prestaciï¿½n antiguedad Acumulada
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_interesesprestacion($this->personal->codper,"0",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "PRESTACION_ANTIGUEDAD": // Monto Acumulado de la prestaciï¿½n antiguedad
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_prestacionantiguedad($this->personal->codper,"1",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "INTERESES_PRESTACION": // Monto Acumulado de los intereses de prestaciï¿½n antiguedad
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_interesesprestacion($this->personal->codper,"1",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "ANTICIPOS_PRESTACION": // Monto de los Anticipos de la prestaciï¿½n antiguedad
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_prestacionantiguedad($this->personal->codper,"2",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "ANTICIPOS_INTERESES": // Monto de los Anticipos de los intereses
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->uf_obtener_interesesprestacion($this->personal->codper,"2",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "FERIADO_NACIONAL": // Numero de Dï¿½as Feriados nacionales
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$as_valor=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fechasper,$_SESSION["la_nomina"]["codnom"],$as_codper,1);
+				$as_valor=round($as_valor,0);
+				break;
+
+			case "FERIADO_REGIONAL": // Numero de Dï¿½as Feriados regionales
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$as_valor=$this->io_feriado->uf_select_feriados($ld_fecdesper,$ld_fechasper,$_SESSION["la_nomina"]["codnom"],$as_codper,2);
+				$as_valor=round($as_valor,0);
+				break;
+
+			case "PERMISO_RESTUDIO": // Numero de Dï¿½as de permiso remunerado por estudio.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',1);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_ESTUDIO": // Numero de Dï¿½as de permiso no remunerado por estudio.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',1);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_RMEDICO": // Numero de Dï¿½as de permiso remunerado por medico.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',2);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_MEDICO": // Numero de Dï¿½as de permiso no remunerado por medico.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',2);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_RTRAMITES": // Numero de Dï¿½as de permiso remunerado por tramites.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',3);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_TRAMITES": // Numero de Dï¿½as de permiso no remunerado por tramites.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',3);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_ROTROS": // Numero de Dï¿½as de permiso remunerado por otros.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',4);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_OTROS": // Numero de Dï¿½as de permiso no remunerado por otros.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',4);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_RREPOSO": // Numero de Dï¿½as de permiso remunerado por reposo.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',5);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_REPOSO": // Numero de Dï¿½as de permiso no remunerado por reposo.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',5);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_RREPOSOLABORAL": // Numero de Dï¿½as de permiso remunerado por reposo laboral.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'1',6);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "PERMISO_REPOSOLABORAL": // Numero de Dï¿½as de permiso no remunerado por reposo laboral.
+				$ld_fecdesper=$_SESSION["la_nomina"]["fecdesper"];
+				$ld_fechasper=$_SESSION["la_nomina"]["fechasper"];
+				$li_diaper=$this->io_permiso->uf_select_diaspermisos($as_codper,$ld_fecdesper,$ld_fechasper,'0',6);
+				$as_valor=round($li_diaper);
+				break;
+
+			case "HT_HORASLABORADAS": // Numero de Horas laboradas registradas en la hoja de tiempo
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper," SUM(sno_hojatiempo.horlab) AS total ","",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "HT_HORASEXTRASLABORADAS": // Numero de Horas Extras laboradas registradas en la hoja de tiempo
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper," SUM(horextlab) AS total ","",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "HT_DIASLABORADOS": // Numero de Dï¿½as laborados registrados en la hoja de tiempo
+				$as_valor=0;
+				$li_monto=0;
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper," COUNT(fechojtie) AS total ","",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "HT_SUBTERRANEO": // Numero de Dï¿½as en subterraneo
+				$as_valor=0;
+				$li_monto=0;
+				$ls_cadena="";
+				switch($_SESSION["ls_gestor"])
+				{
+					case "MYSQLT":
+						$ls_cadena=" SUM(ROUND(CAST(trasub AS NUMERIC),0)) AS total ";
+						break;
+					case "POSTGRES":
+						$ls_cadena=" SUM(ROUND(CAST(trasub AS NUMERIC),0)) AS total ";
+						break;
+					case "INFORMIX":
+						$ls_cadena=" SUM(ROUND(CAST(trasub AS FLOAT),0)) AS total ";
+						break;
+				}
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper,$ls_cadena,"",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "HT_REPOSOCOMIDA": // Numero de Dï¿½as de reposo comida
+				$as_valor=0;
+				$li_monto=0;
+				$ls_cadena="";
+				switch($_SESSION["ls_gestor"])
+				{
+					case "MYSQLT":
+						$ls_cadena=" SUM(ROUND(CAST(repcom AS NUMERIC),0)) AS total ";
+						break;
+					case "POSTGRES":
+						$ls_cadena=" SUM(ROUND(CAST(repcom AS NUMERIC),0)) AS total ";
+						break;
+					case "INFORMIX":
+						$ls_cadena=" SUM(ROUND(CAST(repcom AS FLOAT),0)) AS total ";
+						break;
+				}
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper,$ls_cadena,"",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case "HT_ESCALERA": // Numero de Dï¿½as de escalera
+				$as_valor=0;
+				$li_monto=0;
+				$ls_cadena="";
+				switch($_SESSION["ls_gestor"])
+				{
+					case "MYSQLT":
+						$ls_cadena=" SUM(ROUND(CAST(traesc AS NUMERIC),0)) AS total ";
+						break;
+					case "POSTGRES":
+						$ls_cadena=" SUM(ROUND(CAST(traesc AS NUMERIC),0)) AS total ";
+						break;
+					case "INFORMIX":
+						$ls_cadena=" SUM(ROUND(CAST(traesc AS FLOAT),0)) AS total ";
+						break;
+				}
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper,$ls_cadena,"",$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
+			case substr(trim($as_token),0,8)=="HC_TURNO": // Turno de hoja de tiempo
+				$ls_codhor=substr($as_token,10,3); // cï¿½digo del horario
+				$ls_codhor=str_pad($ls_codhor,3,"0",STR_PAD_LEFT);
+				$ls_criterio=" AND sno_hojatiempo.codhor = '".$ls_codhor."'";
+				$lb_valido=$this->io_hojatiempo->uf_select_hojatiempo($as_codper," COUNT(sno_hojatiempo.codhor) AS total ",$ls_criterio,$li_monto);
+				if($lb_valido)
+				{
+					$as_valor=$li_monto;
+				}
+				break;
+
 			default:
-				$this->io_mensajes->message("ERROR->PERSONAL PS[".$as_token."] Nó Válido.");
+				$this->io_mensajes->message("ERROR->PERSONAL PS[".$as_token."] Nï¿½ Vï¿½lido.");
 				$lb_valido=false;
 				break;
 
@@ -2847,17 +3272,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_valor_tabla($as_codper,$as_token,&$ai_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_valor_tabla
-		//		   Access: private 
-		//	    Arguments: as_codper // código de personal
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_token // valor que va a ser reemplazado
 		//				   ai_valor // valor del token
-		//	      Returns: lb_valido True si se sustituye correctamente el valor ó False si hubo error 
-		//	  Description: función que dado un token se sutituye por su valor respectivo de la tabla de sueldo
+		//	      Returns: lb_valido True si se sustituye correctamente el valor ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado un token se sutituye por su valor respectivo de la tabla de sueldo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ai_valor=0;
 		$lb_valido=true;
@@ -2876,7 +3301,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("ERROR->TABLA SUELDO TB[".$as_token."] Nó Válido.");
+			$this->io_mensajes->message("ERROR->TABLA SUELDO TB[".$as_token."] Nï¿½ Vï¿½lido.");
 		}
 		else
 		{
@@ -2884,7 +3309,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_valor=$row["monsalgra"];
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_valor_tabla
@@ -2892,17 +3317,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_valor_concepto($as_codper,$as_token,&$ai_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_valor_concepto
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_token // valor que va a ser reemplazado
 		//				   ai_valor // valor del token
-		//	      Returns: lb_valido True si se sustituye correctamente el valor ó False si hubo error 
-		//	  Description: función que dado un token se sutituye por su valor respectivo del concepto
+		//	      Returns: lb_valido True si se sustituye correctamente el valor ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado un token se sutituye por su valor respectivo del concepto
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_aplicar=true;
 		$ai_valor=0;
@@ -2918,16 +3343,16 @@ class sigesp_sno_c_evaluador
 				{
 					$lb_aplicar=$la_concepto["aplcon"];
 				}
-		
+
 				if($lb_aplicar)
 				{
 					$as_formula=$la_concepto["forcon"];
 					$lb_valido=$this->uf_evaluar($as_codper,$as_formula,$ai_valor);
 				}
-			}		
+			}
 			else
 			{
-				$this->io_mensajes->message("ERROR->CONCEPTO CN[".$as_token."] Nó Válido. Utilizado en el Concepto ".$ls_codconc);
+				$this->io_mensajes->message("ERROR->CONCEPTO CN[".$as_token."] Nï¿½ Vï¿½lido. Utilizado en el Concepto ".$ls_codconc);
 			}
 		}
 		else
@@ -2941,17 +3366,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_valor_constante($as_codper,$as_token,&$ai_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_valor_constante
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_token // valor que va a ser reemplazado
 		//				   ai_valor // valor del token
-		//	      Returns: lb_valido True si se sustituye correctamente el valor ó False si hubo error 
-		//	  Description: función que dado un token se sutituye por su valor respectivo de la constante
+		//	      Returns: lb_valido True si se sustituye correctamente el valor ï¿½ False si hubo error
+		//	  Description: funciï¿½n que dado un token se sutituye por su valor respectivo de la constante
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$ai_valor=0;
 		$lb_valido=true;
@@ -2959,7 +3384,7 @@ class sigesp_sno_c_evaluador
 		$lb_valido=$this->io_constante->uf_obtener_constantepersonal($as_codper,$as_token,$ai_valor);
 		if($lb_valido===false)
 		{
-			$this->io_mensajes->message("ERROR->CONSTANTE CT[".$as_token."] Nó Válido. Utilizado en el Concepto ".$ls_codconc);
+			$this->io_mensajes->message("ERROR->CONSTANTE CT[".$as_token."] Nï¿½ Vï¿½lido. Utilizado en el Concepto ".$ls_codconc);
 		}
 		return $lb_valido;
 	}// end function uf_valor_constante
@@ -2967,17 +3392,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_vtc($as_codper,$as_codconc,&$ai_vtc)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_vtc
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//				   as_codconc // código del concepto
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_codconc // cï¿½digo del concepto
 		//				   ai_vtc // Total a cobrar
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y concepto calcula todas las asignaciones menos las deducciones
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y concepto calcula todas las asignaciones menos las deducciones
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_vtc=0;
@@ -2993,7 +3418,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_vtc ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_vtc ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3001,7 +3426,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_vtc=$row["valsal"];
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_vtc
@@ -3009,19 +3434,19 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_vca($as_codper,$as_codconc,$as_anopre,$as_perpre,&$ai_vca)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_vca
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//				   as_codconc // código del concepto
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_codconc // cï¿½digo del concepto
 		//				   as_anopre // Ano previo
 		//				   as_perpre // perido previo
 		//				   ai_vca // Toatl del concepto
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y concepto calcula el valor del concepto en un período previo
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y concepto calcula el valor del concepto en un perï¿½odo previo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_vtc=0;
@@ -3038,7 +3463,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_vca ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_vca ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3046,7 +3471,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_vtc=$row["valsal"];
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_vca
@@ -3054,19 +3479,19 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_primas_ante($as_codper,$as_mes,$as_anopre,&$ai_prima)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_primas_ante
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//				   as_codconc // código del concepto
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_codconc // cï¿½digo del concepto
 		//				   as_anopre // Ano previo
 		//				   as_perpre // perido previo
 		//				   ai_vca // Toatl del concepto
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y busca el sueldo integral de vacaciones dado un mes y año
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y busca el sueldo integral de vacaciones dado un mes y aï¿½o
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/09/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/09/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_prima=0;
@@ -3076,7 +3501,7 @@ class sigesp_sno_c_evaluador
 				"   AND sno_hsalida.codnom='".$this->ls_codnom."'".
 				"   AND sno_hsalida.anocur='".$as_anopre."'".
 				"   AND sno_hsalida.codper='".$as_codper."'".
-				"   AND substr(sno_hperiodo.fecdesper,6,2)='".$as_mes."'".
+				"   AND substr(cast(sno_hperiodo.fecdesper as char(10)),6,2)='".$as_mes."'".
 				"   AND (sno_hsalida.tipsal='A' OR sno_hsalida.tipsal='D' OR sno_hsalida.tipsal='P1') ".
 				"   AND sno_hsalida.codemp = sno_hperiodo.codemp ".
 				"   AND sno_hsalida.codnom = sno_hperiodo.codnom ".
@@ -3086,7 +3511,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_primas_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_primas_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3094,7 +3519,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_prima=$row["valsal"];
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_primas_ante
@@ -3102,18 +3527,18 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_sueldo_ante($as_codper,$as_mes,$as_anocur,&$ai_sueldo)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_sueldo_ante
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_mes // Mes del que se quiere calcular el sueldo
 		//				   as_anopre // Ano previo
 		//				   ai_sueldo // Sueldo Anterior
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y busca el sueldo Anterior de acuerdo al mes
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y busca el sueldo Anterior de acuerdo al mes
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 23/11/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 23/11/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_sueldo=0;
@@ -3125,7 +3550,7 @@ class sigesp_sno_c_evaluador
 				"   AND sno_hsalida.anocur='".$as_anocur."'".
 				"   AND sno_hsalida.codper='".$as_codper."'".
 				"   AND sno_hsalida.codconc='".$ls_concepto."'".
-				"   AND substr(sno_hperiodo.fecdesper,6,2)='".$as_mes."'".
+				"   AND substr(cast(sno_hperiodo.fecdesper as char(10)),6,2)='".$as_mes."'".
 				"   AND sno_hsalida.codemp = sno_hperiodo.codemp ".
 				"   AND sno_hsalida.codnom = sno_hperiodo.codnom ".
 				"   AND sno_hsalida.anocur = sno_hperiodo.anocur ".
@@ -3134,7 +3559,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_sueldo_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldo_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3146,7 +3571,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_sueldo=0;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_sueldo_ante
@@ -3154,18 +3579,18 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_concepto_ante($as_codper,$as_codconc,$as_criterio,&$ab_cobrado)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_concepto_ante
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//				   as_codconc // código del concepto
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_codconc // cï¿½digo del concepto
 		//				   as_criterio // Criterio de Busqueda
 		//				   ab_cobrado // si el concepto es distinto de cero
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y el concepto verifica si dicho concepto fue pagado
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y el concepto verifica si dicho concepto fue pagado
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 03/08/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 03/08/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ab_cobrado=false;
@@ -3180,7 +3605,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_concepto_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_concepto_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3192,7 +3617,7 @@ class sigesp_sno_c_evaluador
 					$ab_cobrado=true;
 				}
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_concepto_ante
@@ -3200,18 +3625,18 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_dias_tabla_vacacion($as_codtabvac,$ai_anoant,$ai_anopre,&$ai_diabonvac)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_load_tablavacacion
 		//		   Access: public (sigesp_sno_c_vacacion)
-		//	    Arguments: as_codtabvac  // código de la tabla de vacacion
-		//	    		   ai_anoant  // Año de antiguedad
-		//	    		   ai_anopre  // Años de servicio previos
-		//	    		   ai_diabonvac  // Días de Bono vacacional
-		//	      Returns: lb_valido True si existe ó False si no existe
-		//	  Description: Funcion que verifica si la tabla de vacacion está registrada
+		//	    Arguments: as_codtabvac  // cï¿½digo de la tabla de vacacion
+		//	    		   ai_anoant  // Aï¿½o de antiguedad
+		//	    		   ai_anopre  // Aï¿½os de servicio previos
+		//	    		   ai_diabonvac  // Dï¿½as de Bono vacacional
+		//	      Returns: lb_valido True si existe ï¿½ False si no existe
+		//	  Description: Funcion que verifica si la tabla de vacacion estï¿½ registrada
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_diabonvac=0;
@@ -3222,7 +3647,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_dias_tabla_vacacion ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_dias_tabla_vacacion ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3253,7 +3678,7 @@ class sigesp_sno_c_evaluador
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data===false)
 			{
-				$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_dias_tabla_vacacion ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_dias_tabla_vacacion ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
@@ -3271,15 +3696,15 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_sueldominimo(&$ai_sueldominimo)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_sueldominimo
 		//		   Access: private
-		//	    Arguments: ai_sueldominimo // Sueldo Mínimo
-		//	      Returns: lb_valido True si se obtuvo el Sueldo mínimo ó False si no se obtuvo
-		//	  Description: función que busca el sueldo mínimo vigente
+		//	    Arguments: ai_sueldominimo // Sueldo Mï¿½nimo
+		//	      Returns: lb_valido True si se obtuvo el Sueldo mï¿½nimo ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que busca el sueldo mï¿½nimo vigente
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 14/04/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 14/04/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_sueldominimo=0;
@@ -3292,7 +3717,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_sueldominimo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldominimo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3300,7 +3725,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_sueldominimo=number_format($row["monsuemin"],2,".","");
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_concepto_ante
@@ -3308,16 +3733,16 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_unidadtributaria($as_anio,&$ai_unidadtributaria)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_unidadtributaria
 		//		   Access: private
-		//	    Arguments: as_anio // Año
+		//	    Arguments: as_anio // Aï¿½o
 		//	   			   ai_unidadtributaria // Valor de la unidad tributaria
-		//	      Returns: lb_valido True si se obtuvo la Unidad Tributaria ó False si no se obtuvo
-		//	  Description: función que busca la unidad tributaria del año
+		//	      Returns: lb_valido True si se obtuvo la Unidad Tributaria ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que busca la unidad tributaria del aï¿½o
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 14/04/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 14/04/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_unidadtributaria=0;
@@ -3328,7 +3753,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_unidadtributaria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_unidadtributaria ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3336,7 +3761,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_unidadtributaria=number_format($row["valunitri"],3,".","");
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_unidadtributaria
@@ -3348,14 +3773,14 @@ class sigesp_sno_c_evaluador
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_montoanterior
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_tipsal // Tipo de salida
 		//				   ai_meses // Meses anteriores
 		//				   ai_monto // Monto
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y obtiene la suma de los concepto del tipo de salida
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y obtiene la suma de los concepto del tipo de salida
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 19/06/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 19/06/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_monto=0;
@@ -3369,10 +3794,10 @@ class sigesp_sno_c_evaluador
 		$li_mesdes=str_pad($li_mesdes,2,"0",0);
 		switch($as_tipsal)
 		{
-			case "AS": // Asignación
+			case "AS": // Asignaciï¿½n
 				$as_tipsal=" (sno_hsalida.tipsal='A' OR sno_hsalida.tipsal='V1' OR sno_hsalida.tipsal='W1') ";
 				break;
-			case "DE": // Deducción
+			case "DE": // Deducciï¿½n
 				$as_tipsal=" (sno_hsalida.tipsal='D' OR sno_hsalida.tipsal='V2' OR sno_hsalida.tipsal='W2') ";
 				break;
 			case "AP": // Aportes
@@ -3385,8 +3810,8 @@ class sigesp_sno_c_evaluador
 				"   AND sno_hsalida.codnom='".$this->ls_codnom."' ".
 				"   AND sno_hsalida.anocur='".$ls_anocur."' ".
 				"   AND sno_hsalida.codper='".$as_codper."' ".
-				"   AND SUBSTR(sno_hperiodo.fecdesper,6,2) >= '".$li_mesdes."' ".
-				"   AND SUBSTR(sno_hperiodo.fecdesper,6,2) < '".$li_mesact."' ".
+				"   AND SUBSTR(cast(sno_hperiodo.fecdesper as char(10)),6,2) >= '".$li_mesdes."' ".
+				"   AND SUBSTR(cast(sno_hperiodo.fecdesper as char(10)),6,2) < '".$li_mesact."' ".
 				"   AND ".$as_tipsal.
 				"   AND sno_hsalida.codemp = sno_hperiodo.codemp ".
 				"   AND sno_hsalida.codnom = sno_hperiodo.codnom ".
@@ -3396,7 +3821,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_vca ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_montoanterior ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3404,7 +3829,7 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_monto=abs($row["valsal"]);
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_montoanterior
@@ -3412,17 +3837,17 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_montoarc_mesactual($as_codper,&$ai_totalarcant)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_montoarc_mesactual
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   ai_totalarcant // Monto ARC anterior
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene la suma de todos los 
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene la suma de todos los
 		//				   conceptos que pertenecen al arc del periodo inmediato anterior
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/08/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/08/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_totalarcant=0;
@@ -3436,7 +3861,7 @@ class sigesp_sno_c_evaluador
 				"   AND sno_hsalida.codper='".$as_codper."'".
 				"   AND sno_hconcepto.sigcon='A'".
 				"   AND sno_hconcepto.aplarccon=1".
-				"   AND SUBSTR(sno_hperiodo.fecdesper,6,2) = '".$li_mesact."' ".
+				"   AND SUBSTR(cast(sno_hperiodo.fecdesper as char(10)),6,2) = '".$li_mesact."' ".
 				"   AND sno_hsalida.codemp = sno_hperiodo.codemp ".
 				"   AND sno_hsalida.codnom = sno_hperiodo.codnom ".
 				"   AND sno_hsalida.anocur = sno_hperiodo.anocur ".
@@ -3449,7 +3874,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_montoarc_mesactual ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_montoarc_mesactual ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3462,19 +3887,19 @@ class sigesp_sno_c_evaluador
 		return $lb_valido;
 	}// end function uf_obtener_montoarc_mesactual
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_sueldo_docente($as_codper,&$ai_sueldo)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_sueldo_docente
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   ai_sueldo // Sueldo Docente
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene el sueldo de la clasificación docente
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene el sueldo de la clasificaciï¿½n docente
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 20/03/2009 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 20/03/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_sueldo=0;
@@ -3489,7 +3914,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_sueldo_docente ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldo_docente ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3502,20 +3927,20 @@ class sigesp_sno_c_evaluador
 		return $lb_valido;
 	}// end function uf_obtener_sueldo_docente
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_prima_docente($as_codper,$as_tipo,&$ai_prima)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_prima_docente
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   as_tipo //  Tipo de Prima
 		//	    		   ai_prima // Prima
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal obtiene las primas docentes seún el tipo
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal obtiene las primas docentes seï¿½n el tipo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 20/03/2009 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 20/03/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_prima=0;
@@ -3524,13 +3949,13 @@ class sigesp_sno_c_evaluador
 				" WHERE sno_primadocentepersonal.codemp='".$this->ls_codemp."'".
 				"   AND sno_primadocentepersonal.codnom='".$this->ls_codnom."'".
 				"   AND sno_primadocentepersonal.codper='".$as_codper."'".
-				"   AND sno_primasdocentes.tippridoc='".$as_tipo."'".				
+				"   AND sno_primasdocentes.tippridoc='".$as_tipo."'".
 				"   AND sno_primadocentepersonal.codemp = sno_primasdocentes.codemp ".
 				"   AND sno_primadocentepersonal.codpridoc=sno_primasdocentes.codpridoc";
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_prima_docente ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_prima_docente ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3543,19 +3968,19 @@ class sigesp_sno_c_evaluador
 		return $lb_valido;
 	}// end function uf_obtener_prima_docente
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_crear_proxima_vacacionpersonal($as_codper,$as_fecdes,$as_fechas)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_crear_vacacionpersonal
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que dado el código de personal crea una variable session con todos los datos
-		//				   de vacación personal
-		//	   Creado Por: Ing. María Beatriz Unda
-		// Fecha Creación: 17/01/2009 								Fecha Última Modificación :		
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal crea una variable session con todos los datos
+		//				   de vacaciï¿½n personal
+		//	   Creado Por: Ing. Marï¿½a Beatriz Unda
+		// Fecha Creaciï¿½n: 17/01/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_metodovacaciones=trim($this->personal->mettabvac);
@@ -3564,19 +3989,19 @@ class sigesp_sno_c_evaluador
 			case "1": //METODO #0
 				$ld_desde_s=$as_fechas;
 				$ld_desde_s=$this->io_sno->uf_suma_fechas($ld_desde_s,1);
-				$ld_desde_s=$this->io_funciones->uf_convertirdatetobd($ld_desde_s);	
+				$ld_desde_s=$this->io_funciones->uf_convertirdatetobd($ld_desde_s);
 				switch($_SESSION["la_nomina"]["tippernom"])
 				{
-					case "0": // Nóminas Semanales
+					case "0": // Nï¿½minas Semanales
 						$li_dias=7;
 						break;
-					case "1": // Nóminas Quincenales
+					case "1": // Nï¿½minas Quincenales
 						$li_dias=15;
 						break;
-					case "2": // Nóminas Mensuales
+					case "2": // Nï¿½minas Mensuales
 						$li_dias=30;
 						break;
-					case "3": // Nóminas Anuales
+					case "3": // Nï¿½minas Anuales
 						$li_dias=365;
 						break;
 				}
@@ -3586,15 +4011,15 @@ class sigesp_sno_c_evaluador
 				$ls_mes=substr($ld_hasta_s,3,2);
 				$ls_ano=substr($ld_hasta_s,6,4);
 				while(checkdate($ls_mes,$ls_dia,$ls_ano)==false)
-				{ 
-				   $ls_dia=$ls_dia-1; 
+				{
+				   $ls_dia=$ls_dia-1;
 				   break;
-				} 
+				}
 				$ld_hasta_s=$ls_dia."/".$ls_mes."/".$ls_ano;
 				$ld_hasta_s=$this->io_funciones->uf_convertirdatetobd($ld_hasta_s);
 				$ld_desde_r=$this->io_funciones->uf_convertirdatetobd($as_fecdes);
 				$ld_hasta_r=$this->io_funciones->uf_convertirdatetobd($as_fechas);
-				
+
 				$ls_sql="SELECT codvac, sueintbonvac, sueintvac, fecdisvac, fecreivac, diavac, diabonvac, diaadibon, diaadivac, ".
 						"		diafer, sabdom, quisalvac, quireivac ".
 						"  FROM sno_vacacpersonal ".
@@ -3609,7 +4034,7 @@ class sigesp_sno_c_evaluador
 						" WHERE codper='".$as_codper."' ".
 						"   AND ((stavac='2' AND (fecdisvac between '".$ld_desde_r."' AND '".$ld_hasta_r."'))".
 						"    OR ( stavac='3' AND (fecreivac between '".$ld_desde_r."' AND '".$ld_hasta_r."')))".
-						"   AND pagpersal='1'";				
+						"   AND pagpersal='1'";
 				break;
 		}
 		if($ls_metodovacaciones!="0")
@@ -3617,18 +4042,18 @@ class sigesp_sno_c_evaluador
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data==false)
 			{
-				$this->io_mensajes->message("CLASE->Evaluador MÉTODO-> uf_crear_proxima_vacacionpersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO-> uf_crear_proxima_vacacionpersonal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
 			{
 				if($row=$this->io_sql->fetch_row($rs_data))
 				{
-					$la_vacacionpersonal=$row;   
+					$la_vacacionpersonal=$row;
 					$_SESSION["la_proxvacacionpersonal"]=$la_vacacionpersonal;
 					$ld_fecdisvac=$_SESSION["la_proxvacacionpersonal"]["fecdisvac"];
 					$ld_fecreivac=$_SESSION["la_proxvacacionpersonal"]["fecreivac"];
-					
+
 				}
 				else
 				{
@@ -3642,25 +4067,25 @@ class sigesp_sno_c_evaluador
 		{
 				$_SESSION["la_proxvacacionpersonal"]["fecdisvac"]='1900-01-01';
 				$_SESSION["la_proxvacacionpersonal"]["fecreivac"]='1900-01-01';
-		}	
+		}
 		return $lb_valido;
 	}// end function  uf_crear_proxima_vacacionpersonal
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_sueldo_quincena_ante($as_codper,$as_periodo,$as_anocur,&$ai_sueldo)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_sueldo_quincena_ante
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//				   as_periodo // Periodo del que se quiere calcular el sueldo
 		//				   as_anopre // Ano previo
 		//				   ai_sueldo // Sueldo Anterior
-		//	      Returns: lb_valido True si se obtuvo el concepto ó False si no se obtuvo
-		//	  Description: función que dado el código de personal y busca el sueldo Anterior de acuerdo al periodo
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y busca el sueldo Anterior de acuerdo al periodo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 02/04/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 02/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ai_sueldo=0;
@@ -3677,7 +4102,7 @@ class sigesp_sno_c_evaluador
 		if($rs_data==false)
 		{
 			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_sueldo_quincena_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_sueldo_quincena_ante ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
@@ -3685,24 +4110,64 @@ class sigesp_sno_c_evaluador
 			{
 				$ai_sueldo=number_format($rs_data->fields["valsal"],2,".","");
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_valido;
 	}// end function uf_obtener_sueldo_quincena_ante
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_obtener_montoguarderia($as_codper,&$ai_montoguard)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_obtener_sueldo_quincena_ante
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   as_periodo // Periodo del que se quiere calcular el sueldo
+		//				   as_anopre // Ano previo
+		//				   ai_sueldo // Sueldo Anterior
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal y busca el sueldo Anterior de acuerdo al periodo
+		//	   Creado Por: Ing. Yesenia Moreno
+		// Fecha Creaciï¿½n: 02/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$lb_valido=true;
+		$ai_montoguard=0;
+		$ls_sql=" SELECT sum(monto) as monto ".
+				" FROM sno_guarderias ".
+				" WHERE sno_guarderias.codemp='".$this->ls_codemp."' ".
+				" AND sno_guarderias.codper='".$as_codper."'";
+
+		$rs_data=$this->io_sql->select($ls_sql);
+		if($rs_data==false)
+		{
+			$lb_valido=false;
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_montoguarderia ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+		}
+		else
+		{
+			if ((!$rs_data->EOF))
+			{
+				$ai_montoguard=number_format($rs_data->fields["monto"],2,".","");
+			}
+			$this->io_sql->free_result($rs_data);
+		}
+		return $lb_valido;
+	}// end function uf_obtener_sueldo_quincena_ante
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_obtener_categoria_militar($as_codper,&$as_categoria)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtener_categoria_militar
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   as_categoria // categoria militar
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que devuelve la categoria militar que tiene el personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que devuelve la categoria militar que tiene el personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/06/2009 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/06/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_categoria="0000000000";
@@ -3719,7 +4184,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_obtener_categoria_militar ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_categoria_militar ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3732,19 +4197,19 @@ class sigesp_sno_c_evaluador
 		return $lb_valido;
 	}// end function uf_obtener_categoria_militar
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_verificar_personal($as_codper,$as_cedper,&$as_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_verificar_personal
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   as_valor // valor
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que devuelve la categoria militar que tiene el personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que devuelve la categoria militar que tiene el personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/06/2009 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/06/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_valor=0;
@@ -3758,7 +4223,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_verificar_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_verificar_personal ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3774,16 +4239,16 @@ class sigesp_sno_c_evaluador
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_verificar_beneficiario($as_codper,$as_cedper,&$as_valor)
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_verificar_beneficiario
 		//		   Access: private
-		//	    Arguments: as_codper // código de personal
+		//	    Arguments: as_codper // cï¿½digo de personal
 		//	    		   as_valor // valor
-		//	      Returns: lb_valido True si se creo la variable sesion ó False si no se creo
-		//	  Description: función que devuelve la categoria militar que tiene el personal
+		//	      Returns: lb_valido True si se creo la variable sesion ï¿½ False si no se creo
+		//	  Description: funciï¿½n que devuelve la categoria militar que tiene el personal
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/06/2009 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/06/2009 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$as_valor=0;
@@ -3797,7 +4262,7 @@ class sigesp_sno_c_evaluador
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Evaluador MÉTODO->uf_verificar_beneficiario ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_verificar_beneficiario ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -3810,5 +4275,214 @@ class sigesp_sno_c_evaluador
 		return $lb_valido;
 	}// end function uf_verificar_beneficiario
 	//-----------------------------------------------------------------------------------------------------------------------------------
+
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_obtener_prestacionantiguedad($as_codper,$as_tipo,&$ai_monto)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_obtener_prestacionantiguedad
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   ai_monto // Monto
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal busca la prestaciï¿½n antiguedad Acumulada
+		//	   Creado Por: Ing. Yesenia Moreno
+		// Fecha Creaciï¿½n: 02/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$lb_valido=true;
+		$ai_monto=0;
+		$ls_sql="SELECT SUM(monant) AS monantant, 0 as monpreant,  ".
+				"		(SELECT SUM(monant) ".
+				"          FROM sno_anticipoprestaciones ".
+				"         WHERE codemp='".$this->ls_codemp."'".
+				"           AND codper='".$as_codper."'".
+				"           AND estant='X'".
+				"         GROUP BY codper) AS monantantanu ".
+				"  FROM sno_anticipoprestaciones ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ".
+				" UNION ".
+				"SELECT 0 AS monantant, SUM(apoper) as monpreant, 0 AS monantantanu  ".
+				"  FROM sno_fideiperiodo ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ".
+				" UNION ".
+				"SELECT SUM(monant) AS monantant, SUM(monpreant) as monpreant,  0 AS monantantanu".
+				"  FROM sno_deudaanterior ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ";
+		$rs_data=$this->io_sql->select($ls_sql);
+		if($rs_data==false)
+		{
+			$lb_valido=false;
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_prestacionantiguedad ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+		}
+		else
+		{
+			while(!$rs_data->EOF)
+			{
+				switch($as_tipo)
+				{
+					case "0": // para obtener el valor Neto de la Prestacion
+						$ai_monto=$ai_monto+number_format($rs_data->fields["monpreant"]-($rs_data->fields["monantant"]-$rs_data->fields["monantantanu"]),2,".","");
+					break;
+
+					case "1": // para obtener el valor Acumulado de la Prestacion
+						$ai_monto=$ai_monto+number_format($rs_data->fields["monpreant"],2,".","");
+					break;
+
+					case "2": // para obtener el valor de los Anticipos de Prestacion
+						$ai_monto=$ai_monto+number_format(($rs_data->fields["monantant"]-$rs_data->fields["monantantanu"]),2,".","");
+					break;
+				}
+				$rs_data->MoveNext();
+			}
+			$this->io_sql->free_result($rs_data);
+		}
+		return $lb_valido;
+	}// end function uf_obtener_prestacionantiguedad
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	function uf_obtener_interesesprestacion($as_codper,$as_tipo,&$ai_monto)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_obtener_interesesprestacion
+		//		   Access: private
+		//	    Arguments: as_codper // cï¿½digo de personal
+		//				   ai_monto // Monto
+		//	      Returns: lb_valido True si se obtuvo el concepto ï¿½ False si no se obtuvo
+		//	  Description: funciï¿½n que dado el cï¿½digo de personal busca la prestaciï¿½n antiguedad Acumulada
+		//	   Creado Por: Ing. Yesenia Moreno
+		// Fecha Creaciï¿½n: 02/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$lb_valido=true;
+		$ai_monto=0;
+		$ls_sql="SELECT SUM(monint) AS monantint, 0 as monintant, ".
+				"		(SELECT SUM(monint) ".
+				"          FROM sno_anticipoprestaciones ".
+				"         WHERE codemp='".$this->ls_codemp."'".
+				"           AND codper='".$as_codper."'".
+				"           AND estant='X'".
+				"         GROUP BY codper) AS monantintanu ".
+				"  FROM sno_anticipoprestaciones ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ".
+				" UNION ".
+				"SELECT 0 AS monantint, SUM(monint) as monintant, 0 AS monantintanu  ".
+				"  FROM sno_fideiperiodointereses ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ".
+				" UNION ".
+				"SELECT 0 AS monantint, SUM(monint) as monintant,  0 AS monantintanu  ".
+				"  FROM sno_deudaanterior ".
+				" WHERE codemp='".$this->ls_codemp."'".
+				"   AND codper='".$as_codper."'".
+				" GROUP BY codper ";
+		$rs_data=$this->io_sql->select($ls_sql);
+		if($rs_data==false)
+		{
+			$lb_valido=false;
+			$this->io_mensajes->message("CLASE->Evaluador Mï¿½TODO->uf_obtener_interesesprestacion ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+		}
+		else
+		{
+			while(!$rs_data->EOF)
+			{
+				switch($as_tipo)
+				{
+					case "0": // para obtener el valor Neto de los Intereses
+						$ai_monto=$ai_monto+number_format($rs_data->fields["monintant"]-($rs_data->fields["monantint"]-$rs_data->fields["monantintanu"]),2,".","");
+					break;
+
+					case "1": // para obtener el valor Acumulado de los Intereses
+						$ai_monto=$ai_monto+number_format($rs_data->fields["monintant"],2,".","");
+					break;
+
+					case "2": // para obtener el valor de los Anticipos de los Intereses
+						$ai_monto=$ai_monto+number_format(($rs_data->fields["monantint"]-$rs_data->fields["monantintanu"]),2,".","");
+					break;
+				}
+				$rs_data->MoveNext();
+			}
+			$this->io_sql->free_result($rs_data);
+		}
+		return $lb_valido;
+	}// end function uf_obtener_interesesprestacion
+	//-----------------------------------------------------------------------------------------------------------------------------------
+
+
+	function uf_antiguedad_complementaria($codper)
+	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	     Function: uf_antiguedad_complementaria
+		//		   Access: private
+		//	    Arguments: codper
+		//	      Returns: El valor del pago total de dï¿½as adicionales o false si hay un error
+		//	  Description: funciï¿½n que devuelve el calculo de los dï¿½as de antiguedad complementaria
+		//	   Creado Por: Lic. Edgar A. Quintero U.
+		// Fecha Creaciï¿½n: 10/11/2009 								Fecha ï¿½ltima Modificaciï¿½n :
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$meses = intval($_SESSION["la_nomina"]["peractnom"]);
+		$dias = $meses*30;
+
+		$ls_sql=" SELECT (
+							   ((sum(valsal)/12)/30) +
+							   ((((sum(valsal)/12)/30)*40)/360) +
+							   ((((sum(valsal)/12))*3)/360) +
+							   (
+								SELECT sum(abs(valsal))/360 FROM sno_hsalida hs
+								INNER JOIN sno_concepto c ON hs.codconc = c.codconc AND hs.codemp = c.codemp AND hs.codnom = c.codnom
+								WHERE  hs.codper = '".$codper."' AND hs.codemp='".$this->ls_codemp."'
+								AND c.aplidiasadd = 1 AND  hs.codnom<'0006' AND tipsal!='P2'
+							   )
+						   )*(
+								   CASE  (to_number((
+													SELECT
+													(
+													(((DATE_PART('YEAR',CURRENT_DATE)-DATE_PART('YEAR',fecingper))* 372 + (DATE_PART('MONTH',CURRENT_DATE) - DATE_PART('MONTH',fecingper))*31 + (DATE_PART('DAY',CURRENT_DATE)-DATE_PART('DAY',fecingper)))/372)
+													)
+													FROM sno_personal
+													WHERE codper = '".$codper."' AND codemp='".$this->ls_codemp."'
+									), '99') + (SELECT anoperobr FROM sno_personal WHERE codper = '".$codper."' AND codemp='".$this->ls_codemp."'))
+									WHEN 0 THEN 0
+									WHEN 1 THEN 0
+									WHEN 2 THEN 2
+									WHEN 3 THEN 4
+									WHEN 4 THEN 6
+									WHEN 5 THEN 8
+									WHEN 6 THEN 10
+									WHEN 7 THEN 12
+									WHEN 8 THEN 14
+									WHEN 9 THEN 16
+									WHEN 10 THEN 18
+									WHEN 11 THEN 20
+									WHEN 12 THEN 22
+									WHEN 13 THEN 24
+									ELSE 24
+								   END
+						   ) AS total
+					FROM sno_hsalida hs
+					INNER JOIN sno_concepto c ON hs.codconc = c.codconc AND hs.codemp = c.codemp AND hs.codnom = c.codnom
+					WHERE hs.codper = '".$codper."' AND hs.codemp='".$this->ls_codemp."' AND hs.codnom<'0006' AND tipsal!='P2'
+					AND (sueintcon = 1 OR hs.codconc IN ('0000000020','0000000022','0000000035','0000000036'))";
+
+		$rs_data=$this->io_sql->select($ls_sql);
+
+		if($rs_data===false)
+		{
+			echo "CLASE->Evaluador Mï¿½TODO->uf_antiguedad_complementaria ERROR->".$this->io_sql->message;
+			$this->io_mensajes->message('ERROR: METODO: uf_antiguedad_complementaria CLASE: Evaluador');
+			return false;
+		}
+
+		return $rs_data->fields["total"];
+	}// end function uf_antiguedad_complementaria
+
 }
 ?>
