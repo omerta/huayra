@@ -1,0 +1,6 @@
+{
+    "require": {
+        "doctrine/orm": "^2.5",
+        "symfony/yaml": "^3.1"
+    }
+}
