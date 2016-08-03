@@ -11,9 +11,9 @@ $isDevMode = false;
 // the connection configuration
 $dbParams = array(
     'driver'   => 'pdo_pgsql',
-    'user'     => 'prometeo',
+    'user'     => 'USER',
     'password' => '',
-    'dbname'   => 'CNU2015',
+    'dbname'   => 'DATABASE',
 );
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
