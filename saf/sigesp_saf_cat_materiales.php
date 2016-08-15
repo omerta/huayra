@@ -7,19 +7,7 @@ session_start();
 <head>
 <title>Cat&aacute;logo de Condici&oacute;n del Activo </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-<!--
-a:link {
-	color: #006699;
-}
-a:visited {
-	color: #006699;
-}
-a:active {
-	color: #006699;
-}
--->
-</style>
+
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/tablas.css" rel="stylesheet" type="text/css">
@@ -73,18 +61,18 @@ if(array_key_exists("operacion",$_POST))
 {
 	$ls_operacion=$_POST["operacion"];
 	$ls_codigo="%".$_POST["txtcodigo"]."%";
-	$ls_denominacion="%".$_POST["txtdenominacion"]."%";	
+	$ls_denominacion="%".$_POST["txtdenominacion"]."%";
 }
 else
 {
 	$ls_operacion="BUSCAR";
 	$ls_codigo="%%";
-	$ls_denominacion="%%";	
+	$ls_denominacion="%%";
 }
 print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 print "<tr class=titulo-celda>";
-print "<td>Código</td>";
-print "<td>Denominación</td>";
+print "<td>C&oacute;digo</td>";
+print "<td>Denominaci&oacute;n</td>";
 print "</tr>";
 if($ls_operacion=="BUSCAR")
 {
@@ -102,15 +90,15 @@ if($ls_operacion=="BUSCAR")
 		$ds->data=$data;
 
 		$totrow=$ds->getRowCount("codtipest");
-	
+
 		for($z=1;$z<=$totrow;$z++)
 		{
 			print "<tr class=celdas-blancas>";
 			$ls_codigo=$data["codtipest"][$z];
-			$ls_denominacion=$data["dentipest"][$z];			
+			$ls_denominacion=$data["dentipest"][$z];
 			print "<td><a href=\"javascript: aceptar('$ls_codigo','$ls_denominacion');\">".$ls_codigo."</a></td>";
 			print "<td>".$ls_denominacion."</td>";
-			print "</tr>";			
+			print "</tr>";
 		}
 	}
 }
@@ -124,10 +112,11 @@ print "</table>";
 <script language="JavaScript">
 	function aceptar(ls_codigo,ls_denominacion)
 	{
-		opener.document.form1.txtcodtipest.value=ls_codigo;	
+		opener.document.form1.txtcodtipest.value=ls_codigo;
 		opener.document.form1.txtcodtipest.readOnly=true;
 		opener.document.form1.txtdentipest.value=ls_denominacion;
 		opener.document.form1.existe.value="TRUE";
+		opener.document.form1.hidstatus.value="G";
 		close();
 	}
 	function ue_search()
