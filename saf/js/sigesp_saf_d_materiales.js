@@ -6,6 +6,7 @@ function ue_nuevo()
 	{
 		$("#txtcodtipest").val('');
 		$("#txtdentipest").val('');
+		$("#txtcodtipest").prop('readonly', false);
 		$("#hidstatus").val(''); // bandera que indica una modificación del formulario
 
 		$("#delete_error_block").hide( "slow" );
@@ -86,7 +87,7 @@ function ue_guardar()
 						 	 log_sistema:log_sistema,log_logusr:log_logusr,log_ventanas:log_ventanas},
 							 null,"json")
 					.done(function(data)
-					{ alert(data);
+					{
 						if (data[0] == false)
 						{
 							/* */
@@ -219,6 +220,7 @@ function ue_eliminar()
 						// quizas se pueda hacer con un for
 						$("#txtcodtipest").val('');
 						$("#txtdentipest").val('');
+						$("#txtcodtipest").prop('readonly', false);
 						$("#hidstatus").val(''); // bandera que indica una modificación del formulario
 					}
 				});

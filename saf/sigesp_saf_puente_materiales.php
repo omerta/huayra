@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	file_put_contents('/tmp/sugau_saf.log', print_r($_POST, TRUE), FILE_APPEND);
+	//file_put_contents('/tmp/sugau_saf.log', print_r($_POST, TRUE), FILE_APPEND);
 
 	use Doctrine\ORM\Tools\Setup;
 	use Doctrine\ORM\EntityManager;
@@ -53,13 +53,19 @@
 			 */
 
 			/* */
+			try {
 			$product = new SafTipoEstructura();
 			$product->setCodemp($ls_codemp);
 			$product->setCodtipest($ls_codtipest);
 			$product->setDentipest($ls_dentipest);
-
 			$entityManager->persist($product);
 			$entityManager->flush();
+			$lb_valido[0] = true;
+			$lb_valido[1] = "";
+			} catch (Exception $e) {
+				$lb_valido[0] = false;
+				$lb_valido[1] = $e->getMessage();
+			}
 
 		}elseif($status=="G")
 		{
@@ -75,7 +81,7 @@
 			 if ($material === null){
 				 $lb_valido[0] = false;
 			 }else{
-				 file_put_contents('/tmp/sugau_saf.log', print_r($material, TRUE), FILE_APPEND);
+				 //file_put_contents('/tmp/sugau_saf.log', print_r($material, TRUE), FILE_APPEND);
 				 $material->setDentipest($ls_dentipest);
 				 $entityManager->flush();
 				 $lb_valido[0] = true;
