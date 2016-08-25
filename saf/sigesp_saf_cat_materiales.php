@@ -60,14 +60,27 @@ $arr=$_SESSION["la_empresa"];
 if(array_key_exists("operacion",$_POST))
 {
 	$ls_operacion=$_POST["operacion"];
-	$ls_codigo="%".$_POST["txtcodigo"]."%";
-	$ls_denominacion="%".$_POST["txtdenominacion"]."%";
+	$ls_codigo=$_POST["txtcodigo"];
+  $ls_denominacion="%".$_POST["txtdenominacion"]."%";
+  if($ls_codigo == "" )
+  {
+    $ls_sql="SELECT codtipest, dentipest FROM saf_tipoestructura".
+  			" WHERE dentipest ilike '".$ls_denominacion."'".
+  			" ORDER BY codtipest";
+  }else{
+    $ls_sql="SELECT codtipest, dentipest FROM saf_tipoestructura".
+  			" WHERE codtipest = '".$ls_codigo."'".
+  			"   AND dentipest ilike '".$ls_denominacion."'".
+  			" ORDER BY codtipest";
+  }
 }
 else
 {
 	$ls_operacion="BUSCAR";
-	$ls_codigo="%%";
 	$ls_denominacion="%%";
+  $ls_sql="SELECT codtipest, dentipest FROM saf_tipoestructura".
+			" WHERE dentipest ilike '".$ls_denominacion."'".
+			" ORDER BY codtipest";
 }
 print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 print "<tr class=titulo-celda>";
@@ -76,10 +89,7 @@ print "<td>Denominaci&oacute;n</td>";
 print "</tr>";
 if($ls_operacion=="BUSCAR")
 {
-	$ls_sql="SELECT codtipest, dentipest FROM saf_tipoestructura".
-			" WHERE codtipest like '".$ls_codigo."'".
-			"   AND dentipest like '".$ls_denominacion."'".
-			" ORDER BY codtipest";
+
     $rs_data=$io_sql->select($ls_sql);
     $data=$rs_cta;
 	if($row=$io_sql->fetch_row($rs_data))
@@ -114,6 +124,7 @@ print "</table>";
 	{
 		opener.document.form1.txtcodtipest.value=ls_codigo;
 		opener.document.form1.txtcodtipest.readOnly=true;
+    opener.document.getElementById('codigo').style.display='block';
 		opener.document.form1.txtdentipest.value=ls_denominacion;
 		opener.document.form1.existe.value="TRUE";
 		opener.document.form1.hidstatus.value="G";

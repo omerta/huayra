@@ -16,7 +16,8 @@
 	$entityManager = EntityManager::create($dbParams, $config);
 
 	/* entidad */
-	require_once "entidades/SafTipoEstructura.php";
+	require_once "entidades/SafTipoestructura.php";
+	require_once "entidades/SigespEmpresa.php";
 
 	$ls_codtipest = $_POST['codtipest'];
 	$ls_dentipest = $_POST['dentipest'];
@@ -54,19 +55,27 @@
 
 			/* */
 			try {
-			$product = new SafTipoEstructura();
-			$product->setCodemp($ls_codemp);
-			$product->setCodtipest($ls_codtipest);
-			$product->setDentipest($ls_dentipest);
-			$entityManager->persist($product);
-			$entityManager->flush();
-			$lb_valido[0] = true;
-			$lb_valido[1] = "";
+				//$product = new SafTipoestructura();
+				//$product->setCodemp($ls_codemp);
+				//$product->setCodtipest($ls_codtipest);
+				//$product->setDentipest($ls_dentipest);
+
+				$sigespEmpresa = $entityManager->find('SigespEmpresa', $ls_codemp);
+
+				$tipoEstructura = new SafTipoestructura();
+				$tipoEstructura->SetCodemp($sigespEmpresa);
+				$tipoEstructura->SetDentipest($ls_dentipest);
+
+				$entityManager->persist($tipoEstructura);
+				$entityManager->flush();
+
+				$codigo = $tipoEstructura->getCodtipest();
+				$lb_valido[0] = true;
+				$lb_valido[1] = $codigo;
 			} catch (Exception $e) {
 				$lb_valido[0] = false;
 				$lb_valido[1] = $e->getMessage();
 			}
-
 		}elseif($status=="G")
 		{
 			/*
@@ -77,7 +86,7 @@
 			 //$material = $entityManager->getRepository('SafTipoEstructura')->findBy(array(
 			 //	'codtipest' => $ls_codtipest,
 			 //	'codemp' => $ls_codemp));
-			 $material = $entityManager->find('SafTipoEstructura', $ls_codtipest);
+			 $material = $entityManager->find('SafTipoestructura', $ls_codtipest);
 			 if ($material === null){
 				 $lb_valido[0] = false;
 			 }else{

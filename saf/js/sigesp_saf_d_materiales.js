@@ -8,6 +8,8 @@ function ue_nuevo()
 		$("#txtdentipest").val('');
 		$("#txtcodtipest").prop('readonly', false);
 		$("#hidstatus").val(''); // bandera que indica una modificación del formulario
+		$('#txtcodtipest').val('');
+		$('#codigo').hide();
 
 		$("#delete_error_block").hide( "slow" );
 		$("#delete_success_block").hide( "slow" );
@@ -81,7 +83,7 @@ function ue_guardar()
 			if(lb_status=="")
 			{
 					$.post("sigesp_saf_puente_materiales.php",
-							{codtipest:li_codtipest,dentipest:li_dentipest,
+							{dentipest:li_dentipest,
 							 status:lb_status,
 							 log_empresa:log_empresa,
 						 	 log_sistema:log_sistema,log_logusr:log_logusr,log_ventanas:log_ventanas},
@@ -109,12 +111,16 @@ function ue_guardar()
 							$("#new_error_block_detail").hide( "slow" );
 							$("#save_error_block").hide( "slow" );
 							$("#hidstatus").val('G'); // bandera que indica una modificación del formulario
+							$("#txtcodtipest").val(data[1]); // bandera que indica una modificación del formulario
+							$("#txtcodtipest").prop('readonly', true)
+							$('#codigo').show();
+							/*
 							if(data[1] != "")
 							{
 								$("#warning_success_block").show( "slow" );
 								//$("#new_error_block_detail").children('div').append('<strong>' + data[1] + '</strong> ');
 								$("#warning_success_block").children('div').html('<strong>' + data[1] + '</strong> ');
-							}
+							}*/
 						}
 					});
 			} // G indica que es un modificación del formulario
@@ -220,7 +226,7 @@ function ue_eliminar()
 						// quizas se pueda hacer con un for
 						$("#txtcodtipest").val('');
 						$("#txtdentipest").val('');
-						$("#txtcodtipest").prop('readonly', false);
+						$('#codigo').hide();
 						$("#hidstatus").val(''); // bandera que indica una modificación del formulario
 					}
 				});

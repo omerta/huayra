@@ -84,24 +84,4 @@ class Materiales {
 
 $materiales = new Materiales();
 
-/*
-<?php
-  require_once("class_funciones_activos.php");
-	$io_fac= new class_funciones_activos("../");
-
-	require_once("../shared/class_folder/class_mensajes.php");
-	$io_msg= new class_mensajes();
-
-	require_once("sigesp_saf_c_materiales.php");
-	$io_material= new sigesp_saf_c_materiales();
-
-	require_once("../shared/class_folder/sigesp_include.php");
-	$in=     new sigesp_include();
-	$con= 	 $in->uf_conectar();
-	require_once("../shared/class_folder/class_funciones_db.php");
-	$io_fun= new class_funciones_db($con);
-	$arre=$_SESSION["la_empresa"];
-	$ls_empresa=$arre["codemp"];
-*/
-
 ?>
