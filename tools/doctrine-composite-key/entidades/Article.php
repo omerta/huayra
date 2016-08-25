@@ -1,10 +1,14 @@
 <?php
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @Entity
  */
  class Article
  {
-   /** @Id @Column(type="integer") @GeneratedValue */
+   /**
+    * @Id @Column(type="integer")
+    * @GeneratedValue
+    */
    private $id;
    /** @Column(type="string") */
    private $title;
@@ -19,88 +23,23 @@
       $this->attributes[$name] = new ArticleAttribute($name, $value, $this);
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId()
     {
-        return $this->id;
+      return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Article
-     */
-     public function setTitle($title)
-     {
-         $this->title = $title;
-
-         return $this;
-     }
-
-     /**
-      * Get title
-      *
-      * @return string
-      */
-     public function getTitle()
-     {
-         return $this->title;
-     }
- }
-
- /**
-  * @Entity
-  */
-  class ArticleAttribute
-  {
-    /** @Id @ManyToOne(targetEntity="Article", inversedBy="attributes") */
-    private $article;
-
-    /** @Id @Column(type="string") */
-    private $attribute;
-
-    /** @Column(type="string") */
-    private $value;
-
-    public function __construct($name, $value, $article)
+    public function getTitle()
     {
-      $this->attribute = $name;
-      $this->value = $value;
-      $this->article = $article;
+      return $this->title;
     }
 
-    /**
-     * Remove attribute
-     *
-     * @param \ArticleAttribute $attribute
-     */
-    public function removeAttribute(\ArticleAttribute $attribute)
+    public function setTitle($title)
     {
-        $this->attributes->removeElement($attribute);
+      $this->title = $title;
     }
 
-    /**
-     * Get attributes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAttributes()
+    public function __toString()
     {
-        return $this->attributes;
-    }
-
-    /** Get $attribute
-     *
-     * @return string
-     */
-    public function getAttribute()
-    {
-        return $this->atribute;
+      return $this->id.' '.$this->title;
     }
 }

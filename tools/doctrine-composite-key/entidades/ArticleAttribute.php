@@ -1,98 +1,46 @@
 <?php
-
-
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
- * ArticleAttribute
+ * @Entity
  */
-class ArticleAttribute
-{
-    /**
-     * @var string
-     */
-    private $attribute;
+ class ArticleAttribute
+ {
+   /** @Id @ManyToOne(targetEntity="Article", inversedBy="attributes") */
+   private $article;
+   /** @Id @Column(type="string") */
+   private $attribute;
+   /** @Column(type="string") */
+   private $value;
 
-    /**
-     * @var string
-     */
-    private $value;
+   public function __construct($name, $value, $article)
+   {
+     $this->attribute = $name;
+     $this->value = $value;
+     $this->article = $article;
+   }
 
-    /**
-     * @var \Article
-     */
-    private $article;
+   public function getArticle()
+   {
+     return $this->article;
+   }
 
+   public function getAttribute()
+   {
+     return $this->attribute;
+   }
 
-    /**
-     * Set attribute
-     *
-     * @param string $attribute
-     *
-     * @return ArticleAttribute
-     */
-    public function setAttribute($attribute)
-    {
-        $this->attribute = $attribute;
+   public function setAttribute($attribute)
+   {
+     $this->attribute = $attribute;
+   }
 
-        return $this;
-    }
+   public function getValue()
+   {
+     return $this->value;
+   }
 
-    /**
-     * Get attribute
-     *
-     * @return string
-     */
-    public function getAttribute()
-    {
-        return $this->attribute;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return ArticleAttribute
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * Set article
-     *
-     * @param \Article $article
-     *
-     * @return ArticleAttribute
-     */
-    public function setArticle(\Article $article)
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    /**
-     * Get article
-     *
-     * @return \Article
-     */
-    public function getArticle()
-    {
-        return $this->article;
-    }
+   public function setValue($value)
+   {
+     $this->value = $value;
+   }
 }
-
