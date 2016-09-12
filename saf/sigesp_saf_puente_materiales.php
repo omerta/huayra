@@ -1,14 +1,10 @@
 <?php
+	// saf/sigesp_saf_puente_materiales.php
 	session_start();
-	//file_put_contents('/tmp/sugau_saf.log', print_r($_POST, TRUE), FILE_APPEND);
+	//file_put_contents('/tmp/sugau_saf.log', print_r($_SESSION, TRUE), FILE_APPEND);
 
 	use Doctrine\ORM\Tools\Setup;
 	use Doctrine\ORM\EntityManager;
-
-	/*
-	 * antigua función solo referencial
-	 * require_once("sigesp_saf_c_materiales.php");
-	 */
 
 	/* doctrine */
 	require_once "doctrine/bootstrap.php";
@@ -18,6 +14,7 @@
 	/* entidad */
 	require_once "entidades/SafTipoestructura.php";
 	require_once "entidades/SigespEmpresa.php";
+	require_once "entidades/SssRegistroEventos.php";
 
 	$ls_codtipest = $_POST['codtipest'];
 	$ls_dentipest = $_POST['dentipest'];
@@ -28,6 +25,11 @@
 	$la_seguridad["sistema"]= $_POST['log_sistema'];
 	$la_seguridad["logusr"]= $_POST['log_logusr'];
 	$la_seguridad["ventanas"]= $_POST['log_ventanas'];
+	$ls_codemp = $_SESSION["la_empresa"]["codemp"];
+	require_once("../shared/class_folder/sigesp_c_seguridad.php");
+	$ip = new sigesp_c_seguridad();
+	$ip = $ip->getip();
+
 
 	if ($status == "" || $status == "G")
   {
@@ -37,29 +39,17 @@
   }
 
 	/*
-	 * @TODO agregar caracteristica de multi-empresa (codemp,codtipest)
-	 * @TODO agregar operaciones a la bitacora
+	 * @TODO mejorar la inteligencia de los registros en bitacora
+	 * 	guardando el registro y su bitácora.
 	 */
 	function Guardar($ls_codtipest,$ls_dentipest,$status,$la_seguridad)
 	{
-		global $entityManager;
-
-		$ls_codemp = $_SESSION["la_empresa"]["codemp"];
+		global $entityManager, $ls_codemp, $ip;
 
 		if($status=="")
 		{
-			/*
-			 * función antigua solo referencial
-			 * $ls_valido=$io_material->guardar($ls_codtipest, $ls_dentipest, $ls_existe, $la_seguridad);
-			 */
-
 			/* */
 			try {
-				//$product = new SafTipoestructura();
-				//$product->setCodemp($ls_codemp);
-				//$product->setCodtipest($ls_codtipest);
-				//$product->setDentipest($ls_dentipest);
-
 				$sigespEmpresa = $entityManager->find('SigespEmpresa', $ls_codemp);
 
 				$tipoEstructura = new SafTipoestructura();
@@ -70,48 +60,63 @@
 				$entityManager->flush();
 
 				$codigo = $tipoEstructura->getCodtipest();
+
 				$lb_valido[0] = true;
 				$lb_valido[1] = $codigo;
+
+				$ls_evento = "INSERT";
+				$ls_descripcion ="Se insertó el material ".$codigo;
+				$ls_sisope = "N/D";
+
+				registrar_evento($ls_codemp,$la_seguridad["logusr"],$la_seguridad["sistema"],
+													$ls_evento,$la_seguridad["ventanas"],$ld_fecha,$ip,$ls_descripcion,$ls_sisope);
+
 			} catch (Exception $e) {
 				$lb_valido[0] = false;
 				$lb_valido[1] = $e->getMessage();
 			}
 		}elseif($status=="G")
 		{
-			/*
-			 * $ls_valido=$io_material->uf_elimina_materiales($ls_codtipest, $la_seguridad);
-			 */
-
-			 /* */
-			 //$material = $entityManager->getRepository('SafTipoEstructura')->findBy(array(
-			 //	'codtipest' => $ls_codtipest,
-			 //	'codemp' => $ls_codemp));
 			 $material = $entityManager->find('SafTipoestructura', $ls_codtipest);
-			 if ($material === null){
+
+			 if ($material === null)
+			 {
 				 $lb_valido[0] = false;
 			 }else{
-				 //file_put_contents('/tmp/sugau_saf.log', print_r($material, TRUE), FILE_APPEND);
 				 $material->setDentipest($ls_dentipest);
 				 $entityManager->flush();
 				 $lb_valido[0] = true;
+
+				 $ls_evento = "UPDATE";
+				 $ls_descripcion ="Se actualizó el material ".$ls_codtipest;
+				 $ls_sisope="N/D";
+
+				 registrar_evento($ls_codemp,$la_seguridad["logusr"],$la_seguridad["sistema"],
+ 													$ls_evento,$la_seguridad["ventanas"],$ld_fecha,$ip,$ls_descripcion,$ls_sisope);
 			 }
 
 		}
-
-		//file_put_contents('/tmp/sugau_saf.log', print_r($lb_valido, TRUE), FILE_APPEND);
     echo json_encode($lb_valido);
 	}
 
-	function Eliminar($ls_catalogo,$la_seguridad)
+	function Eliminar($ls_codtipest,$la_seguridad)
 	{
-		global $entityManager;
+		global $entityManager, $ls_codemp, $ip;
 
-		$material = $entityManager->find('SafTipoEstructura', $ls_catalogo);
+		$material = $entityManager->find('SafTipoestructura', $ls_codtipest);
 		if(!$material){
 			$lb_valido[0] = false;
 		}else{
 			$entityManager->remove($material);
 			$entityManager->flush();
+
+			$ls_evento = "DELETE";
+			$ls_descripcion ="Se eliminó el Material ".$ls_codtipest;
+			$ls_sisope="N/D";
+
+			registrar_evento($ls_codemp,$la_seguridad["logusr"],$la_seguridad["sistema"],
+												$ls_evento,$la_seguridad["ventanas"],$ld_fecha,$ip,$ls_descripcion,$ls_sisope);
+
 			$lb_valido[0] = true;
 			/* para activar un warning */
 			$lb_valido[1] = "";
@@ -120,4 +125,25 @@
 		echo json_encode($lb_valido);
 	}
 
+	function registrar_evento($codemp,$codusu,$codsis,$ls_evento,$nomven,$fecevetra,$equevetra,$desevetra,$ususisoper)
+	{
+		global $entityManager;
+		$evento = new SssRegistroEventos();
+
+		$ls_codintper="---------------------------------";
+
+		$evento->setCodemp($codemp);
+		$evento->setCodusu($codusu);
+		$evento->setCodsis($codsis);
+		$evento->setEvento($ls_evento);
+		$evento->setNomven($nomven);
+		$evento->setCodintper($ls_codintper);
+		$evento->setFecevetra(new \DateTime);
+		$evento->setEquevetra($equevetra);
+		$evento->setDesevetra($desevetra);
+		$evento->setUsusisoper($ususisoper);
+
+		$entityManager->persist($evento);
+		$entityManager->flush();
+	}
 ?>
