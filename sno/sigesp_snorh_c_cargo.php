@@ -32,7 +32,7 @@ class sigesp_snorh_c_cargo
 		$this->io_seguridad= new sigesp_c_seguridad();
 		require_once("sigesp_sno_c_personalnomina.php");
 		$this->io_personalnomina= new sigesp_sno_c_personalnomina();
-        $this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
+    $this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
 	}// end function sigesp_snorh_c_cargo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -53,8 +53,8 @@ class sigesp_snorh_c_cargo
 		unset($this->io_funciones);
 		unset($this->io_seguridad);
 		unset($this->io_personalnomina);
-        unset($this->ls_codemp);
-        unset($this->ls_codnom);
+    unset($this->ls_codemp);
+    unset($this->ls_codnom);
 	}// end function uf_destructor
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -340,29 +340,25 @@ class sigesp_snorh_c_cargo
 				" GROUP BY sno_nomina.codnom, sno_nomina.desnom ".
 				" ORDER BY sno_nomina.codnom, sno_nomina.desnom ";
 		$rs_data=$this->io_sql->select($ls_sql);
-       	print "<select class='form-control' name='cmbnomina' id='cmbnomina' ".$ls_disabled.">";
-        print " <option value='' ".$ls_selected.">--Seleccione Una--</option>";
+       	//print "<select class='form-control' name='cmbnomina' id='cmbnomina' ".$ls_disabled.">";
+        //print " <option value='' ".$ls_selected.">--Seleccione Una--</option>";
 		if($rs_data===false)
 		{
         	$io_mensajes->message("Clase->Seleccionar N�mina M�todo->uf_cargarnomina Error->".$io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
+			$n=0;
 			while($row=$this->io_sql->fetch_row($rs_data))
 			{
 				$ls_codnom=$row["codnom"];
 				$ls_desnom=$row["desnom"];
-				$ls_selected="";
-				if($as_codnom==$ls_codnom)
-				{
-					$ls_selected="selected";
-				}
-            	print "<option value='".$ls_codnom."' ".$ls_selected.">".$ls_codnom."-".$ls_desnom."</option>";
+				$nominas[$n] = array('valor' => $ls_codnom, 'nombre' => $ls_desnom);
+				$n++;
 			}
 			$this->io_sql->free_result($rs_data);
+			return $nominas;
 		}
-       	print "</select>";
-		print "<input name='txtcodnom' type='hidden' id='txtcodnom' value='".$as_codnom."'>";
    }
    //--------------------------------------------------------------
 }

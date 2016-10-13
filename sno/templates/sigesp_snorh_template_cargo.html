@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<!--<script type="text/javascript" language="JavaScript1.2" src="../shared/js/disabled_keys.js"></script>-->
+<title>Definici&oacute;n de Cargo</title>
+<meta http-equiv="imagetoolbar" content="no">
+
+<script type="text/javascript" language="JavaScript1.2" src="js/stm31.js"></script>
+<script type="text/javascript" language="JavaScript1.2" src="js/funcion_nomina.js"></script>
+<!-- Separar el código JavaScript -->
+<script type="text/javascript" src="js/sigesp_snorh_d_cargo.js"></script>
+<!-- jQuery -->
+<script type="text/javascript" src="../shared/js/jquery-2.1.4.min.js"></script>
+<!-- Estilo de bootstrap -->
+<link href="../shared/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="css/nomina.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/tablas.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/cabecera.css" rel="stylesheet" type="text/css">
+<link href="../shared/css/general.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+	<div class="container">
+	  <header>
+	    <div>
+	      <img class="img-responsive center-block" src="../shared/imagebank/header.jpg" alt="">
+	    </div>
+
+	    <div class="seccion">
+	      <div class="descripcion-sistema">
+	        <div>
+	          <font color="#6699CC" size="3">Sistema de N&oacute;mina</font>
+	        </div>
+	        <div>
+	          {{ fecha }}
+	        </div>
+	        <div>
+	          {{ usuario }} {{usuario_apellido}} <i>en</i> {{ db_name }}
+	        </div>
+	      </div>
+
+	      <div class="conteiner-botonera">
+	        <script type="text/javascript" language="JavaScript1.2" src="js/menu.js"></script>
+	      </div>
+
+	      <nav class="navbar navbar-default">
+	        <div class="container-fluid">
+	          <ul class="nav navbar-nav">
+	            <li>
+	              <a href="javascript: ue_nuevo();">
+	                <span>Nuevo</span>
+	                <img src="../shared/imagebank/tools20/nuevo.gif" title="Nuevo" alt="Nuevo" width="20" height="20" border="0">
+	              </a>
+	            </li>
+	            <li>
+	              <a href="javascript: ue_guardar();">
+	                <span>Guardar</span>
+	                <img src="../shared/imagebank/tools20/grabar.gif" title="Guardar" alt="Grabar" width="20" height="20" border="0">
+	              </a>
+	            </li>
+	            <li>
+	              <a href="javascript: ue_buscar();">
+	                <span>Buscar</span>
+	                <img src="../shared/imagebank/tools20/buscar.gif" title="Buscar" alt="Buscar" width="20" height="20" border="0">
+	              </a>
+	            </li>
+	            <li>
+	              <a href="javascript: ue_eliminar();">
+	                <span>Eliminar</span>
+	                <img src="../shared/imagebank/tools20/eliminar.gif" title="Eliminar" alt="Eliminar" width="20" height="20" border="0">
+	              </a>
+	            </li>
+	            <li>
+	              <a href="javascript: ue_cerrar();">
+	                <span>Cerrar</span>
+	                <img src="../shared/imagebank/tools20/salir.gif" title="Salir" alt="Salir" width="20" height="20" border="0">
+	              </a>
+	            </li>
+	            <li>
+	              <a href="../ayuda" target="_blank">
+	                <span>Ayuda</span>
+	                <img src="../shared/imagebank/tools20/ayuda.gif" title="Ayuda" alt="Ayuda" width="20" height="20"></div>
+	              </a>
+	            </li>
+	          </ul>
+	        </div>
+	      </nav>
+	    </div>
+	  </header>
+
+	<div class="container">
+	  <h1 class="titulo">Definici&oacute;n de Cargo</h1>
+	    <div class="formato-blanco">
+	      <form name="form1" method="post" action="" class="form-horizontal">
+
+					{#<p>The current version is {{ constant('Twig_Environment::VERSION') }}</p>#}
+					{#<pre>{{ dump(nominas) }}</pre>#}
+
+					{# SEGURIDAD #}
+			    <input type="hidden" name="permisos" id="permisos" value="{{ ls_permisos }}">
+			    <input type="hidden" name="leer" id="leer" value="{{ la_permisos_leer }}">
+			    <input type="hidden" name="incluir" id="incluir" value="{{ la_permisos_incluir }}">
+			    <input type="hidden" name="cambiar" id="cambiar" value="{{ la_permisos_cambiar }}">
+			    <input type="hidden" name="eliminar" id="eliminar" value="{{ la_permisos_eliminar }}">
+			    <input type="hidden" name="imprimir" id="imprimir" value="{{ la_permisos_imprimir }}">
+			    <input type="hidden" name="anular" id="anular" value="{{ la_permisos_anular }}">
+			    <input type="hidden" name="ejecutar" id="ejecutar" value="{{ la_permisos_ejecutar }}">
+			    {# SEGURIDAD #}
+
+					<div class="form-group">
+						<label for="" class="control-label col-md-4">C&oacute;digo</label>
+						<div class="col-md-8">
+							<input class="form-control" name="txtcodcar" type="text" id="txtcodcar" size="15" maxlength="15">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="" class="control-label col-md-4">Descripci&oacute;n</label>
+						<div class="col-md-8">
+							<input class="form-control" name="txtdescar" type="text" id="txtdescar" size="60" maxlength="100" onKeyUp="ue_validarcomillas(this);">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="" class="control-label col-md-4">N&oacute;mina</label>
+						<div class="col-md-8">
+							<select class='form-control' name='cmbnomina' id='cmbnomina'>
+									<option value="">Seleccione</option>
+								{% for nomina in nominas %}
+									<option value="{{ nomina.valor }}">{{ nomina.nombre | raw }}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+					<input name="operacion" type="hidden" id="operacion" value="{{ operacion }}">
+					<input name="existe" type="hidden" id="existe" value="{{ existe }}">
+					<input name="txtcodnom" type="hidden" id="txtcodnom">
+					</form>
+
+					{% if debug == true %}
+						<div class="debug">
+							<label>Usuario:</label> {{ loguser }}
+							<label>Permisos:</label> {{ ls_permisos }}
+							<label>Leer:</label> {{ la_permisos_leer }}
+							<label>Incluir:</label> {{ la_permisos_incluir }}
+							<label>Cambiar:</label> {{ la_permisos_cambiar }}
+							<label>Eliminar:</label> {{ la_permisos_eliminar }}
+							<label>Imprimir:</label> {{ la_permisos_imprimir }}
+							<label>Anular:</label> {{ la_permisos_anular }}
+							<label>Ejecutar:</label> {{ la_permisos_ejecutar }}
+							<label>Seguridad empresa:</label>{{ la_seguridad_empresa }}
+							<label>Seguridad logusr:</label>{{ la_seguridad_logusr }}
+							<label>Seguridad sistema:</label>{{ la_seguridad_sistema }}
+							<label>Seguridad ventanas:</label>{{ la_seguridad_ventanas }}
+							<div>
+								<button onclick="hiddenOn();" id="valuehidden">Hidden</button>
+							</div>
+						</div>
+					{% endif %}
+
+					</div>
+					</div>

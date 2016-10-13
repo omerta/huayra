@@ -8,11 +8,11 @@ function ue_nuevo()
 		f.existe.value="FALSE";
 		f.action="sigesp_snorh_d_cargo.php";
 		f.submit();
-   	}
+ 	}
 	else
-   	{
- 		alert("No tiene permiso para realizar esta operacion");
-   	}
+ 	{
+		alert("No tiene permiso para realizar esta operacion");
+ 	}
 }
 
 function ue_guardar()
@@ -36,11 +36,11 @@ function ue_guardar()
 		{
 			alert("Debe llenar todos los datos.");
 		}
-   	}
+ 	}
 	else
-   	{
+ 	{
  		alert("No tiene permiso para realizar esta operacion");
-   	}
+ 	}
 }
 
 function ue_eliminar()
@@ -55,7 +55,7 @@ function ue_eliminar()
 			codnom = ue_validarvacio(f.cmbnomina.value);
 			if ((codcar!="")&&(codnom!=""))
 			{
-				if(confirm("�Desea eliminar el Registro actual?"))
+				if(confirm("\u00bfDesea eliminar el Registro actual?"))
 				{
 					f.operacion.value="ELIMINAR";
 					f.action="sigesp_snorh_d_cargo.php";
@@ -95,4 +95,17 @@ function ue_buscar()
    	{
  		alert("No tiene permiso para realizar esta operacion");
    	}
+}
+
+function hiddenOn()
+{
+	var hiddenStatus = document.getElementById("operacion").value;
+	if(hiddenStatus == "")
+	{
+		document.getElementById("valuehidden").innerHTML = "VACIO";
+	}
+	if(hiddenStatus == "G")
+	{
+		document.getElementById("valuehidden").innerHTML = "G";
+	}
 }
