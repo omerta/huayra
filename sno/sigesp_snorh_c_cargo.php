@@ -8,53 +8,53 @@ class sigesp_snorh_c_cargo
 	var $io_personalnomina;
 	var $ls_codemp;
 	var $ls_codnom;
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function sigesp_snorh_c_cargo()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: sigesp_sno_c_cargo
 		//		   Access: public (sigesp_sno_d_cargo)
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 14/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 14/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_include.php");
 		$io_include=new sigesp_include();
 		$io_conexion=$io_include->uf_conectar();
 		require_once("../shared/class_folder/class_sql.php");
-		$this->io_sql=new class_sql($io_conexion);	
+		$this->io_sql=new class_sql($io_conexion);
 		require_once("../shared/class_folder/class_mensajes.php");
-		$this->io_mensajes=new class_mensajes();		
+		$this->io_mensajes=new class_mensajes();
 		require_once("../shared/class_folder/class_funciones.php");
-		$this->io_funciones=new class_funciones();		
+		$this->io_funciones=new class_funciones();
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$this->io_seguridad= new sigesp_c_seguridad();
 		require_once("sigesp_sno_c_personalnomina.php");
 		$this->io_personalnomina= new sigesp_sno_c_personalnomina();
-        $this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
+    $this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
 	}// end function sigesp_snorh_c_cargo
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_destructor()
-	{	
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_destructor
 		//		   Access: public (sigesp_sno_d_cargo)
 		//	  Description: Destructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		unset($io_include);
 		unset($io_conexion);
-		unset($this->io_sql);	
-		unset($this->io_mensajes);		
-		unset($this->io_funciones);		
+		unset($this->io_sql);
+		unset($this->io_mensajes);
+		unset($this->io_funciones);
 		unset($this->io_seguridad);
 		unset($this->io_personalnomina);
-        unset($this->ls_codemp);
-        unset($this->ls_codnom);
+    unset($this->ls_codemp);
+    unset($this->ls_codnom);
 	}// end function uf_destructor
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -64,11 +64,11 @@ class sigesp_snorh_c_cargo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_cargo
 		//		   Access: private
-		//	    Arguments: as_codcar  // Código de Cargo
-		// 	      Returns: lb_existe True si existe ó False si no existe
-		//	  Description: Funcion que verifica si el cargo está registrado
+		//	    Arguments: as_codcar  // Cï¿½digo de Cargo
+		// 	      Returns: lb_existe True si existe ï¿½ False si no existe
+		//	  Description: Funcion que verifica si el cargo estï¿½ registrado
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_existe=true;
 		$ls_sql="SELECT codcar ".
@@ -79,7 +79,7 @@ class sigesp_snorh_c_cargo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_select_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_select_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_existe=false;
 		}
 		else
@@ -88,56 +88,56 @@ class sigesp_snorh_c_cargo
 			{
 				$lb_existe=false;
 			}
-			$this->io_sql->free_result($rs_data);	
+			$this->io_sql->free_result($rs_data);
 		}
 		return $lb_existe;
 	}// end function uf_select_cargo
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_cargo($as_codcar,$as_descar,$aa_seguridad)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_insert_cargo
 		//		   Access: private
-		//	    Arguments: as_codcar  // código de cargo
-		//				   as_descar  // descripción
+		//	    Arguments: as_codcar  // cï¿½digo de cargo
+		//				   as_descar  // descripciï¿½n
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el insert ó False si hubo error en el insert
+		//	      Returns: lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
 		//	  Description: Funcion que inserta el cargo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="INSERT INTO sno_cargo(codemp,codnom,codcar,descar)VALUES".
 				"('".$this->ls_codemp."','".$this->ls_codnom."','".$as_codcar."','".$as_descar."')";
-				
-		$this->io_sql->begin_transaction();				
+
+		$this->io_sql->begin_transaction();
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_insert_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_insert_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$this->io_sql->rollback();
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó el  Cargo ".$as_codcar." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Insertï¿½ el  Cargo ".$as_codcar." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
-			{	
+			{
 				$this->io_mensajes->message("El Cargo fue registrado.");
 				$this->io_sql->commit();
 			}
 			else
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_insert_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_insert_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$this->io_sql->rollback();
 			}
 		}
@@ -151,13 +151,13 @@ class sigesp_snorh_c_cargo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_update_cargo
 		//		   Access: private
-		//	    Arguments: as_codcar  // código de cargo
-		//				   as_descar  // descripción
+		//	    Arguments: as_codcar  // cï¿½digo de cargo
+		//				   as_descar  // descripciï¿½n
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el update ó False si hubo error en el update
+		//	      Returns: lb_valido True si se ejecuto el update ï¿½ False si hubo error en el update
 		//	  Description: Funcion que actualiza el cargo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="UPDATE sno_cargo ".
@@ -171,27 +171,27 @@ class sigesp_snorh_c_cargo
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_update_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_update_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$this->io_sql->rollback();
 		}
 		else
 		{
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó el  Cargo ".$as_codcar." asociado a la nómina ".$this->ls_codnom;
+			$ls_descripcion ="Actualizï¿½ el  Cargo ".$as_codcar." asociado a la nï¿½mina ".$this->ls_codnom;
 			$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
-			{	
+			{
 				$this->io_mensajes->message("El Cargo fue Actualizado.");
 				$this->io_sql->commit();
 			}
 			else
 			{
 				$lb_valido=false;
-				$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_update_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+				$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_update_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$this->io_sql->rollback();
 			}
 		}
@@ -201,20 +201,20 @@ class sigesp_snorh_c_cargo
 
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_guardar($as_existe,$as_codcar,$as_descar,$as_codnom,$aa_seguridad)
-	{		
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_guardar
 		//		   Access: private
-		//	    Arguments: as_codcar  // código de cargo
-		//				   as_descar  // descripción
-		//				   as_codnom  // Nómina
+		//	    Arguments: as_codcar  // cï¿½digo de cargo
+		//				   as_descar  // descripciï¿½n
+		//				   as_codnom  // Nï¿½mina
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el guardar ó False si hubo error en el guardar
+		//	      Returns: lb_valido True si se ejecuto el guardar ï¿½ False si hubo error en el guardar
 		//	  Description: Funcion que guarda el cargo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		$lb_valido=false;		
+		$lb_valido=false;
 		$this->ls_codnom=$as_codnom;
 		switch ($as_existe)
 		{
@@ -249,12 +249,12 @@ class sigesp_snorh_c_cargo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_delete_cargo
-		//	    Arguments: as_codcar  // código de cargo
+		//	    Arguments: as_codcar  // cï¿½digo de cargo
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	      Returns: lb_valido True si se ejecuto el delete ó False si hubo error en el delete
+		//	      Returns: lb_valido True si se ejecuto el delete ï¿½ False si hubo error en el delete
 		//	  Description: Funcion que elimina el cargo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$this->ls_codnom=$as_codnom;
@@ -274,34 +274,34 @@ class sigesp_snorh_c_cargo
 			{
 				$lb_valido=false;
 				$this->io_sql->rollback();
-				$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_delete_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_delete_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			}
 			else
 			{
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="DELETE";
-				$ls_descripcion ="Eliminó el  Cargo ".$as_codcar." asociado a la nómina ".$this->ls_codnom;
+				$ls_descripcion ="Eliminï¿½ el  Cargo ".$as_codcar." asociado a la nï¿½mina ".$this->ls_codnom;
 				$lb_valido= $this->io_seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				if($lb_valido)
-				{	
+				{
 					$this->io_mensajes->message("El Cargo fue Eliminado.");
 					$this->io_sql->commit();
 				}
 				else
 				{
 					$lb_valido=false;
-					$this->io_mensajes->message("CLASE->Cargo MÉTODO->uf_delete_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+					$this->io_mensajes->message("CLASE->Cargo Mï¿½TODO->uf_delete_cargo ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 					$this->io_sql->rollback();
 				}
 			}
-		} 
+		}
 		else
 		{
 			$this->io_mensajes->message("No se puede eliminar el registro. Hay Personal asociado a este cargo.");
-		}       
+		}
 		unset($_SESSION["la_nomina"]);
 		return $lb_valido;
     }// end function uf_delete_cargo
@@ -313,10 +313,10 @@ class sigesp_snorh_c_cargo
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_cargarnomina
 		//		   Access: private
-		//	  Description: Función que obtiene todas las nóminas y las carga en un 
+		//	  Description: Funciï¿½n que obtiene todas las nï¿½minas y las carga en un
 		//				   combo para seleccionarlas
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 15/02/2008 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 15/02/2008 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		switch($as_codnom)
 		{
@@ -333,35 +333,32 @@ class sigesp_snorh_c_cargo
 				"  FROM sno_nomina, sss_permisos_internos ".
 				" WHERE sno_nomina.codemp='".$this->ls_codemp."'".
 				"   AND sss_permisos_internos.codsis='SNO'".
+				"   AND sss_permisos_internos.enabled=1".
 				"   AND sss_permisos_internos.codusu='".$_SESSION["la_logusr"]."'".
 				"   AND sno_nomina.codemp = sss_permisos_internos.codemp ".
 				"   AND sno_nomina.codnom = sss_permisos_internos.codintper ".
 				" GROUP BY sno_nomina.codnom, sno_nomina.desnom ".
 				" ORDER BY sno_nomina.codnom, sno_nomina.desnom ";
 		$rs_data=$this->io_sql->select($ls_sql);
-       	print "<select name='cmbnomina' id='cmbnomina' style='width:380px' ".$ls_disabled.">";
-        print " <option value='' ".$ls_selected.">--Seleccione Una--</option>";
+       	//print "<select class='form-control' name='cmbnomina' id='cmbnomina' ".$ls_disabled.">";
+        //print " <option value='' ".$ls_selected.">--Seleccione Una--</option>";
 		if($rs_data===false)
 		{
-        	$io_mensajes->message("Clase->Seleccionar Nómina Método->uf_cargarnomina Error->".$io_funciones->uf_convertirmsg($this->io_sql->message)); 
+        	$io_mensajes->message("Clase->Seleccionar Nï¿½mina Mï¿½todo->uf_cargarnomina Error->".$io_funciones->uf_convertirmsg($this->io_sql->message));
 		}
 		else
 		{
+			$n=0;
 			while($row=$this->io_sql->fetch_row($rs_data))
 			{
 				$ls_codnom=$row["codnom"];
 				$ls_desnom=$row["desnom"];
-				$ls_selected="";
-				if($as_codnom==$ls_codnom)
-				{
-					$ls_selected="selected";
-				}
-            	print "<option value='".$ls_codnom."' ".$ls_selected.">".$ls_codnom."-".$ls_desnom."</option>";				
+				$nominas[$n] = array('valor' => $ls_codnom, 'nombre' => $ls_desnom);
+				$n++;
 			}
 			$this->io_sql->free_result($rs_data);
+			return $nominas;
 		}
-       	print "</select>";
-		print "<input name='txtcodnom' type='hidden' id='txtcodnom' value='".$as_codnom."'>";
    }
    //--------------------------------------------------------------
 }
