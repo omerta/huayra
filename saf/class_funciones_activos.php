@@ -8,11 +8,11 @@ class class_funciones_activos
 		//		   Access: public
 		//	  Description: Constructor de la Clase
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 
 	}
-	
+
    //--------------------------------------------------------------
    function uf_obteneroperacion()
    {
@@ -20,11 +20,11 @@ class class_funciones_activos
 		//	     Function: uf_obteneroperacion
 		//		   Access: public
 		//	      Returns: operacion valor de la variable
-		//	  Description: Función que obtiene que tipo de operación se va a ejecutar
+		//	  Description: Funciï¿½n que obtiene que tipo de operaciï¿½n se va a ejecutar
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
-		
+
 		if(array_key_exists("operacion",$_POST))
 		{
 			$operacion=$_POST["operacion"];
@@ -33,7 +33,7 @@ class class_funciones_activos
 		{
 			$operacion="NUEVO";
 		}
-   		return $operacion; 
+   		return $operacion;
    }
    //--------------------------------------------------------------
 
@@ -44,9 +44,9 @@ class class_funciones_activos
 		//	     Function: uf_obtenerexiste
 		//		   Access: public
 		//	      Returns: existe valor de la variable
-		//	  Description: Función que obtiene si existe el registro ó no
+		//	  Description: Funciï¿½n que obtiene si existe el registro ï¿½ no
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists("existe",$_POST))
 		{
@@ -56,10 +56,10 @@ class class_funciones_activos
 		{
 			$existe="FALSE";
 		}
-   		return $existe; 
+   		return $existe;
    }
    //--------------------------------------------------------------
-	
+
    //--------------------------------------------------------------
    function uf_seleccionarcombo($as_valores,$as_seleccionado,&$aa_parametro,$li_total)
    {
@@ -70,9 +70,9 @@ class class_funciones_activos
 		//				   as_seleccionado  // Valor que se debe seleccionar
 		//				   aa_parametro  // arreglo de valores
 		//				   li_total  // Valor toatl de valores
-		//	  Description: Función que seleciona un valor de un combo
+		//	  Description: Funciï¿½n que seleciona un valor de un combo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
    		$la_valores = split("-",$as_valores);
 		for($li_index=0;$li_index<$li_total;++$li_index)
@@ -94,9 +94,9 @@ class class_funciones_activos
 		//	    Arguments: as_valor  // Variable que deseamos obtener
 		//				   as_valordefecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_valor,$_POST))
 		{
@@ -106,7 +106,7 @@ class class_funciones_activos
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    }
    //--------------------------------------------------------------
 
@@ -117,31 +117,31 @@ class class_funciones_activos
 		//	     Function: uf_obtenervariable
 		//		   Access: public
 		//	    Arguments: as_variable  // Variable que deseamos obtener
-		//			       as_caso1  // condición 1
-		//			       as_caso2  // condición 2
-		//			       as_valor1  // Valor si se cumple la condición 1
-		//			       as_valor2  // Valor si se cumple la condición 2
+		//			       as_caso1  // condiciï¿½n 1
+		//			       as_caso2  // condiciï¿½n 2
+		//			       as_valor1  // Valor si se cumple la condiciï¿½n 1
+		//			       as_valor2  // Valor si se cumple la condiciï¿½n 2
 		//	  		       as_defecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que dependiendo del caso trae un valor u otro
+		//	  Description: Funciï¿½n que dependiendo del caso trae un valor u otro
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		switch($as_variable)
 		{
 			case $as_caso1:
 				$valor = $as_valor1;
 				break;
-					
+
 			case $as_caso2:
 				$valor = $as_valor2;
-				break;					
-			
+				break;
+
 			default:
 				$valor = $as_defecto;
 				break;
 		}
-   		return $valor; 
+   		return $valor;
    }
    //--------------------------------------------------------------
 
@@ -151,11 +151,11 @@ class class_funciones_activos
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_formatonumerico
 		//		   Access: public
-		//	    Arguments: as_valor  // valor sin formato numérico
-		//	      Returns: as_valor valor numérico formateado
-		//	  Description: Función que le da formato a los valores numéricos que vienen de la BD
+		//	    Arguments: as_valor  // valor sin formato numï¿½rico
+		//	      Returns: as_valor valor numï¿½rico formateado
+		//	  Description: Funciï¿½n que le da formato a los valores numï¿½ricos que vienen de la BD
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$as_valor=str_replace(".",",",$as_valor);
 		$li_poscoma = strpos($as_valor, ",");
@@ -169,7 +169,7 @@ class class_funciones_activos
 		$li_poscoma = $li_poscoma - 1;
 		for($li_index=$li_poscoma;$li_index>=0;--$li_index)
 		{
-			if(($li_contador==3)&&(($li_index-1)>=0)) 
+			if(($li_contador==3)&&(($li_index-1)>=0))
 			{
 				$as_valor = substr($as_valor,0,$li_index).".".substr($as_valor,$li_index);
 				$li_contador=1;
@@ -189,9 +189,9 @@ class class_funciones_activos
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtenertipo
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de llamada del catalogo
+		//	  Description: Funciï¿½n que obtiene que tipo de llamada del catalogo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists("tipo",$_GET))
 		{
@@ -201,7 +201,7 @@ class class_funciones_activos
 		{
 			$tipo="";
 		}
-   		return $tipo; 
+   		return $tipo;
    	}
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -211,9 +211,9 @@ class class_funciones_activos
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_obtenervalor_get
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de llamada del catalogo
+		//	  Description: Funciï¿½n que obtiene que tipo de llamada del catalogo
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_variable,$_GET))
 		{
@@ -223,7 +223,7 @@ class class_funciones_activos
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    	}
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -236,9 +236,9 @@ class class_funciones_activos
 		//	    Arguments: as_valor  // Variable que deseamos obtener
 		//				   as_valordefecto  // Valor por defecto de la variable
 		//	      Returns: valor contenido de la variable
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if(array_key_exists($as_valor,$_POST))
 		{
@@ -248,12 +248,12 @@ class class_funciones_activos
 		{
 			$valor=$as_valordefecto;
 		}
-		
+
 		if ($valor=="")
 		{
 			$valor=$as_valordefecto;
 		}
-   		return $valor; 
+   		return $valor;
    }
    //--------------------------------------------------------------
 
@@ -262,12 +262,12 @@ class class_funciones_activos
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_agregarlineablanca
 		//         Access: private
-		//      Argumento: $aa_object // arreglo de titulos 
+		//      Argumento: $aa_object // arreglo de titulos
 		//				   $ai_totrows // ultima fila pintada en el grid
-		//	      Returns: 
+		//	      Returns:
 		//    Description: Funcion que convierte a formato numerico
 		//	   Creado Por: Ing. Luis Anibal Lang
-		// Fecha Creación: 07/06/2006 								Fecha Última Modificación : 07/06/2006 
+		// Fecha Creaciï¿½n: 07/06/2006 								Fecha ï¿½ltima Modificaciï¿½n : 07/06/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$li_valoraux=str_replace(".","",$ai_valor);
 		$li_valoraux=str_replace(",",".",$li_valoraux);
@@ -281,12 +281,12 @@ class class_funciones_activos
 		//		   Access: public (en todas las clases que usen seguridad)
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
-		//				   as_permisos  // persimo si puede entrar ó no a la página
+		//				   as_permisos  // persimo si puede entrar ï¿½ no a la pï¿½gina
 		//				   aa_seguridad  // arreglo de las variables de seguridad
 		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
@@ -305,7 +305,7 @@ class class_funciones_activos
 		$aa_permisos["anular"]="";
 		$aa_permisos["ejecutar"]="";
 		if (array_key_exists("permisos",$_POST)||($ls_logusr=="PSEGIS"))
-		{	
+		{
 			if($ls_logusr=="PSEGIS")
 			{
 				$as_permisos="1";
@@ -329,20 +329,20 @@ class class_funciones_activos
 		}
 		unset($io_seguridad);
    }// end function uf_load_seguridad
-   
+
    //----------------------------------------------------------------------------------------------------------------------------
    function uf_print_permisos($as_permisos,$aa_permisos,$as_logusr,$as_accion)
    {
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_print_permisos
 		//		   Access: public
-		//	    Arguments: as_permisos  // permisos que tiene el usuario en la página
+		//	    Arguments: as_permisos  // permisos que tiene el usuario en la pï¿½gina
 		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
 		//				   as_logusr  // login de usuario
-		//				   as_accion  // acción que va a ejecutar si no tiene permiso el usuario
-		//	  Description: Función que imprime el permiso de seguridad en las páginas
+		//				   as_accion  // acciï¿½n que va a ejecutar si no tiene permiso el usuario
+		//	  Description: Funciï¿½n que imprime el permiso de seguridad en las pï¿½ginas
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		if (($as_permisos)||($as_logusr=="PSEGIS"))
 		{
@@ -362,7 +362,7 @@ class class_funciones_activos
 			print("</script>");
 		}
    }// end function uf_print_permisos
-   
+
    //----------------------------------------------------------------------------------------------------------------------------
    function uf_load_seguridad_reporte($as_sistema,$as_ventanas,$as_descripcion)
    {
@@ -372,9 +372,9 @@ class class_funciones_activos
 		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
 		//				   as_ventanas // Ventana del que se desea verificar la seguridad
 		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//	  Description: Función que obtiene el valor de una variable que viene de un submit
+		//	  Description: Funciï¿½n que obtiene el valor de una variable que viene de un submit
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 27/04/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 27/04/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		require_once("../../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
@@ -398,9 +398,9 @@ class class_funciones_activos
 		//////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_loadmodalidad
 		//		   Access: public
-		//	  Description: Función que obtiene que tipo de modalidad y da las longitudes por accion
+		//	  Description: Funciï¿½n que obtiene que tipo de modalidad y da las longitudes por accion
 		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 19/04/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		//////////////////////////////////////////////////////////////////////////////
 		$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
 		$ai_len1=$_SESSION["la_empresa"]["loncodestpro1"];
@@ -413,7 +413,7 @@ class class_funciones_activos
 			case "1": // Modalidad por Proyecto
 				$as_titulo="Estructura Presupuestaria";
 				break;
-				
+
 			case "2": // Modalidad por Programatica
 				$as_titulo="Estructura Programatica";
 				break;
@@ -421,47 +421,48 @@ class class_funciones_activos
    	}// end function uf_loadmodalidad
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
-	//-----------------------------------------------------------------------------------------------------------------------------------
-   	function uf_formatoprogramatica($as_codpro,&$as_programatica)
+		/**
+		* FunciÃ³n que obtiene que de acuerdo a la modalidad imprime la programatica.
+		*
+		* @param string $as_codpro
+		* @param string $as_programatica
+		* @return string $as_programatica Se pasa por referencia.
+		*
+		* @author Yesenia Moreno, Luis Lang 2007
+		*/
+		function uf_formatoprogramatica($as_codpro,&$as_programatica)
    	{
-		//////////////////////////////////////////////////////////////////////////////
-		//	     Function: uf_formatoprogramatica
-		//		   Access: public
-		//	  Description: Función que obtiene que de acuerdo a la modalidad imprime la programatica
-		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
-		//////////////////////////////////////////////////////////////////////////////
-		$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
-		$li_len1=0;
-		$li_len2=0;
-		$li_len3=0;
-		$li_len4=0;
-		$li_len5=0;
-		$ls_titulo="";
-		$this->uf_loadmodalidad(&$li_len1,&$li_len2,&$li_len3,&$li_len4,&$li_len5,&$ls_titulo);
-		$ls_codest1=substr($as_codpro,0,25);
-		$ls_codest2=substr($as_codpro,25,25);
-		$ls_codest3=substr($as_codpro,50,25);
-		$ls_codest4=substr($as_codpro,75,25);
-		$ls_codest5=substr($as_codpro,100,25);
-		$ls_codest1=substr($ls_codest1,(25-$li_len1),$li_len1);
-		$ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
-		$ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
-		$ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
-		$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);		
-		switch($ls_modalidad)
-		{
-			case "1": // Modalidad por Proyecto
-				$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3;
-				break;
+			$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
+			$li_len1=0;
+			$li_len2=0;
+			$li_len3=0;
+			$li_len4=0;
+			$li_len5=0;
+			$ls_titulo="";
+			$this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
+			$ls_codest1=substr($as_codpro,0,25);
+			$ls_codest2=substr($as_codpro,25,25);
+			$ls_codest3=substr($as_codpro,50,25);
+			$ls_codest4=substr($as_codpro,75,25);
+			$ls_codest5=substr($as_codpro,100,25);
+			$ls_codest1=substr($ls_codest1,(25-$li_len1),$li_len1);
+			$ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
+			$ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
+			$ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
+			$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);
+			switch($ls_modalidad)
+			{
+				case "1": // Modalidad por Proyecto
+					$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3;
+					break;
 
-			case "2": // Modalidad por Programa
-				$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3."-".$ls_codest4."-".$ls_codest5;
-				break;
-		}
+				case "2": // Modalidad por Programa
+					$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3."-".$ls_codest4."-".$ls_codest5;
+					break;
+			}
    	}// end function uf_obtenertipo
 	//-----------------------------------------------------------------------------------------------------------------------------------
-	
+
 	function uf_chkciescg()
 	{
 	 require_once("../shared/class_folder/class_sql.php");
@@ -477,11 +478,11 @@ class class_funciones_activos
 	 $ls_codemp=$_SESSION["la_empresa"]["codemp"];
 	 $lb_valido=false;
 	 $ls_sql = "SELECT estciescg FROM sigesp_empresa  ".
-			   "   WHERE codemp='".$ls_codemp."' " ;		   
+			   "   WHERE codemp='".$ls_codemp."' " ;
 	 $rs_data=$io_sql->select($ls_sql);
 	 if($rs_data===false)
 	 {
-	  $io_msg->message("CLASE->activo MÉTODO->uf_chkciescg ERROR->".$io_funcion->uf_convertirmsg($io_sql->message));
+	  $io_msg->message("CLASE->activo Mï¿½TODO->uf_chkciescg ERROR->".$io_funcion->uf_convertirmsg($io_sql->message));
 	 }
 	 else
 	 {
@@ -490,7 +491,7 @@ class class_funciones_activos
 	    $li_estciescg = $rs_data->fields["estciescg"];
 		$rs_data->MoveNext();
 	   }
-	   
+
 	   if($li_estciescg == 1)
 	   {
 	    $ls_valido = true;
@@ -501,7 +502,7 @@ class class_funciones_activos
 	   }
        $io_sql->free_result($rs_data);
 	 }
-		
+
 	return $lb_valido;
 	}
 function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo)
@@ -510,14 +511,14 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 		//	     Function: uf_select_config
 		//		   Access: public
 		//	    Arguments: as_sistema  // Sistema al que pertenece la variable
-		//				   as_seccion  // Sección a la que pertenece la variable
+		//				   as_seccion  // Secciï¿½n a la que pertenece la variable
 		//				   as_variable  // Variable nombre de la variable a buscar
 		//				   as_valor  // valor por defecto que debe tener la variable
 		//				   as_tipo  // tipo de la variable
 		//	      Returns: $ls_resultado variable buscado
-		//	  Description: Función que obtiene una variable de la tabla config
+		//	  Description: Funciï¿½n que obtiene una variable de la tabla config
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 require_once("../shared/class_folder/class_sql.php");
 	 require_once("../shared/class_folder/sigesp_include.php");
@@ -540,7 +541,7 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 		$rs_data=$io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$io_msg->message("CLASE->SAF MÉTODO->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$io_msg->message("CLASE->SAF Mï¿½TODO->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -559,11 +560,11 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 					$ls_valor=$this->uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo);
 				}
 			}
-			$io_sql->free_result($rs_data);		
+			$io_sql->free_result($rs_data);
 		}
 		return rtrim($ls_valor);
 	}// end function uf_select_config
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+	//-----------------------------------------------------------------------------------------------------------------------------------
  //-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo)
 	{
@@ -571,14 +572,14 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 		//	     Function: uf_insert_config
 		//		   Access: public
 		//	    Arguments: as_sistema  // Sistema al que pertenece la variable
-		//				   as_seccion  // Sección a la que pertenece la variable
+		//				   as_seccion  // Secciï¿½n a la que pertenece la variable
 		//				   as_variable  // Variable nombre de la variable a buscar
 		//				   as_valor  // valor por defecto que debe tener la variable
 		//				   as_tipo  // tipo de la variable
-		//	      Returns: $lb_valido True si se ejecuto el insert ó False si hubo error en el insert
-		//	  Description: Función que inserta la variable de configuración
+		//	      Returns: $lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
+		//	  Description: Funciï¿½n que inserta la variable de configuraciï¿½n
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creación: 01/01/2006 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 require_once("../shared/class_folder/class_sql.php");
 		 require_once("../shared/class_folder/sigesp_include.php");
@@ -592,18 +593,18 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 		 $io_funcion = new class_funciones();
 		$lb_valido=true;
 		$io_sql->begin_transaction();
-		$this->ls_codemp=$_SESSION["la_empresa"]["codemp"];		
+		$this->ls_codemp=$_SESSION["la_empresa"]["codemp"];
 		$ls_sql="DELETE ".
 				"  FROM sigesp_config ".
 				" WHERE codemp='".$this->ls_codemp."' ".
 				"   AND codsis='".$as_sistema."' ".
 				"   AND seccion='".$as_seccion."' ".
-				"   AND entry='".$as_variable."' ";		
+				"   AND entry='".$as_variable."' ";
 		$li_row=$io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
  			$lb_valido=false;
-			$io_msg->message("CLASE->SAF MÉTODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+			$io_msg->message("CLASE->SAF Mï¿½TODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$io_sql->rollback();
 		}
 		else
@@ -630,12 +631,12 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 			}
 			$ls_sql="INSERT INTO sigesp_config(codemp, codsis, seccion, entry, value, type)VALUES ".
 					"('".$this->ls_codemp."','".$as_sistema."','".$as_seccion."','".$as_variable."','".$valor."','".$as_tipo."')";
-					
+
 			$li_row=$io_sql->execute($ls_sql);
 			if($li_row===false)
 			{
 				$lb_valido=false;
-				$io_msg->message("CLASE->SNO MÉTODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
+				$io_msg->message("CLASE->SNO Mï¿½TODO->uf_insert_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				$io_sql->rollback();
 			}
 			else
@@ -644,7 +645,7 @@ function uf_select_config($as_sistema, $as_seccion, $as_variable, $as_valor, $as
 			}
 		}
 		return $lb_valido;
-	}// end function uf_insert_config	
-	//-----------------------------------------------------------------------------------------------------------------------------------	
+	}// end function uf_insert_config
+	//-----------------------------------------------------------------------------------------------------------------------------------
 }
 ?>

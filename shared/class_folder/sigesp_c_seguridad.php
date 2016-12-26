@@ -16,19 +16,19 @@
 			$this->io_funcion= new class_funciones();
 			$this->io_sql=     new class_sql($this->con);
 			$this->io_fun=     new class_funciones_db($this->con);
-		}	
-		
+		}
+
 		function uf_sss_select_eventos($as_evento,$ls_descripcion)
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//	     Function: uf_sss_select_eventos
-			//         Access: public 
+			//         Access: public
 			//      Argumento: $as_evento        // codigo de evento
 			//                 $ls_descripcion   // descripcion  de evento
 			//	      Returns: Retorna un Booleano
 			//    Description: Funcion que verifica la existencia de un evento en la tabla sss_eventos
 			//	   Creado Por: Ing. Luis Anibal Lang
-			// Fecha Creación: 01/11/2005 								Fecha Última Modificación : 
+			// Fecha Creaciï¿½n: 01/11/2005 								Fecha ï¿½ltima Modificaciï¿½n :
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			$lb_valido=true;
 			$ls_sql="";
@@ -38,7 +38,7 @@
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data===false)
 			{
-				$this->io_msg->message("CLASE->seguridad MÉTODO->uf_sss_select_eventos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				$this->io_msg->message("CLASE->seguridad Mï¿½TODO->uf_sss_select_eventos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
@@ -57,29 +57,29 @@
 			}
 			return $lb_valido;
 		} // end function uf_sss_select_eventos
-		
+
+		/**
+		 * Funcion que inserta un evento que se origina en alguna operaciÃ³n
+		 * de INSERT, UPDATE o DELETE dentro del Sistema y lo inserta en la
+		 * tabla sss_registro_eventos.
+		 *
+		 * @param string $as_empresa CÃ³digo de Empresa
+		 * @param string $as_sistema CÃ³digo de Sistema
+		 * @param string $as_evento CÃ³digo de Evento
+		 * @param string $as_usuario CÃ³digo de Usuario
+		 * @param string $as_ventana CÃ³digo de Ventana
+		 * @param string $as_descripcion CÃ³digo de Evento
+		 * @return bool $lb_valido
+		 *
+		 * @author Luis Anibal Lang 2005
+		 */
 		function uf_sss_insert_eventos_ventana($as_empresa,$as_sistema,$as_evento,$as_usuario,$as_ventana,$as_descripcion)
 		{
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//	     Function: uf_sss_insert_eventos_ventana
-			//         Access: public 
-			//      Argumento: $as_empresa      // codigo de empresa
-			//                 $as_sistema      // codigo de sistema
-			//                 $as_evento       // codigo de evento
-			//                 $as_usuario      // codigo de usuario
-			//                 $as_ventana      // codigo de ventana
-			//                 $as_descripcion  // descripcion  de evento
-			//	      Returns: Retorna un Booleano
-			//    Description: Funcion que inserta un evento que se origina en alguna operación  de INSERT, UPDATE ó DELETE 
-			//				   dentro del Sistema y lo inserta en la tabla sss_registro_eventos
-			//	   Creado Por: Ing. Luis Anibal Lang
-			// Fecha Creación: 01/11/2005 								Fecha Última Modificación : 
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if($as_usuario!="PSEGIS")
 			{
 				$lb_valido=true;
 				$ls_sql="";
-			
+
 				$ld_fecha = date("Y-m-d H:i:s");
 				$ls_ip=$this->getip();
 				$ls_descripcion="";
@@ -88,15 +88,15 @@
 				$ls_codintper="---------------------------------";
 				$li_numeve=$this->io_fun->uf_generar_codigo("","",$ls_tabla,$ls_columna);
 				$ls_sisope="N/D";
-				$as_ventana= $this->obtenerCodigoMenu($as_sistema,$as_ventana,&$campo);
+				$as_ventana= $this->obtenerCodigoMenu($as_sistema,$as_ventana,$campo);
 				$ls_sql= "INSERT INTO sss_registro_eventos (codemp, numeve, codusu, codsis, evento, $campo, codintper, fecevetra, equevetra,".
-						 " 									desevetra, ususisoper)". 
+						 " 									desevetra, ususisoper)".
 						 " VALUES ('".$as_empresa."','".$li_numeve."','".$as_usuario."','".$as_sistema."','".$as_evento."',".
 						 " 		   '".$as_ventana."','".$ls_codintper."','".$ld_fecha."','".$ls_ip."','".$as_descripcion."','".$ls_sisope."')" ;
 				$li_row=$this->io_sql->execute($ls_sql);
 				if($li_row===false)
 				{
-					$this->io_msg->message("CLASE->seguridad MÉTODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+					$this->io_msg->message("CLASE->seguridad Mï¿½TODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 					//print $this->io_sql->message;
 					$lb_valido=true;
 				}
@@ -110,58 +110,57 @@
 				$lb_valido=true;
 			}
 		  	return $lb_valido;
-		} // end  function uf_sss_insert_eventos_ventana		
-		
+		} // end  function uf_sss_insert_eventos_ventana
+
+		/**
+	   * Funcion que verifica si un usuario tiene permiso en determinada pantalla
+		 * o no comparando que el campo "enabled" sea igual a 1 para
+		 * "permiso otorgado". En la tabla sss_derechos_usuarios.
+		 *
+		 * @param string $as_empresa CÃ³digo de empresa
+		 * @param string $as_usuario CÃ³digo de usuario
+		 * @param string $as_sistema CÃ³digo de sistema
+		 * @param string $as_ventana CÃ³digo de ventana
+		 * @return bool $lb_valido
+		 *
+		 * @author Nelson Barraez 2010
+		 * @author Luis Anibal Lang 2005
+		 */
 		function uf_sss_select_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana)
 		{
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//	     Function: uf_sss_select_permisos
-			//         Access: public 
-			//      Argumento: $as_empresa      // codigo de empresa
-			//                 $as_usuario      // codigo de usuario
-			//                 $as_sistema      // codigo de sistema
-			//                 $as_ventana      // codigo de ventana
-			//	      Returns: Retorna un Booleano
-			//    Description: Funcion que verifica si un usuario tiene permiso en determinada pantalla o no comparando que el campo
-			//				   "enabled" sea igual a 1 para "permiso otorgado". En la tabla sss_derechos_usuarios
-			//	   Creado Por: Ing. Nelson Barraez
-			// Fecha Creación: 27/05/2010 								Fecha Última Modificación : 
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			$lb_valido=true;
 			$ls_sql="";
 			$ls_enabled= 1;
-			$lb_valido=$this->uf_sss_load_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana,&$aa_permisos);
+			$lb_valido=$this->uf_sss_load_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana,$aa_permisos);
 			return $lb_valido;
 		} // end  function uf_sss_select_permisos
 
-
+		/**
+		* Funcion que verifica si un usuario tiene permiso en determinada pantalla o no
+		* comparando que el campo "enabled" sea igual a 1 para "permiso otorgado" y carga
+		* en un arreglo todos los permisos de la barra de herramientas. Los permisos
+		* se consiguen consultando la tabla sss_derechos_usuarios.z
+		*
+		* @param string $as_empresa CÃ³digo de empresa
+		* @param string $as_usuario CÃ³digo de usuario
+		* @param string $as_sistema CÃ³digo de sistema
+		* @param string $as_ventana CÃ³digo de ventana
+		* @param string $aa_permisos Arreglo que contiene los permisos de la barra de herramienta
+		* @return boole
+		*
+		* @author Luis Anibal Lang 2005,2007
+		*/
 		function uf_sss_load_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana,&$aa_permisos)
 		{
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//	     Function: uf_sss_select_permisos
-			//         Access: public 
-			//      Argumento: $as_empresa       // codigo de empresa
-			//                 $as_usuario       // codigo de usuario
-			//                 $as_sistema       // codigo de sistema
-			//                 $as_ventana       // codigo de ventana
-			//                 $aa_permisos      // arreglo que contiene los permisos de la barra de herramienta
-			//	      Returns: Retorna un Booleano
-			//    Description: Funcion que verifica si un usuario tiene permiso en determinada pantalla o no comparando que el campo
-			//				   "enabled" sea igual a 1 para "permiso otorgado" y carga en un arreglo todos los permisos de la barra
-			//				   de herramientas En la tabla sss_derechos_usuarios
-			//	   Creado Por: Ing. Luis Anibal Lang
-			// Fecha Creación: 01/11/2005 								Fecha Última Modificación : 19/03/2007
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			$lb_valido=true;
 			$aa_permisos = array();
 			$ls_sql="";
 			$ls_enabled= 1;
-			$as_ventana= $this->obtenerCodigoMenu($as_sistema,$as_ventana,&$campo);
-			
+
 			if($this->uf_load_permisos_por_grupo($as_empresa,$as_usuario,$as_sistema,$as_ventana,$aa_permisos))//Verifico si el usuario esta en un grupo si esta cargo los permisos
 			{
-				/* No lleva ninguna acción ya el llenado de los permisos viene del metodo load_permisos_por_grupo, 
-				   se deja asi solo para apreciar que si consigue los permisos en el grupo los carga, sino va por 
+				/* No lleva ninguna acciï¿½n ya el llenado de los permisos viene del metodo load_permisos_por_grupo,
+				   se deja asi solo para apreciar que si consigue los permisos en el grupo los carga, sino va por
 				   el else y los busca por medio del usuario.                                                   */
 			}
 			else//Si el usuario no pertenece a un grupo busco sus permisos como usuario
@@ -175,7 +174,7 @@
 				$rs_data=$this->io_sql->select($ls_sql);
 				if($rs_data===false)
 				{
-					$this->io_msg->message("CLASE->seguridad MÉTODO->uf_sss_select_permisos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+					$this->io_msg->message("CLASE->seguridad MÃ‰TODO->uf_sss_select_permisos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 					$lb_valido=false;
 				}
 				else
@@ -199,34 +198,32 @@
 					}
 					$this->io_sql->free_result($rs_data);
 				}
-				//$this->io_sql->free_result($rs_data);
 			}
 			return $lb_valido;
 		} // end  function uf_sss_select_permisos
 
+		/**
+		 * Funcion que verifica si un usuario tiene permiso en determinada pantalla
+		 * o no comparando que el campo "enabled" sea igual a 1 para "permiso otorgado"
+		 * y carga en un arreglo todos los permisos de la barra de herramientas
+		 * En la tabla sss_derechos_usuarios, en los casos de SNO y SPG verificando
+		 * igualmente el codigo interno de permisologia.
+		 *
+	   * @param string $as_empresa   CÃ³digo de empresa
+		 * @param string $as_usuario   CÃ³digo de usuario
+		 * @param string $as_sistema   CÃ³digo de sistema
+		 * @param string $as_ventana   CÃ³digo de ventana
+		 * @param string $as_codintper CÃ³digo interno de permisologia
+		 * @param string $aa_permisos  CÃ³reglo que contiene los permisos de la barra de herramienta
+		 *
+		 * @author Luis Anibal Lang 2006, 2007
+		 */
 		function uf_sss_load_permisosinternos($as_empresa,$as_usuario,$as_sistema,$as_ventana,$as_codintper,&$aa_permisos)
 		{
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//	     Function: uf_sss_load_permisosinternos
-			//         Access: public 
-			//      Argumento: $as_empresa       // codigo de empresa
-			//                 $as_usuario       // codigo de usuario
-			//                 $as_sistema       // codigo de sistema
-			//                 $as_ventana       // codigo de ventana
-			//                 $as_codintper     // codigo interno de permisologia
-			//                 $aa_permisos      // arreglo que contiene los permisos de la barra de herramienta
-			//	      Returns: Retorna un Booleano
-			//    Description: Funcion que verifica si un usuario tiene permiso en determinada pantalla o no comparando que el campo
-			//				   "enabled" sea igual a 1 para "permiso otorgado" y carga en un arreglo todos los permisos de la barra
-			//				   de herramientas En la tabla sss_derechos_usuarios, en los casos de SNO y SPG verificando igualmente 
-			//				   el codigo interno de permisologia
-			//	   Creado Por: Ing. Luis Anibal Lang
-			// Fecha Creación: 26/10/2006 								Fecha Última Modificación : 19/03/2007
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			$lb_valido=true;
 			$ls_sql="";
 			$ls_enabled= 1;
-			$as_ventana= $this->obtenerCodigoMenu($as_sistema,$as_ventana,&$campo);
+			$as_ventana= $this->obtenerCodigoMenu($as_sistema,$as_ventana,$campo);
 			$ls_sql="SELECT * FROM sss_derechos_usuarios".
 					" WHERE codemp='".$as_empresa."'".
 					"   AND codusu='".$as_usuario."'".
@@ -237,7 +234,7 @@
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data===false)
 			{
-				$this->io_msg->message("CLASE->seguridad MÉTODO->uf_sss_load_permisosinternos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				$this->io_msg->message("CLASE->seguridad Mï¿½TODO->uf_sss_load_permisosinternos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
@@ -269,12 +266,12 @@
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//	     Function: uf_sss_load_permisossigesp
-			//         Access: public 
+			//         Access: public
 			//      Argumento: $aa_permisos      // arreglo que contiene los permisos de la barra de herramienta
 			//	      Returns: Retorna un Booleano
 			//    Description: Funcion que otorga todos los permisos al usuario SIGESP
 			//	   Creado Por: Ing. Luis Anibal Lang
-			// Fecha Creación: 01/11/2005 								Fecha Última Modificación : 19/03/2007
+			// Fecha Creaciï¿½n: 01/11/2005 								Fecha ï¿½ltima Modificaciï¿½n : 19/03/2007
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			$aa_permisos["leer"]=1;
 			$aa_permisos["incluir"]=1;
@@ -298,10 +295,10 @@
 		   else if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
 				   $ip = $_SERVER['REMOTE_ADDR'];
 		   else
-				   $ip = "unknown";				   
+				   $ip = "unknown";
    		   return($ip);
 		}
-		
+
 		function uf_load_permisos_por_grupo($as_empresa,$as_usuario,$as_sistema,$as_ventana,&$aa_permisos)
 		{
 			$ls_sql="SELECT sss_derechos_grupos.* FROM sss_derechos_grupos,sss_usuarios_en_grupos ".
@@ -311,11 +308,11 @@
 					"   AND sss_derechos_grupos.nomven='".$as_ventana."' ".
 					"   AND sss_derechos_grupos.enabled=1 ".
 					"   AND sss_usuarios_en_grupos.codgru=sss_derechos_grupos.codgru";
-					
+
 			$rs_data=$this->io_sql->select($ls_sql);
 			if($rs_data===false)
 			{
-				$this->io_msg->message("CLASE->seguridad MÉTODO->uf_load_permisos_por_grupo ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				$this->io_msg->message("CLASE->seguridad MÃ‰TODO->uf_load_permisos_por_grupo ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 			}
 			else
@@ -338,32 +335,32 @@
 				}
 				$this->io_sql->free_result($rs_data);
 			}
-			return $lb_valido;	
+			return $lb_valido;
 		}
 
 		/***********************************************************************************
-		* @Función que busca el código del sistema ventana
-		* @parametros: 
-		* @retorno: 
-		* @fecha de creación: 09/10/2008
+		* @Funciï¿½n que busca el cï¿½digo del sistema ventana
+		* @parametros:
+		* @retorno:
+		* @fecha de creaciï¿½n: 09/10/2008
 		* @autor: Ing. Yesenia Moreno de Lang
 		************************************************************************************
-		* @fecha modificación:
-		* @descripción:
+		* @fecha modificaciï¿½n:
+		* @descripciï¿½n:
 		* @autor:
-		***********************************************************************************/		
+		***********************************************************************************/
 			function obtenerCodigoMenu($codsis,$nomfisico,&$campo)
 			{
 				/*global $conexionbd;
 				if (array_key_exists('session_activa',$_SESSION))
-				{	
+				{
 					$codmenu=0;
-					$_SESSION['session_activa'] = time();			
+					$_SESSION['session_activa'] = time();
 					$consulta = "SELECT codmenu ".
 								"  FROM sss_sistemas_ventanas ".
 								" WHERE codsis = '$codsis' ".
 								"	AND nomfisico ='$nomfisico' ";
-					$result = $this->io_sql->Execute($consulta); 
+					$result = $this->io_sql->Execute($consulta);
 					if($result === false)
 					{
 						$this->valido  = false;
@@ -371,7 +368,7 @@
 					else
 					{
 						if(!$result->EOF)
-						{   
+						{
 							$codmenu=$result->fields["codmenu"];
 						}
 						$result->Close();
@@ -384,7 +381,7 @@
 					$campo= "nomven";
 				//}
 				return $codmenu;
-			}		
+			}
 
 	}//  end class sigesp_c_seguridad
 ?>
