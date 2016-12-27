@@ -273,21 +273,20 @@ class class_funciones_activos
 		$li_valoraux=str_replace(",",".",$li_valoraux);
 		return $li_valoraux;
 	}
-   //----------------------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Función que obtiene el valor de una variable que viene de un submit.
+	 *
+	 * @param string $as_sistema Sistema del que se desea verificar la seguridad
+	 * @param string $as_ventanas Ventana del que se desea verificar la seguridad
+	 * @param string $as_permisos Permiso si puede entrar o no a la página
+	 * @param array $aa_seguridad Arreglo de las variables de seguridad
+	 * @param array $aa_permisos Arreglo de permisos (incluir, modificar, eliminar, etc)
+	 *
+	 * @author Yesenia Moreno 2006
+	 */
    function uf_load_seguridad($as_sistema,$as_ventanas,&$as_permisos,&$aa_seguridad,&$aa_permisos)
    {
-		//////////////////////////////////////////////////////////////////////////////
-		//	     Function: uf_load_seguridad
-		//		   Access: public (en todas las clases que usen seguridad)
-		//	    Arguments: as_sistema // Sistema del que se desea verificar la seguridad
-		//				   as_ventanas // Ventana del que se desea verificar la seguridad
-		//				   as_permisos  // persimo si puede entrar � no a la p�gina
-		//				   aa_seguridad  // arreglo de las variables de seguridad
-		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
-		//	  Description: Funci�n que obtiene el valor de una variable que viene de un submit
-		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creaci�n: 01/01/2006 								Fecha �ltima Modificaci�n :
-		//////////////////////////////////////////////////////////////////////////////
 		require_once("../shared/class_folder/sigesp_c_seguridad.php");
 		$io_seguridad= new sigesp_c_seguridad();
 		$ls_empresa=$_SESSION["la_empresa"]["codemp"];
@@ -330,20 +329,18 @@ class class_funciones_activos
 		unset($io_seguridad);
    }// end function uf_load_seguridad
 
-   //----------------------------------------------------------------------------------------------------------------------------
+	 /**
+ 		* Función que imprime el permiso de seguridad en las páginas.
+ 		*
+ 		* @param boole $as_permisos Permisos que tiene el usuario en la página
+ 		* @param array $aa_permisos Arreglo de permisos (incluir, modificar, eliminar, etc)
+ 		* @param string $as_logusr Nombre de usuario
+ 		* @param string $as_accion Acción que va a ejecutar si no tiene permiso el usuario.
+ 		*
+ 		* @author Yesenia Moreno 2006
+ 		*/
    function uf_print_permisos($as_permisos,$aa_permisos,$as_logusr,$as_accion)
    {
-		//////////////////////////////////////////////////////////////////////////////
-		//	     Function: uf_print_permisos
-		//		   Access: public
-		//	    Arguments: as_permisos  // permisos que tiene el usuario en la p�gina
-		//				   aa_permisos  // arreglo de permisos (incluir, modificar, eliminar, etc )
-		//				   as_logusr  // login de usuario
-		//				   as_accion  // acci�n que va a ejecutar si no tiene permiso el usuario
-		//	  Description: Funci�n que imprime el permiso de seguridad en las p�ginas
-		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creaci�n: 01/01/2006 								Fecha �ltima Modificaci�n :
-		//////////////////////////////////////////////////////////////////////////////
 		if (($as_permisos)||($as_logusr=="PSEGIS"))
 		{
 			print("<input type=hidden name=permisos id=permisos value='$as_permisos'>");

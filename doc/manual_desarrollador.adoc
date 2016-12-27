@@ -12,13 +12,15 @@ Cuando un formulario/ventana se carga (\_d_, \_p_,\_r_) se ejecuta el método
 `uf_load_seguridad` que se encuentra en la clase `class_funciones_activos`.
 
 [source,php]
-.sigesp_saf_d_activo.php
+.saf/sigesp_saf_d_activo.php
 ----
+...
 require_once("class_funciones_activos.php");
 $io_fun_activo=new class_funciones_activos();
 $io_fun_activo->uf_load_seguridad("SAF","sigesp_saf_d_activo.php",$ls_permisos,$la_seguridad,$la_permisos); // <1>
+...
 ----
-<1> método `uf_load_seguridad`
+<1> Método `uf_load_seguridad`
 
 El método `uf_load_seguridad` usa cinco parametros:
 
@@ -28,7 +30,7 @@ El método `uf_load_seguridad` usa cinco parametros:
 * `$la_seguridad`/`$aa_seguridad`, un Arreglo; que se pasa por parametro; con los índices
   _empresa_, _logusr_, _sistema_, _ventanas_. _empresa_ se toma de
   `$_SESSION[la_empresa][codemp]` y _logusr_ se toma de `$_SESSION[la_logusr]`.
-* `$la_permisos`/`$aa_permisos`, un Arreglo; que se paso por parametro; con los
+* `$la_permisos`/`$aa_permisos`, un Arreglo; que se pasa por parametro; con los
   índices: _leer_, _incluir_, _cambiar_, _eliminar_, _imprimir_, _anular_, _ejecutar_.
 
 [source,php]
@@ -81,6 +83,7 @@ function uf_sss_load_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana,&$
 					$aa_permisos["administrador"]= $row["administrativo"];
   }
   ...
+}
 ----
 <1> Se asignan los permisos
 
@@ -112,12 +115,16 @@ la tabla `sss_derecho_usuario`.
 | ejecutar       | 0 o 1 | $aa_permisos["ejecutar"] | |
 |====
 
+Luego se llama al método `uf_print_permisos` desde el formulario/panatalla.
+
 [source,php]
 .saf/sigesp_saf_d_activo.php
 ----
+...
 require_once("class_funciones_activos.php");
 $io_fun_activo=new class_funciones_activos();
 $io_fun_activo->uf_print_permisos($ls_permisos,$la_permisos,$ls_logusr,"location.href='sigespwindow_blank.php'");
+...
 ----
 
 Este método utiliza cuatro parámetros:
@@ -130,6 +137,7 @@ Este método utiliza cuatro parámetros:
 [source,php]
 .saf/class_funciones_activos.php
 ----
+...
 function uf_print_permisos($as_permisos,$aa_permisos,$as_logusr,$as_accion)
 {
  if (($as_permisos)||($as_logusr=="PSEGIS"))
@@ -150,6 +158,7 @@ function uf_print_permisos($as_permisos,$aa_permisos,$as_logusr,$as_accion)
    print("</script>");
  }
 }
+...
 ----
 
 Para hacer efectivos los permisos, denegar y permitir acciones, se usa _JavaScript_.
