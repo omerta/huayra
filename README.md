@@ -93,3 +93,9 @@ Causar la lectura del los sitios virutal disponibles.
 # El archivo *sigesp_config.php*
 
 * El gestor puede tener los siguientes valores: POSTGRES, INFORMIX.
+
+# Twig
+
+```bash
+huayra/shared$ php composer.phar require twig/twig
+```

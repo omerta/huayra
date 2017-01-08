@@ -101,7 +101,7 @@ El método `uf_sss_load_permisos` recibe cinco parametros:
 Los valores con que se llena el Arreglo `$aa_permisos` se obtienen de consultar
 la tabla `sss_derecho_usuario`.
 
-.Tabla sss_derecho_usuario
+.sss_derecho_usuario
 |====
 | Campo          | Valores posibles | Variable PHP | |
 | enabled        | 0 o 1 | $aa_permisos["enabled"] | |
@@ -115,7 +115,7 @@ la tabla `sss_derecho_usuario`.
 | ejecutar       | 0 o 1 | $aa_permisos["ejecutar"] | |
 |====
 
-Luego se llama al método `uf_print_permisos` desde el formulario/panatalla.
+Luego se llama al método `uf_print_permisos` desde el formulario/pantalla.
 
 [source,php]
 .saf/sigesp_saf_d_activo.php
@@ -182,6 +182,35 @@ function ue_guardar()
 	}	else {
  		alert("No tiene permiso para realizar esta operacion");
  	}
+}
+----
+
+## Registro de evento
+
+Cada operación sobre el formulario es guardada en la tabla *sss_registro_eventos*.
+}
+
+## Refactorización de la seguridad (Borrador)
+
+Cambiar la validación via JavaScript por una validación desde PHP.
+
+[source,php]
+.saf/saf_c_seguro.php
+----
+funtion delete()
+{
+  require_once("../shared/class_folder/sigesp_c_seguridad");
+  $checkSeguridad = new sigesp_c_seguridad();
+  $permisos = $checkSeguridad->uf_sss_load_permisos($aa_seguridad["empresa"],$aa_seguridad["logusr"],
+                                                    $aa_seguridad["sistema"],$aa_seguridad["ventanas"],
+                                                    $aa_permisos);
+
+  if(true === $aa_permisos["eliminar"])
+  {
+    ...
+  } else {
+    return "No tiene permiso.";
+  }
 }
 ----
 
