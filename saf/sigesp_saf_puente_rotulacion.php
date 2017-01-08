@@ -1,5 +1,5 @@
 <?php
-	file_put_contents('/tmp/sugau_saf.log', print_r($_POST, TRUE), FILE_APPEND);
+	//file_put_contents('/tmp/sugau_saf.log', print_r($_POST, TRUE), FILE_APPEND);
 	//file_put_contents('/tmp/sugau_saf.log', print_r($_SESSION, TRUE), FILE_APPEND);
 	session_start();
     require_once("sigesp_saf_c_rotulacion.php");
@@ -56,8 +56,7 @@
 		{
 			$lb_valido=$io_saf->uf_saf_update_rotulacion($ls_codigo,$denominacion,$empleo,$la_seguridad);
 		}
-        //file_put_contents('/tmp/sugau_saf.log', print_r($lb_valido, TRUE), FILE_APPEND);
-        echo $lb_valido;
+    echo $lb_valido;
 	}
 
 	function Eliminar($ls_codigo)
@@ -65,12 +64,7 @@
     $io_saf= new sigesp_saf_c_rotulacion();
 
 		$lb_valido=$io_saf->uf_saf_delete_rotulacion($ls_codigo,$la_seguridad);
-		if($lb_valido == false)
-		{
-			echo false;
-		}elseif ($lb_valido == true) {
-			echo true;
-		}
+		echo $lb_valido;
 	}
 
 ?>

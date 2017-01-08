@@ -5,20 +5,16 @@
   <h1 class="titulo">Definici&oacute;n de M&eacute;todos de Rotulaci&oacute;n</h1>
 	<h2 class="subtitulo">Datos</h2>
 
-	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" onreset="limpiar()" data-toggle="validator">
-
-    {# SEGURIDAD #}
-    <input type=hidden name=permisos id=permisos value='{{ ls_permisos }}'>
-    <input type=hidden name=leer id=leer value='{{ la_permisos_leer }}'>
-    <input type=hidden name=incluir id=incluir value='{{ la_permisos_incluir }}'>
-    <input type=hidden name=cambiar id=cambiar value='{{ la_permisos_cambiar }}'>
-    <input type=hidden name=eliminar id=eliminar value='{{ la_permisos_eliminar }}'>
-    <input type=hidden name=imprimir id=imprimir value='{{ la_permisos_imprimir }}'>
-    <input type=hidden name=anular id=anular value='{{ la_permisos_anular }}'>
-    <input type=hidden name=ejecutar id=ejecutar value='{{ la_permisos_ejecutar }}'>
-    {# SEGURIDAD #}
+	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" data-toggle="validator">
 
     {# BLOQUES PARA MENSAJES #}
+      <!-- Mensaje y gif de espesta -->
+      <div id="mensaje_espera_texto" class="alert alert-danger" style="display:none;"> Por favor espere...</div>
+      <!-- mesaje de exito o error -->
+      <div id="mensajes" style="display:none;"></div>
+      <!-- mensaje detallado en caso de error -->
+      <div id="mensajes_detalles" style="display:none;"></div>
+      <!-- validacion de campos required -->
       <div id="required_error_block" style="display:none;">
           <div class="alert alert-danger">
             <p><strong>Error!</strong> Falta llenar los siguientes campos.</p>
@@ -27,53 +23,16 @@
           </div>
       </div>
 
-      <div id="save_error_block" style="display:none;">
-        <div class="alert alert-danger">
-          <strong>Error!</strong> El formunario no pudo ser guardado.
-        </div>
-      </div>
-      <div id="save_success_block" style="display:none;">
-        <div class="alert alert-success">
-          <strong>Éxito!</strong> El formulario fue guardado.
-        </div>
-      </div>
-      <div id="warning_success_block" style="display:none;">
-        <div class="alert alert-warning">
-          <p></p>
-        </div>
-      </div>
-
-      <div id="delete_error_block" style="display:none;">
-        <div class="alert alert-danger">
-          <strong>Error!</strong> El objeto no pudo ser borrado.
-        </div>
-      </div>
-      <div id="delete_success_block" style="display:none;">
-        <div class="alert alert-success">
-          <strong>Éxito!</strong> El objeto fue borrado.
-        </div>
-      </div>
-      <div id="new_error_block" style="display:none;">
-        <div class="alert alert-danger">
-          <strong>Error!</strong> Al asignar un <i>Código</i> al formulario de registro.
-        </div>
-      </div>
-      <div id="new_error_block_detail" style="display:none;">
-        <div class="alert alert-danger">
-          <p></p>
-        </div>
-      </div>
-
     {# Comienza tu formulario aqui #}
 		<div class="form-group">
-			<label for="codigo" class="control-label col-md-10">Código</label>
+			<label for="codigo" class="control-label col-md-10">C&oacute;digo</label>
 			<div class="col-md-2">
-				<input name="txtcodrot" type="text" id="txtnombre" style="text-align:center" class="form-control" readonly>
+				<input name="txtcodrot" type="text" id="txtnombre" style="text-align:center" class="form-control" readonly required>
 			</div>
 		</div>
 
     <div class="form-group">
-			<label for="codigo" class="control-label col-md-3">Denominación</label>
+			<label for="codigo" class="control-label col-md-3">Denominaci&oacute;n</label>
 			<div class="col-md-9">
 					<input name="txtdenrot" type="text" id="txtdenrot" class="form-control" required>
 			</div>
@@ -91,24 +50,4 @@
     {# fin del formulario #}
 </form>
 
-  {% if debug == true %}
-    <div class="debug">
-      <label>Usuario:</label> {{ loguser }}
-      <label>Permisos:</label> {{ ls_permisos }}
-      <label>Leer:</label> {{ la_permisos_leer }}
-      <label>Incluir:</label> {{ la_permisos_incluir }}
-      <label>Cambiar:</label> {{ la_permisos_cambiar }}
-      <label>Eliminar:</label> {{ la_permisos_eliminar }}
-      <label>Imprimir:</label> {{ la_permisos_imprimir }}
-      <label>Anular:</label> {{ la_permisos_anular }}
-      <label>Ejecutar:</label> {{ la_permisos_ejecutar }}
-      <label>Seguridad empresa:</label>{{ la_seguridad_empresa }}
-      <label>Seguridad logusr:</label>{{ la_seguridad_logusr }}
-      <label>Seguridad sistema:</label>{{ la_seguridad_sistema }}
-      <label>Seguridad ventanas:</label>{{ la_seguridad_ventanas }}
-      <div>
-        <button onclick="hiddenOn();" id="valuehidden">Hidden</button>
-      </div>
-    </div>
-  {% endif %}
 {% endblock %}
