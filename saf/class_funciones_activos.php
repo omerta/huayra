@@ -438,7 +438,7 @@ class class_funciones_activos
 		$li_len4=0;
 		$li_len5=0;
 		$ls_titulo="";
-		$this->uf_loadmodalidad(&$li_len1,&$li_len2,&$li_len3,&$li_len4,&$li_len5,&$ls_titulo);
+		$this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
 		$ls_codest1=substr($as_codpro,0,25);
 		$ls_codest2=substr($as_codpro,25,25);
 		$ls_codest3=substr($as_codpro,50,25);
