@@ -1,15 +1,72 @@
+// @TODO reescribir todas las funciones al estito jQuery
+// $("#btEliminar").click(function(){
+// 	var accion:
+// 	$.post("phpFile.php",function(data){
+//		if(data===true){...}
+//		else{..}
+//		});
+//	});
+
+/* mensaje de espera */
+$(document).ajaxStart(function () {
+	$('#mensaje_espera_texto').show();
+	$(document.body).css({'cursor' : 'wait'});
+}).ajaxStop(function () {
+	$('#mensaje_espera_texto').hide();
+	$(document.body).css({'cursor' : 'default'});
+});
+
+/* eliminar el contenido del modal al cerrarlo */
+$(document).ready(function() {
+  $(".modal").on("hidden.bs.modal", function() {
+		$('#table_catalogo_rotulacion > tbody').html('');
+  });
+});
+
 function ue_buscar()
 {
-	f=document.form1;
-	li_leer=f.leer.value;
-	if (li_leer==1)
- 	{
-		window.open("sigesp_saf_cat_rotulacion.php","catalogo","menubar=no,toolbar=no,scrollbars=yes,width=518,height=400,left=50,top=50,location=no,resizable=yes");
- 	}
-	else
- 	{
- 		alert("No tiene permiso para realizar esta operacion");
- 	}
+	$('#table_catalogo_rotulacion > tbody').html('');
+	var codrot = $('#txtcodigo').val();
+	var denrot = $('#txtdenominacion').val();
+	$.post("sigesp_saf_puente_rotulacion.php",
+				 {status:"CATALOGO",codrot:codrot,denrot:denrot},null,"json")
+				 .done(function(data)
+				 {
+					 if(data != null){
+						 $.each(data, function(i, val) {
+								$('#table_catalogo_rotulacion > tbody:last-child').append('<tr class="celdas-blancas"></tr>');
+								var aceptar = ("'"+val['codrot']+"','"+val['denrot']+"','"+val['emprot']+"'");
+							 $.each(val, function(j, val) {
+								 if(j == 'codrot')
+								 {
+									 $('#table_catalogo_rotulacion > tbody > tr:last-child').append('<td><a href=\"javascript: aceptar('+ aceptar +');\">'+ val +'</td>');
+								 }else{
+									 $('#table_catalogo_rotulacion > tbody > tr:last-child').append('<td>'+ val +'</td>');
+								 }
+							 });
+						 });
+					 }else{
+						 $('#table_catalogo_rotulacion > tbody').append('<tr><td colspan="3" class="alert alert-warning">Upps!, no hay datos que mostrar</tr></td>');
+					 }
+					 $('#txtcodigo').val('');
+					 $('#txtdenominacion').val('');
+					 $('#catalogo_rotulacion').modal('show');
+				 })
+				 .fail(function(data) {
+					 alert("Error con Ajax al buscar en la tabla los métodos de rotulacion.");
+					 console.log(data);
+				 })
+}
+
+function aceptar(prov,d,v,n,hidstatus)
+{
+	$('#txtcodrot').val(prov);
+	$('#txtdenrot').val(d);
+	$('#txtempleo').val(v);
+	$('#operacion').val('G');
+	$("#mensajes").hide('slow');
+	$("#mensajes_detalles").hide('slow');
+	$('#catalogo_rotulacion').modal('hide');
 }
 
 function ue_cata()
@@ -19,10 +76,12 @@ function ue_cata()
 
 function ue_nuevo()
 {
-	f=document.form1;
-	li_incluir=f.incluir.value;
-	if(li_incluir==1)
-	{
+	/* */
+	$("#mensajes").hide('slow');
+	$("#mensajes_detalles").hide('slow');
+	$("#required_error_block").hide('slow');
+
+	/* */
 		$.post("sigesp_saf_puente_rotulacion.php",
 						{newstatus:"NEW"},null,"json")
 				.done(function(data)
@@ -30,40 +89,30 @@ function ue_nuevo()
 					if (data[0] == false)
 					{
 						/* es posible que esten 'show' alguno de los bloques de error */
-						/* id de las etiquetas html */
-						$("#delete_error_block").hide( "slow" );
-						$("#delete_success_block").hide( "slow" );
-						$("#save_success_block").hide( "slow" );
-						$("#save_error_block").hide( "slow" );
-						$("#new_error_block").hide( "slow" );
-						$("#new_error_block_detail").hide( "slow" );
+						$("#mensajes").hide("slow");
+						$("#mensajes_detalles").hide("slow");
 						/* mostramos el error correspondiente */
-						$("#new_error_block").show( "slow" );
-						$("#new_error_block_detail").show( "slow" );
-						//$("#new_error_block_detail").children('div').append('<strong>' + data[1] + '</strong> ');
-						$("#new_error_block_detail").children('div').html('<strong>' + data[1] + '</strong> ');
-						$("#txtnombre").val('')
+						$("#mensajes").removeClass('alert alert-success')
+													.addClass('alert alert-danger')
+													.html('<strong>Error!</strong> Al asignar un <i>C&oacute;digo</i> al formulario de registro.');
+						$("#mensajes").show('slow');
+						/* detalles del error */
+						$("#mensajes_detalles").addClass('alert alert-warning')
+																	 .html('<strong>' + data[1] + '</strong> ');
+						$("#mensajes_detalles").show('slow');
+						/* reset the form */
+						$("#form1")[0].reset();
 					}else if(data[0] == true)
 					{
-						$("#delete_error_block").hide( "slow" );
-						$("#delete_success_block").hide( "slow" );
-						$("#save_success_block").hide( "slow" );
-						$("#save_error_block").hide( "slow" );
-						$("#new_error_block").hide( "slow" );
-						$("#new_error_block_detail").hide( "slow" );
-						$("#required_error_block").hide("slow");
-						$("#warning_success_block").hide("slow");
-						$("#txtnombre").val(data[1]);
-						$("#txtdenrot").val('');
-						$("#txtempleo").val('');
+						/* */
+						$("#mensajes").hide("slow");
+						$("#mensajes_detalles").hide("slow");
+						/* */
 						$("#operacion").val(''); // bandera que indica una modificación del formulario
+						$("#form1")[0].reset();
+						$("#txtcodrot").val(data[1]);
 					}
 				});
-		   	}
-			else
-		   	{
-		 		alert("No tiene permiso para realizar esta operacion");
-		   	}
 }
 
 function ue_check_fields()
@@ -73,7 +122,7 @@ function ue_check_fields()
 	$.each(fields, function(i, field) {
 		if (!field.value)
 	  	{
-			console.log(field.name);
+			// console.log(field.name);
 			var label = $('#' + field.name).parent().prev("label").html();
 			$("#required_error_block").children('div.sub_required_error_block').append('<strong>"' + label + '"</strong> ');
 			ToReturn = true;
@@ -88,146 +137,121 @@ function ue_guardar()
 	$("#required_error_block").children('div.sub_required_error_block').html("");
 
 	f=document.form1;
-	li_incluir=f.incluir.value;
-	li_cambiar=f.cambiar.value;
-	lb_status=f.operacion.value;
+	//li_incluir=f.incluir.value;
+	//li_cambiar=f.cambiar.value;
 
-	if(((lb_status=="G")&&(li_cambiar==1))||(lb_status=="")&&(li_incluir==1))
-	{
-		/* atrinuto name de la etiqueta input */
+		/* atributo name de la etiqueta input */
+		lb_status=f.operacion.value;
 		li_txtcodrot=f.txtcodrot.value;
 		li_txtdenrot=f.txtdenrot.value;
 		li_txtempleo= f.txtempleo.value;
 		/* insert/update */
 		if(!ue_check_fields())
 		{
-			if(lb_status=="")
+			if(lb_status === "")
 			{
 					$.post("sigesp_saf_puente_rotulacion.php",
 							{codigo:li_txtcodrot,denominacion:li_txtdenrot,
 							 empleo:li_txtempleo,status:lb_status},null,"json")
 					.done(function(data)
 					{
-						if (data[0] == false)
+						if (data[0] === false)
 						{
-							/* */
-							$("#delete_error_block").hide( "slow" );
-							$("#delete_success_block").hide( "slow" );
-							$("#save_success_block").hide( "slow" );
-							$("#save_error_block").hide( "slow" );
-							$("#new_error_block").hide( "slow" );
-							/* */
-							$("#save_error_block").show( "slow" );
-							$("#new_error_block_detail").show( "slow" );
-							//$("#new_error_block_detail").children('div').append('<strong>' + data[1] + '</strong> ');
-							$("#new_error_block_detail").children('div').html('<strong>' + data[1] + '</strong> ');
-						}else if(data[0] == true)
+							/* mensaje de error */
+							$("#mensajes").removeClass('alert alert-success')
+														.addClass('alert alert-danger')
+														.html('<strong>Error!</strong> El formunario no pudo ser guardado.');
+							$("#mensajes").show('slow');
+							/* detalles del error */
+							$("#mensajes_detalles").addClass('alert alert-warning')
+																		 .html('<strong>' + data[1] + '</strong> ');
+							$("#mensajes_detalles").show('slow');
+						}else if(data[0] === true)
 						{
-							$("#delete_error_block").hide( "slow" );
-							$("#delete_success_block").hide( "slow" );
-							$("#save_success_block").show( "slow" );
-							$("#new_error_block_detail").hide( "slow" );
-							$("#save_error_block").hide( "slow" );
+							$("#mensajes_detalles").hide('slow');
+							/* mesaje de error */
+							$("#mensajes").removeClass('alert alert-danger')
+													 	.addClass('alert alert-success')
+													 	.html('<strong>&Eacute;xito!</strong> El formulario fue guardado.');
+ 							$("#mensajes").show('slow');
 							$("#operacion").val('G'); // bandera que indica una modificación del formulario
-							if(data[1] != "")
-							{
-								$("#warning_success_block").show( "slow" );
-								//$("#new_error_block_detail").children('div').append('<strong>' + data[1] + '</strong> ');
-								$("#warning_success_block").children('div').html('<strong>' + data[1] + '</strong> ');
-							}
 						}
 					});
 			} // G indica que es un modificación del formulario
-			else if(lb_status=="G")
+			else if(lb_status == "G")
 			{
 					$.post("sigesp_saf_puente_rotulacion.php",
-							{codigo:li_txtcodrot,denominacion:li_txtdenrot,
-							 empleo:li_txtempleo,status:lb_status})
+								{codigo:li_txtcodrot,denominacion:li_txtdenrot,
+							 	empleo:li_txtempleo,status:lb_status},null,"json")
 					.done(function(data)
 					{
-						if (data == false)
+						if (data[0] === false)
 						{
-							$("#delete_error_block").hide( "slow" );
-							$("#delete_success_block").hide( "slow" );
-							$("#save_success_block").hide( "slow" );
-							$("#save_error_block").hide( "slow" );
-							$("#new_error_block").hide( "slow" );
-							/**/
-							$("#error_block").show( "slow" );
-						}else if(data == true)
+							/* */
+							$("#mensajes_detalles").hide('slow');
+							$("#mensajes").removeClass('alert alert-success')
+														.addClass('alert alert-danger')
+														.html('<strong>Error!</strong> El formunario no pudo ser actualizado.');
+							$("#mensajes").show('slow');
+							/* detalles del error */
+							$("#mensajes_detalles").addClass('alert alert-warning')
+																		 .html('<strong>' + data[1] + '</strong> ');
+							$("#mensajes_detalles").show('slow');
+						}else if(data[0] === true)
 						{
-							$("#delete_error_block").hide( "slow" );
-							$("#delete_success_block").hide( "slow" );
-							$("#save_error_block").hide( "slow" );
-							$("#save_success_block").hide( "slow" );
-							$("#new_error_block").hide( "slow" );
-							/**/
-							$("#save_success_block").show( "slow" );
+							/* mesaje de error */
+							$("#mensajes_detalles").hide('slow');
+							$("#mensajes").removeClass('alert alert-danger')
+														.addClass('alert alert-success')
+														.html('<strong>&Eacute;xito!</strong> El formulario fue actualizado.');
+							$("#mensajes").show('slow');
+							$("#operacion").val('G'); // bandera que indica una modificación del formulario
 						}
 					});
 			}
-		}else
-			{
+		} else {
 			$("#required_error_block").show( "slow" );
-			}
-		}
-	else
-		{
-		alert("No tiene permiso para realizar esta operacion");
 		}
 }
 
 function ue_eliminar()
 {
-	f=document.form1;
-	li_eliminar=f.eliminar.value;
-	if(li_eliminar==1)
-	{
+		f=document.form1;
 		li_txtcodrot=f.txtcodrot.value;
-		if(li_txtcodrot!="")
+		if(li_txtcodrot !== "")
 			{
-				$.post("sigesp_saf_puente_rotulacion.php", {codigo:li_txtcodrot,status:"DELETE"})
+				$.post("sigesp_saf_puente_rotulacion.php",
+							 {codigo:li_txtcodrot,status:"DELETE"},
+						 	 null,"json")
 				.done(function(data)
 				{
-					if (data == false)
+					if (data[0] === false)
+					{
+						$("#mensajes_detalles").hide('slow');
+						$("#mensajes").removeClass('alert alert-success')
+													.addClass('alert alert-danger')
+													.html('<strong>Error!</strong> El objeto no pudo ser borrado.');
+						$("#mensajes").show('slow');
+						/* detalles del error */
+						$("#mensajes_detalles").addClass('alert alert-warning')
+																	 .html('<strong>' + data[1] + '</strong> ');
+						$("#mensajes_detalles").show('slow');
+					}else if(data[0] === true)
 					{
 						// ocultamos los bloques que pueden haber
 						// quedado de operaciones anteriores
-						$("#save_success_block").hide( "slow" );
-						$("#save_error_block").hide( "slow" );
-						$("#delete_error_block").hide( "slow" );
-						$("#new_error_block").hide( "slow" );
-						//$("#error_block").after( data );
-						$("#delete_error_block").show( "slow" );
-					}else if(data == true)
-					{
-						// ocultamos los bloques que pueden haber
-						// quedado de operaciones anteriores
-						$("#save_success_block").hide( "slow" );
-						$("#save_error_block").hide( "slow" );
-						// ocular el bloque de error si existe
-						$("#delete_error_block").hide( "slow" );
-						$("#new_error_block").hide( "slow" );
-						// mostramos el bloque de exito
-						$("#delete_success_block").show( "slow" );
-						// colocamos todos los campos en blanco
-						// quizas se pueda hacer con un for
-						$("#txtnombre").val('');
-						$("#txtdenrot").val('');
-						$("#txtempleo").val('');
-						$("#operacion").val('');
+						$("#mensajes_detalles").hide('slow');
+						$("#mensajes").removeClass('alert alert-danger')
+													.addClass('alert alert-success')
+													.html('<strong>&Eacute;xito!</strong> El objeto fue borrado.');
+						$("#mensajes").show('slow');
+						$("#form1")[0].reset();
+						$("#operacion").val(''); // bandera que indica una modificación del formulario
 					}
 				});
-			}
-			else
-		   	{
+			}else{
 		 		alert("Hay algunos campos en blanco");
-		   	}
-	}
-	else
-   	{
- 		alert("No tiene permiso para realizar esta operacion");
-   	}
+	   	}
 }
 
 function ue_cerrar()
@@ -238,7 +262,7 @@ function ue_cerrar()
 function hiddenOn()
 {
 	var hiddenStatus = document.getElementById("operacion").value;
-	if(hiddenStatus == "")
+	if(hiddenStatus === "")
 	{
 		document.getElementById("valuehidden").innerHTML = "VACIO";
 	}
@@ -249,6 +273,6 @@ function hiddenOn()
 }
 
 function ue_ayuda()
-	{
-		window.open("/doc/saf/sigesp_saf_d_rotulacion.md","fullscreen=yes,menubar=no,toolbar=no,scrollbars=yes");
-	}
+{
+	window.open("/doc/saf/sigesp_saf_d_rotulacion.md","fullscreen=yes,menubar=no,toolbar=no,scrollbars=yes");
+}

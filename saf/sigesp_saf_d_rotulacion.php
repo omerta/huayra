@@ -1,13 +1,12 @@
 <?php
-// print_r($_POST);
-// print_r($_SESSION);
 class Rotulacion {
 	//propiedades
+	const SISTEMA = 'SAF';
+	const VENTANA = 'sigesp_saf_d_rotulacion.php';
 
 	//metodos
 	function __construct()
 	{
-
 		session_start();
 		/** SEGURIDAD
 		 * @la_logusr nombre de usuario
@@ -20,17 +19,6 @@ class Rotulacion {
 		}
 		$ls_logusr=$_SESSION["la_logusr"];
 
-		/**
-		  * Consultamos los permisos del usuario sobre la ventana del sistema.
-		  * $la_permiso regresa por referencia un array con: leer, incluir,
-		  *				cambiar,eliminar,imprimir,anular y ejecutar.
-		  * $la_seguridad regresa por referencia un array con: empresa, logusr,
-		  *				sistema y ventanas.
-		  */
-		require_once("class_funciones_activos.php");
-		$io_fun_activo=new class_funciones_activos();
-		$io_fun_activo->uf_load_seguridad("SAF","sigesp_saf_d_rotulacion.php",$ls_permisos,$la_seguridad,$la_permisos);
-
 		/* */
 		require_once("../shared/class_folder/class_mensajes.php");
 		$io_mensaje= new class_mensajes();
@@ -41,59 +29,62 @@ class Rotulacion {
 		$ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 		if ($ls_rbtipocat == 0)
 		{
-			$io_mensaje->message("No se puede registrar ningun método de rotulación, sin definir la configuración!!!");
+			$io_mensaje->message("No se puede registrar ningun metodo de rotulacion, sin definir la configuracion!!!");
 			print "<script language=JavaScript>";
 			print "location.href='sigespwindow_blank.php'";
 			print "</script>";
 		}
 		/** SEGURIDAD */
 
-		/* varibles cabecera */
-		$fecha = date("j/n/Y")." - ".date("h:i a");
-		$la_nomusu = $_SESSION["la_nomusu"];
-		$la_apeusu = $_SESSION["la_apeusu"];
-		$ls_database = $_SESSION["ls_database"];
-
-		/* twig */
-		require_once 'vendor/autoload.php';
-		$loader = new Twig_Loader_Filesystem('templates');
-		$twig = new Twig_Environment($loader);
-
-		$var_template = array(
-							 	'fecha' => $fecha,
-							 	'usuario' => $la_nomusu,
-								'usuario_apellido' => $la_apeusu,
-								'db_name' => $ls_database,
-								'rbtipocat' => $ls_rbtipocat,
-								'loguser' => $ls_logusr,
-								'ls_permisos' => $ls_permisos,
-								'la_permisos_leer' => $la_permisos[leer],
-								'la_permisos_incluir' => $la_permisos[incluir],
-								'la_permisos_cambiar' => $la_permisos[cambiar],
-								'la_permisos_eliminar' => $la_permisos[eliminar],
-								'la_permisos_imprimir' => $la_permisos[imprimir],
-								'la_permisos_anular' => $la_permisos[anular],
-								'la_permisos_ejecutar' => $la_permisos[ejecutar],
-								'la_seguridad_empresa' => $la_seguridad[empresa],
-								'la_seguridad_logusr' => $la_seguridad[logusr],
-								'la_seguridad_sistema' => $la_seguridad[sistema],
-								'la_seguridad_ventanas' => $la_seguridad[ventanas],
-								'debug' => '0');
+		/**
+		* Consultamos los permisos del usuario sobre la ventana del sistema.
+		* $la_permiso regresa por referencia un array con: leer, incluir,
+		*				cambiar,eliminar,imprimir,anular y ejecutar.
+		*
+		* $aa_permisos es un Arreglo con los permisos del usuario
+		*/
+		$permisos = $io_saf_tipcat->seguridad->uf_sss_load_permisos($_SESSION["la_empresa"]["codemp"],
+																											$_SESSION["la_logusr"],
+																											self::SISTEMA,
+																											self::VENTANA,
+																											$aa_permisos);
 
 		/**
-		 * Si se tiene permiso (true) se carga el template y al mismo tiempo
-		 * se pasan las variables.
-		 * Si no tiene permiso (false) se redirige a la presentación del modulo.
-		 */
-		if($ls_permisos == true || $ls_logusr == "PSEGIS")
+			* Si se tiene permiso (true) se carga el template y al mismo tiempo
+			* se pasan las variables.
+			* Si no tiene permiso (false) se redirige a la presentacion del modulo.
+			*/
+		if($aa_permisos["leer"] == true || $ls_logusr == "PSEGIS")
 		{
+			/* varibles cabecera */
+			$fecha = date("j/n/Y")." - ".date("h:i a");
+			$la_nomusu = $_SESSION["la_nomusu"];
+			$la_apeusu = $_SESSION["la_apeusu"];
+			$ls_database = $_SESSION["ls_database"];
+
+			/* twig */
+			require_once '../shared/vendor/autoload.php';
+			$templates = array(__DIR__.'/../shared/templates/',
+												 __DIR__.'/templates/');
+			$loader = new Twig_Loader_Filesystem($templates);
+			$twig = new Twig_Environment($loader);
+
+			$var_template = array('titulo' => 'DefiniciÃ³n de MÃ©todos de RotulaciÃ³n',
+													 	'fecha' => $fecha,
+													 	'usuario' => $la_nomusu,
+														'usuario_apellido' => $la_apeusu,
+														'db_name' => $ls_database,
+														'rbtipocat' => $ls_rbtipocat,
+														'loguser' => $ls_logusr,
+														'debug' => '0');
+
 			echo $twig->render('sigesp_saf_template_rotulacion.html',$var_template);
-		}elseif ($ls_permisos == false){
-			echo $twig->render('sigesp_saf_template_noaccess.html');
+		}elseif ($aa_permisos["leer"] == false){
+			$host  = $_SERVER['HTTP_HOST'];
+			header("Location: http://$host/saf/sigespwindow_blank.php");
 		}
 	}
-
 }
 
-$default = new Rotulacion();
+$rotulacion = new Rotulacion();
 ?>

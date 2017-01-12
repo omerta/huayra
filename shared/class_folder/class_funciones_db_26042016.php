@@ -1,0 +1,594 @@
+<?php
+/**
+*  Clase class_funciones_db, Clase que posee funciones de manejo de configuracion interna de base de datos
+*  @author SIGESP
+*  @package SUGAU
+*  @version 1.0
+*  @filesource
+*  @access public
+*/
+class class_funciones_db
+{
+    var $is_msg_error;
+    var $io_database;
+	/**
+	* Constructor de la clase class_funciones_db
+	*/
+    function class_funciones_db($conn)
+	{
+	  require_once("class_funciones.php");
+	  require_once("class_mensajes.php");
+	  $this->io_sql       = new class_sql($conn);
+	  $this->io_funcion   = new class_funciones();
+	  $this->io_msg   = new class_mensajes();
+	  $this->io_database  = $_SESSION["ls_database"];
+	  $this->ls_gestor    = $_SESSION["ls_gestor"];
+	}
+
+	/**
+	* Determina la longitud de una columna tipo caracter
+	*/
+    function uf_longitud_columna_char($as_tabla,$as_columna)
+    {
+	   $li_length = 0;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			   $ls_sql=" SELECT character_maximum_length AS width ".
+					   " FROM information_schema.columns ".
+					   " WHERE TABLE_SCHEMA='".$this->io_database."' AND UPPER(table_name)=UPPER('".$as_tabla."') AND ".
+					   "       UPPER(column_name)=UPPER('".$as_columna."')";
+			break;
+	   		case "POSTGRES":
+			  $ls_sql = " SELECT character_maximum_length AS width ".
+						"   FROM INFORMATION_SCHEMA.COLUMNS ".
+						"  WHERE table_catalog='".$this->io_database."'".
+						"    AND UPPER(table_name)=UPPER('".$as_tabla."')".
+						"    AND UPPER(column_name)=UPPER('".$as_columna."')";
+			break;
+	   		case "INFORMIX":
+			   $ls_sql= "SELECT syscolumns.collength AS width FROM syscolumns, systables ".
+						" WHERE syscolumns.tabid = systables.tabid ".
+						" AND UPPER(systables.tabname)=UPPER('".$as_tabla."') ".
+						" AND UPPER(syscolumns.colname)=UPPER('".$as_columna."')";
+			break;
+	   }
+	   $rs_data=$this->io_sql->select($ls_sql);
+	   if ($row=$this->io_sql->fetch_row($rs_data))   {  $li_length=$row["width"];  }
+	   return $li_length;
+    } // end function()
+
+
+	/**
+	* Deternima si existe una columna en una tabla (uf_select_column)
+	* @param string $as_tabla  Nombre de la tabla
+	* @param string $as_columna Nombre de la columna
+    */
+	function uf_select_column($as_tabla,$as_columna)
+	{
+      $lb_existe = false;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			  $ls_sql = " SELECT COLUMN_NAME ".
+						" FROM INFORMATION_SCHEMA.COLUMNS ".
+						" WHERE TABLE_SCHEMA='".$this->io_database."' AND UPPER(TABLE_NAME)=UPPER('".$as_tabla."') AND UPPER(COLUMN_NAME)=UPPER('".$as_columna."')";
+			break;
+	   		case "POSTGRES":
+			  $ls_sql = " SELECT COLUMN_NAME ".
+						" FROM INFORMATION_SCHEMA.COLUMNS ".
+						" WHERE table_catalog='".$this->io_database."' AND UPPER(table_name)=UPPER('".$as_tabla."') AND UPPER(column_name)=UPPER('".$as_columna."')";
+			break;
+	   		case "INFORMIX":
+			   $ls_sql= "SELECT syscolumns.* FROM syscolumns, systables ".
+						" WHERE syscolumns.tabid = systables.tabid ".
+						" AND UPPER(systables.tabname)=UPPER('".$as_tabla."') ".
+						" AND UPPER(syscolumns.colname)=UPPER('".$as_columna."')";
+			break;
+	   }
+	  $rs_data=$this->io_sql->select($ls_sql);
+	  if($rs_data===false)
+	  {
+         //$this->io_msg->message("ERROR en uf_select_column()".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+		 $error[0]=false;
+		 $error[1]=$this->io_sql->message;
+		 return $error;
+		 //return false;
+	  }
+	  else
+	  {
+		  if ($row=$this->io_sql->fetch_row($rs_data))
+		  {
+		  	$lb_existe[0]=true;
+		  }
+  		  $this->io_sql->free_result($rs_data);
+	  }
+	  return $lb_existe;
+	}
+
+	/**
+	* Selecciona  en una tabla (uf_select_table)
+	* @param string $as_tabla  Nombre de la tabla
+	*/
+	function uf_select_table($as_tabla)
+	{
+       $lb_existe = false;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			   $ls_sql= " SELECT * FROM ".
+						" INFORMATION_SCHEMA.TABLES ".
+						" WHERE TABLE_SCHEMA='".$this->io_database."' AND (UPPER(TABLE_NAME)=UPPER('".$as_tabla."'))";
+			break;
+	   		case "POSTGRES":
+			   $ls_sql= " SELECT * FROM ".
+						" INFORMATION_SCHEMA.TABLES ".
+						" WHERE table_catalog='".$this->io_database."' AND (UPPER(table_name)=UPPER('".$as_tabla."'))";				break;
+	   		case "INFORMIX":
+			   $ls_sql= " SELECT * FROM ".
+						" systables ".
+						" WHERE  (UPPER(tabname)=UPPER('".$as_tabla."'))";
+			break;
+	   }
+	   $rs_data=$this->io_sql->select($ls_sql);
+	   if($rs_data===false)
+	   {
+       		//$this->io_msg->message("ERROR en uf_select_table()".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+	   		$error[0]=false;
+	   		$error[1]=$this->io_sql->message;
+ 			return $error;
+ 			//return false;
+	   }
+	   else
+	   {
+	 	  if ($row=$this->io_sql->fetch_row($rs_data))
+	 	  {
+	 	  	$lb_existe[0]=true;
+	 	  }
+   		  $this->io_sql->free_result($rs_data);
+   	   }
+   	   //file_put_contents('/tmp/sugau_saf.log', print_r("uf_select_table ".$lb_existe."\n", TRUE), FILE_APPEND);
+	   return $lb_existe;
+	} // end function uf_select_table
+
+	/**
+	*  Este m�todo genera el numero consecutivo del c�digo de cualquier tabla deseada
+	*	@param string $ab_empresa Si usara el campo empresa como filtro
+	*	@param string $as_codemp Codigo de la empresa
+	*	@param string $as_tabla Nombre de la tabla
+	*	@param string $as_campo Nombre del campo que desea incrementar
+	*	@param int  ai_length    Longitud del campo
+	*   @return string $ls_codigo   Representa el codigo incrementado o generado
+	*	@todo el mensaje de error no funciona (is_msg_error)
+	*/
+    function uf_generar_codigo($ab_empresa,$as_codemp,$as_tabla,$as_columna)
+	{
+		$lb_existe=$this->uf_select_table($as_tabla);
+		if ($lb_existe)
+		   {
+			  $lb_existe=$this->uf_select_column($as_tabla,$as_columna);
+			  if ($lb_existe)
+			  {
+				   $li_longitud=$this->uf_longitud_columna_char($as_tabla,$as_columna) ;
+				   if ($ab_empresa)
+				   {
+						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." WHERE codemp='".$as_codemp."' ORDER BY ".$as_columna." DESC";
+						  $rs_funciondb=$this->io_sql->select($ls_sql);
+						  if ($row=$this->io_sql->fetch_row($rs_funciondb))
+						  {
+							  $codigo=$row[$as_columna];
+							  settype($codigo,'int');                             // Asigna el tipo a la variable.
+							  $codigo = $codigo + 1;                              // Le sumo uno al entero.
+							  settype($codigo,'string');                          // Lo convierto a varchar nuevamente.
+							  $ls_codigo=$this->io_funcion->uf_cerosizquierda($codigo,$li_longitud);
+						  }
+						  else
+						  {
+							  $codigo="1";
+							  $ls_codigo=$this->io_funcion->uf_cerosizquierda($codigo,$li_longitud);
+						  }
+					}
+					else
+					{
+						  $ls_sql="SELECT ".$as_columna." FROM ".$as_tabla." ORDER BY ".$as_columna." DESC";
+						  $rs_funciondb=$this->io_sql->select($ls_sql);
+						  if ($row=$this->io_sql->fetch_row($rs_funciondb))
+						  {
+							   $codigo=$row[$as_columna];
+							   settype($codigo,'int');                                          // Asigna el tipo a la variable.
+							   $codigo = $codigo + 1;                                           // Le sumo uno al entero.
+							   settype($codigo,'string');                                       // Lo convierto a varchar nuevamente.
+							   $ls_codigo=$this->io_funcion->uf_cerosizquierda($codigo,$li_longitud);
+						   }
+						   else
+						   {
+							   $codigo="1";
+							   $ls_codigo=$this->io_funcion->uf_cerosizquierda($codigo,$li_longitud);
+						   }
+					}// SI NO TIENE CODIGO DE EMPRESA
+				}
+				else
+				{
+					$ls_codigo="";
+					$this->io_msg="No existe el campo";
+				}
+		 }
+		 else
+		{
+			$ls_codigo="";
+			$this->io_msg="No existe la tabla";
+		}
+	    return $ls_codigo;
+	 } // end function
+
+
+	/**
+	 *  Este m�todo genera el numero consecutivo del c�digo de una tabla con PK tipo SERIAL,
+	 *	reemplaza a la funci�n 'uf_generar_codigo'. La nuevas tablas usan el tipo de dato
+	 * 	serial para el campo que es llave primaria.
+	 *	@param string $as_tabla Nombre de la tabla
+	 *	@param string $as_campo Nombre del campo que desea incrementar
+	 *	@param int  ai_length    Longitud del campo
+	 *  @return string $ls_codigo   Representa el codigo incrementado o generado
+	 *	@todo el mensaje de error no funciona (is_msg_error)
+	 */
+    function uf_generar_codigo_serial($as_tabla,$as_columna)
+	{
+		$lb_existe=$this->uf_select_table($as_tabla);
+		if($lb_existe[0])
+		   {
+				$lb_existe=$this->uf_select_column($as_tabla,$as_columna);
+			  	if ($lb_existe[0])
+			  	{
+            // ---- SQL
+            // -- drop fk
+            // ALTER TABLE saf_activo
+            // DROP CONSTRAINT fk_saf_acti_saf_rotul_saf_rotu;
+            // -- saf_activo
+            // ALTER TABLE saf_activo ALTER COLUMN codrot TYPE integer USING codrot::integer;
+            // -- saf_rotulacion
+            // ALTER TABLE saf_rotulacion ALTER COLUMN codrot TYPE integer USING codrot::integer;
+            // CREATE SEQUENCE saf_rotulacion_codrot_seq OWNED BY saf_rotulacion.codrot;
+            // ALTER TABLE saf_rotulacion ALTER COLUMN codrot SET DEFAULT nextval('saf_rotulacion_codrot_seq');
+            // -- create fk
+            // ALTER TABLE IF EXISTS saf_activo
+            // ADD CONSTRAINT fk_saf_acti_saf_rotul_saf_rotu FOREIGN KEY (codrot)
+            // REFERENCES saf_rotulacion (codrot) MATCH SIMPLE
+            // ON UPDATE RESTRICT ON DELETE RESTRICT;
+            // -- GRANT
+            // GRANT USAGE ON SEQUENCE saf_rotulacion_codrot_seq TO <USER>;
+            $ls_sql="SELECT nextval(pg_get_serial_sequence('".$as_tabla."', '".$as_columna."'))";
+            // file_put_contents("/tmp/sugau.log",$ls_sql,FILE_APPEND);
+			  		$rs_funciondb=$this->io_sql->select($ls_sql);
+			  		$row=$this->io_sql->fetch_row($rs_funciondb);
+            // file_put_contents("/tmp/sugau.log",$rs_funciondb,FILE_APPEND);
+            // file_put_contents("/tmp/sugau.log",$row,FILE_APPEND);
+            $ls_codigo[0]=true;
+			  		$ls_codigo[1]=$row["nextval"];
+				}
+				else
+				{
+					$ls_codigo[0]=false;
+					$ls_codigo[1]="No existe el campo en la tabla.";
+					$ls_codigo[1].=" ".$lb_existe[1];
+				}
+		 }
+		 else
+		{
+			$ls_codigo[0]=false;
+			$ls_codigo[1]="No existe la tabla en la base de datos.";
+			$ls_codigo[1].=" ".$lb_existe[1];
+		}
+	    return json_encode($ls_codigo);
+	 } // end function
+
+///--------------------------------------------------------------------------------------------------------------------------------
+    function uf_select_constraint($as_tabla,$as_constrains)
+	{
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//	Function :  uf_select_constraint
+		//	  Access :  public
+		//	Arguments:  as_tabla   // Si usara el campo empresa como filtro
+		//              as_constrains    // codigo de la empresa
+		//	  Returns:	ls_existe   // representa si exite el constrains en la tabla dada
+		//Description:  Este m�todo genera el numero consecutivo del c�digo de
+		//                cualquier tabla deseada
+		//  Creado Por: Ing. Jennifer Rivero
+	    //  Fecha Creaci�n: 27/05/2008
+		///////////////////////////////////////////////////////////////////////////////////////////
+		   $lb_existe = false;
+		   switch ($this->ls_gestor)
+		   {
+				case "MYSQLT":
+				   $ls_sql=" SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS ".
+                           "         WHERE TABLE_NAME='".$as_tabla."' ".
+        				   "         AND CONSTRAINT_NAME='".$as_constrains."'".
+       					   "         AND TABLE_SCHEMA='".$this->io_database."'";
+				break;
+				case "POSTGRES":
+				   $ls_sql= " SELECT * FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS  ".
+                            "        WHERE TABLE_NAME='".$as_tabla."'".
+        					"        AND CONSTRAINT_NAME='".$as_constrains."'".
+      						"        AND TABLE_CATALOG='".$this->io_database."'";
+
+				break;
+		   }
+		   $rs_data=$this->io_sql->select($ls_sql);
+		   if($rs_data===false)
+		   {
+			  $this->io_msg->message("ERROR en uf_select_constraint".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+			 return false;
+		   }
+		   else
+		   {
+			  if ($row=$this->io_sql->fetch_row($rs_data))
+			  {
+			     $lb_existe=true;
+			  }
+			  $this->io_sql->free_result($rs_data);
+		   }
+		   return $lb_existe;
+   }///fin  uf_select_constraint
+
+//------------------------------------------------------------------------------------------------------------------------------------
+	function uf_select_type_columna($as_tabla,$as_columna,$type)
+	{	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	   //	     Function: uf_select_type_columna
+	   //		   Access: public
+	   //		Argumento: $as_tabla   // nombre de la tabla
+	   //				   $as_columna // nombre de la columna
+	   //	  Description: deternima el tipo de datos de la columna en una tabla
+	   //	   Creado Por: Ing. Jennifer rivero
+	   //  Fecha Creaci�n: 31/07/2008		   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      $lb_existe = false;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			  $ls_sql = " SELECT DATA_TYPE                                    ".
+						"   FROM INFORMATION_SCHEMA.COLUMNS                   ".
+						"  WHERE TABLE_SCHEMA='".$this->io_database."'        ".
+						"    AND UPPER(TABLE_NAME)=UPPER('".$as_tabla."')     ".
+						"    AND UPPER(COLUMN_NAME)=UPPER('".$as_columna."')  ".
+						"    AND UPPER(DATA_TYPE)=UPPER('".$type."')          ";
+			break;
+	   		case "POSTGRES":
+			  $ls_sql = " SELECT DATA_TYPE                                   ".
+						"   FROM INFORMATION_SCHEMA.COLUMNS                  ".
+						"  WHERE table_catalog='".$this->io_database."'      ".
+						"    AND UPPER(table_name)=UPPER('".$as_tabla."')    ".
+						"    AND UPPER(column_name)=UPPER('".$as_columna."') ".
+						"    AND UPPER(DATA_TYPE)=UPPER('".$type."')         ";
+			break;
+	   }
+	  $rs_data=$this->io_sql->select($ls_sql);
+	  if($rs_data===false)
+	  {
+         $this->io_msg->message("ERROR en uf_select_type_columna()".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+		 return false;
+	  }
+	  else
+	  {
+		  if ($row=$this->io_sql->fetch_row($rs_data))
+		  {
+		  	$lb_existe=true;
+		  }
+  		  $this->io_sql->free_result($rs_data);
+	  }
+	  return $lb_existe;
+	} // uf_select_type_columna
+//------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------
+   function uf_select_vista($as_vista)
+	{
+	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	   //	     Function: uf_select_vista
+	   //		   Access: public
+	   //		Argumento: $as_vista  // nombre de la vista
+	   //	  Description: deternima si existe una vista existe en la base de dtaos
+	   //	   Creado Por: Ing. Jennifer Rivero
+	   //  Fecha Creaci�n: 17/08/2008
+	   	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       $lb_existe = false;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			   $ls_sql= " SELECT table_name ".
+			            "   FROM INFORMATION_SCHEMA.VIEWS ".
+						"  WHERE TABLE_SCHEMA='".$this->io_database."' ".
+						"    AND (UPPER(TABLE_NAME)=UPPER('".$as_vista."'))";
+			break;
+	   		case "POSTGRES":
+			   $ls_sql= " SELECT table_name ".
+			            "   FROM INFORMATION_SCHEMA.VIEWS ".
+						"  WHERE table_catalog='".$this->io_database."'".
+						"    AND table_schema='public'".
+						"    AND (UPPER(TABLE_NAME)=UPPER('".$as_vista."'))";
+			break;
+
+	   }
+	   $rs_data=$this->io_sql->select($ls_sql);//echo $ls_sql.'<br>';
+	   if($rs_data===false)
+	   {
+          $this->io_msg->message("ERROR en uf_select_vista".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+ 		  return false;
+	   }
+	   else
+	   {
+	 	  if ($row=$this->io_sql->fetch_row($rs_data))
+		  {
+		  		$lb_existe=true;
+		  }
+   		  $this->io_sql->free_result($rs_data);
+   	   }
+	   return $lb_existe;
+	} // end function uf_select_vista
+//------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+    function uf_tamano_type_columna($as_tabla,$as_columna)
+	{	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	   //	     Function: uf_tamano_type_columna
+	   //		   Access: public
+	   //		Argumento: $as_tabla   // nombre de la tabla
+	   //				   $as_columna // nombre de la columna
+	   //	  Description: deternima el tipo de datos de la columna en una tabla
+	   //	   Creado Por: Ing. Jennifer rivero
+	   //  Fecha Creaci�n: 17/08/2008		   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      $lb_existe = false;
+	  $tamano=0;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "POSTGRES":
+			  $ls_sql =" SELECT a.attname as nomcolum,      ".
+					   "		t.typname as type,          ".
+					   "		CASE WHEN a.attlen='-1'     ".
+					   "			 THEN (a.atttypmod - 4) ".
+					   "			 ELSE a.attlen          ".
+					   "		 END as tamano              ".
+					   "  FROM pg_catalog.pg_attribute a    ".
+					   "  LEFT JOIN pg_catalog.pg_type t ON t.oid = a.atttypid   ".
+					   "  LEFT JOIN pg_catalog.pg_class c ON c.oid = a.attrelid  ".
+					   "  LEFT JOIN pg_catalog.pg_constraint cc ON cc.conrelid = c.oid AND cc.conkey[1] = a.attnum ".
+					   "  LEFT JOIN pg_catalog.pg_attrdef d ON d.adrelid = c.oid AND a.attnum = d.adnum            ".
+					   "  WHERE c.relname ='".$as_tabla."'                                                         ".
+					   "	AND a.attname= '".$as_columna."'                                                       ".
+					   "	AND a.attnum > 0                                                                       ".
+					   "	AND t.oid = a.atttypid                                                                 ";
+
+			  $rs_data=$this->io_sql->select($ls_sql);
+			  if($rs_data===false)
+			  {
+				 $this->io_msg->message("ERROR en uf_tamano_type_columna()".
+										$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				 return false;
+			  }
+			  else
+			  {
+				  if ($row=$this->io_sql->fetch_row($rs_data))
+				  {
+					  $tamano=$row["tamano"];
+				  }
+				  $this->io_sql->free_result($rs_data);
+			  }
+			  break;
+	   }
+	  return $tamano;
+	} // uf_select_type_columna
+//---------------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------
+	function uf_tamano_type_columna_Mysql($as_tabla,$as_columna,&$as_valor1,&$as_valor2,&$as_valor3,&$as_valor4)
+	{	   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	   //	     Function: uf_tamano_type_columna_Mysql
+	   //		   Access: public
+	   //		Argumento: $as_tabla   // nombre de la tabla
+	   //				   $as_columna // nombre de la columna
+	   //	  Description: deternima el tipo de datos de la columna en una tabla
+	   //	   Creado Por: Ing. Jennifer Rivero
+	   //  Fecha Creaci�n: 17/08/2008		   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      $lb_existe = false;
+	  $tamano=0;
+	   switch ($this->ls_gestor)
+	   {
+	   		case "MYSQLT":
+			  $ls_sql ="  select T.* from INFORMATION_SCHEMA.columns T ".
+					   "		where T.table_schema='".$this->io_database."' ".
+					   "		and T.table_name='".$as_tabla."' ".
+					   "		and T.column_name='".$as_columna."'";
+
+			  $rs_data=$this->io_sql->select($ls_sql);
+			  if($rs_data===false)
+			  {
+				 $this->io_msg->message("ERROR en uf_tamano_type_columna_Mysql()".
+										$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				 return false;
+			  }
+			  else
+			  {
+				  if ($row=$this->io_sql->fetch_row($rs_data))
+				  {
+					   $lb_existe=true;
+					   $as_valor1=$row["CHARACTER_MAXIMUM_LENGTH"];
+					   $as_valor2=$row["CHARACTER_OCTET_LENGTH"];
+					   $as_valor3=$row["NUMERIC_PRECISION"];
+					   $as_valor4=$row["NUMERIC_SCALE"];
+
+				  }
+				  $this->io_sql->free_result($rs_data);
+			  }
+			  break;
+	   }
+	  return $lb_existe;
+	} // uf_select_type_columna
+///---------------------------------------------------------------------------------------------------------------------------------------
+
+function uf_select_index($as_tabla,$as_index)
+{
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //	   Function: uf_select_index()
+  //	     Access: public
+  //    Description: Funci�n que ubica si el indice ha sido creado.
+  // Fecha Creacion: 26/02/2009								Fecha Ultima Modificacion : 26/02/2009.
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  $lb_existe = false;
+  switch($_SESSION["ls_gestor"]){
+    case "MYSQLT":
+ 	  $ls_sql = "SELECT DISTINCT INDEX_NAME
+	               FROM information_schema.STATISTICS
+				  WHERE TABLE_SCHEMA = '".$_SESSION["ls_database"]."'
+				    AND INDEX_SCHEMA = '".$_SESSION["ls_database"]."'
+					AND TABLE_NAME = '".$as_tabla."'
+					AND INDEX_NAME = '".$as_index."';";
+	break;
+    case "POSTGRES":
+	  $ls_sql = "SELECT relname FROM pg_catalog.pg_class WHERE relname= '".$as_index."'";
+	break;
+  }
+  $rs_data = $this->io_sql->select($ls_sql);
+  if ($rs_data===false)
+     {
+	   $this->io_msg->message("Error--> uf_select_index");
+	   $lb_existe = true;
+	 }
+  else
+     {
+	   if ($row=$this->io_sql->fetch_row($rs_data))
+	      {
+		    $lb_existe = true;
+		  }
+	 }
+  return $lb_existe;
+}
+    function uf_generar_codigo_movimiento_saf($as_tipcmp)
+	{
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//	   Function: uf_generar_codigo
+		//	     Access: public
+		//	  Arguments: $as_tipcmp = Variable que me indica si el movimiento es (IN)corporacion,
+		//               (DE)sincorporacion,(RE)asignacion,(MO)dificacion,(IG)Incorporacion General e
+		//               (IL)Incorporacion por Lotes.
+		//	    Returns: $ls_codigo   // representa el codigo incrementado o generado
+		//	Description: Este m�todo genera el numero consecutivo del c�digo de la tabla saf_movimiento
+		//               seg�n el tipo de comprobante.
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+		$ls_sql = "SELECT numcmp
+					 FROM saf_movimiento
+		            WHERE codemp = '".$_SESSION["la_empresa"]["codemp"]."'
+					  AND tipcmp = '".$as_tipcmp."'
+				    ORDER BY numcmp DESC LIMIT 1";
+		$rs_funciondb=$this->io_sql->select($ls_sql);
+	    if ($row=$this->io_sql->fetch_row($rs_funciondb))
+	       {
+		     $codigo=$row["numcmp"];
+		     settype($codigo,'int');                             // Asigna el tipo a la variable.
+		     $codigo = $codigo + 1;                              // Le sumo uno al entero.
+			 settype($codigo,'string');                          // Lo convierto a varchar nuevamente.
+	       }
+	    else
+	       {
+		     $codigo="1";
+	       }
+	    $ls_codigo = str_pad($codigo,15,0,0);
+		return $ls_codigo;
+	 } // end function
+} // end class_funcrions_db
+?>

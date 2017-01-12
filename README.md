@@ -1,8 +1,7 @@
 huayra/sigesp/sugau
 ======
 
-* [Manual de Usuario](manual_usuario.md)
-* [Manual del Programador](manual_desarrollador.md)
+* [Manual del Programador](doc/manual_desarrollador.adoc)
 
 ## Instalación
 
@@ -100,3 +99,9 @@ Causar la lectura del los sitios virutal disponibles.
 # El archivo *sigesp_config.php*
 
 * El gestor puede tener los siguientes valores: POSTGRES, INFORMIX.
+
+# Twig
+
+```bash
+huayra/shared$ php composer.phar require twig/twig
+```

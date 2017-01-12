@@ -1,4 +1,8 @@
 <?php
+/**
+ * @deprecated 12/01/2017
+ * @deprecated Se reemplaza por un modal de bootstrap en template.
+ */
 session_start();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -8,7 +12,6 @@ session_start();
 <title>Cat&aacute;logo de M&eacute;todo de Rotulaci&oacute;n </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-<!--
 a:link {
 	color: #006699;
 }
@@ -18,7 +21,6 @@ a:visited {
 a:active {
 	color: #006699;
 }
--->
 </style>
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
@@ -73,31 +75,28 @@ $arr=$_SESSION["la_empresa"];
 if(array_key_exists("operacion",$_POST))
 {
 	$ls_operacion=$_POST["operacion"];
-	$ls_codigo="%".$_POST["txtcodigo"]."%";
+	$ls_codigo=$_POST["txtcodigo"];
 	$ls_denominacion="%".$_POST["txtdenominacion"]."%";
 	$ls_status="%".$_POST["hidstatus"]."%";
+
+	$ls_sql = "SELECT * FROM saf_rotulacion".
+	$ls_sql.= " WHERE denrot ilike '".$ls_denominacion."'";
+	!empty($ls_codigo) ? $ls_sql.= " AND codrot = '".$ls_codigo."'" : "FALSE";
+	$ls_sql.= " ORDER BY codrot";
 }
 else
 {
-	$ls_operacion="BUSCAR";
-	$ls_codigo="%%";
-	$ls_denominacion="%%";
-	$ls_status="%%";
+	$ls_sql = "SELECT * FROM saf_rotulacion";
+	$ls_sql.= " ORDER BY codrot LIMIT 10";
 }
 print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 print "<tr class=titulo-celda>";
-//print "<td>Empresa </td>";
-print "<td>Código</td>";
-print "<td>Denominación</td>";
+print "<td>C&oacute;digo</td>";
+print "<td>Denominaci&oacute;n</td>";
 print "</tr>";
-if($ls_operacion=="BUSCAR")
-{
-	$ls_sql="SELECT * FROM saf_rotulacion".
-			" WHERE codrot ilike '".$ls_codigo."'".
-			"   AND denrot ilike '".$ls_denominacion."'".
-			" ORDER BY codrot";
-    $rs_cta=$io_sql->select($ls_sql);
-    $data=$rs_cta;
+
+	$rs_cta=$io_sql->select($ls_sql);
+  $data=$rs_cta;
 	if($row=$io_sql->fetch_row($rs_cta))
 	{
 		$data=$io_sql->obtener_datos($rs_cta);
@@ -114,12 +113,11 @@ if($ls_operacion=="BUSCAR")
 			$ls_denominacion=$data["denrot"][$z];
 			$ls_empleo=$data["emprot"][$z];
 			print "<td><a href=\"javascript: aceptar('$ls_codigo','$ls_denominacion','$ls_empleo','$ls_status');\">".$ls_codigo."</a></td>";
-			//print "<td>".$data["NomGru"][$z]."</td>";
 			print "<td>".$data["denrot"][$z]."</td>";
 			print "</tr>";
 		}
 	}
-}
+
 print "</table>";
 ?>
 </div>
@@ -134,27 +132,17 @@ print "</table>";
 		opener.document.form1.txtdenrot.value=d;
 		opener.document.form1.txtempleo.value=v;
 		opener.document.form1.operacion.value="G";
-
-		/* se borra cualquier mensaje impreso */
-		/* @TODO
-		$("#delete_error_block").hide( "slow" );
-		$("#delete_success_block").hide( "slow" );
-		$("#save_success_block").hide( "slow" );
-		$("#save_error_block").hide( "slow" );
-		$("#new_error_block").hide( "slow" );
-		$("#new_error_block_detail").hide( "slow" );
-		$("#required_error_block").hide("slow");
-		$("#warning_success_block").hide("slow");
-		*/
-
+		/* cerrar los posibles mesanjes de otras operaciones */
+		window.opener.$("#mensajes").hide('slow');
+		window.opener.$("#mensajes_detalles").hide('slow');
 		close();
   }
   function ue_search()
   {
-  f=document.form1;
-  f.operacion.value="BUSCAR";
-  f.action="sigesp_saf_cat_rotulacion.php";
-  f.submit();
+	  f=document.form1;
+	  f.operacion.value="BUSCAR";
+	  f.action="sigesp_saf_cat_rotulacion.php";
+	  f.submit();
   }
 </script>
 </html>

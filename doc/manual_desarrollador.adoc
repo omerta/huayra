@@ -1,0 +1,253 @@
+# Manual del Desarrollador
+
+## Seguridad
+
+Los métodos PHP que intervienen en la seguridad son:
+
+. class_funciones_activos#uf_load_seguridad
+. sigesp_c_seguridad#uf_sss_load_permisos
+. class_funciones_activos#uf_print_permisos
+
+Cuando un formulario/ventana se carga (\_d_, \_p_,\_r_) se ejecuta el método
+`uf_load_seguridad` que se encuentra en la clase `class_funciones_activos`.
+
+[source,php]
+.saf/sigesp_saf_d_activo.php
+----
+...
+require_once("class_funciones_activos.php");
+$io_fun_activo=new class_funciones_activos();
+$io_fun_activo->uf_load_seguridad("SAF","sigesp_saf_d_activo.php",$ls_permisos,$la_seguridad,$la_permisos); // <1>
+...
+----
+<1> Método `uf_load_seguridad`
+
+El método `uf_load_seguridad` usa cinco parametros:
+
+* Nombre del Sistema (SAF, SEP, SSS, SRH, ver apéndice _Sistemas_)
+* Nombre del formunario/ventana (ejemplo, `sigesp_saf_d_activo.php`)
+* `$ls_permisos`/`$as_permisos`, puede ser `true` o `false` y es pasado por parametro.
+* `$la_seguridad`/`$aa_seguridad`, un Arreglo; que se pasa por parametro; con los índices
+  _empresa_, _logusr_, _sistema_, _ventanas_. _empresa_ se toma de
+  `$_SESSION[la_empresa][codemp]` y _logusr_ se toma de `$_SESSION[la_logusr]`.
+* `$la_permisos`/`$aa_permisos`, un Arreglo; que se pasa por parametro; con los
+  índices: _leer_, _incluir_, _cambiar_, _eliminar_, _imprimir_, _anular_, _ejecutar_.
+
+[source,php]
+.saf/class_funciones_activos.php
+----
+function uf_load_seguridad($as_sistema,$as_ventanas,&$as_permisos,&$aa_seguridad,&$aa_permisos)
+{
+  require_once("../shared/class_folder/sigesp_c_seguridad.php");
+  $io_seguridad= new sigesp_c_seguridad();
+  ...
+  $ls_empresa=$_SESSION["la_empresa"]["codemp"];
+  $ls_logusr=$_SESSION["la_logusr"];
+  $aa_seguridad["empresa"]=$ls_empresa;
+  $aa_seguridad["logusr"]=$ls_logusr;
+  $aa_seguridad["sistema"]=$as_sistema;
+  $aa_seguridad["ventanas"]=$as_ventanas
+  ...
+
+  $as_permisos=$io_seguridad->uf_sss_load_permisos($ls_empresa,$ls_logusr,$as_sistema,$as_ventanas,$aa_permisos); // <1>
+}
+----
+<1> Se ejecuta el método `uf_sss_load_permisos`
+
+Luego se ejecuta el método `uf_sss_load_permisos` de la clase `sigesp_c_seguridad`.
+
+[source,php]
+.shared/class_folder/sigesp_c_seguridad.php
+----
+function uf_sss_load_permisos($as_empresa,$as_usuario,$as_sistema,$as_ventana,&$aa_permisos)
+{
+  ...
+  $ls_sql="SELECT * FROM sss_derechos_usuarios".
+					" WHERE codemp='".$as_empresa."'".
+					"   AND codusu='".$as_usuario."'".
+					"   AND codsis='".$as_sistema."'".
+					"   AND nomven='".$as_ventana."'".
+					"   AND enabled=".$ls_enabled." ";
+  ...
+  if($row=$this->io_sql->fetch_row($rs_data)) // <1>
+  {
+					$lb_valido=true;
+					$aa_permisos["enabled"]=  $row["enabled"];
+					$aa_permisos["leer"]=     $row["leer"];
+					$aa_permisos["incluir"]=  $row["incluir"];
+					$aa_permisos["cambiar"]=  $row["cambiar"];
+					$aa_permisos["eliminar"]= $row["eliminar"];
+					$aa_permisos["imprimir"]= $row["imprimir"];
+					$aa_permisos["anular"]=   $row["anular"];
+					$aa_permisos["ejecutar"]= $row["ejecutar"];
+					$aa_permisos["administrador"]= $row["administrativo"];
+  }
+  ...
+}
+----
+<1> Se asignan los permisos
+
+El método `uf_sss_load_permisos` recibe cinco parametros:
+
+* `$ls_empresa`/`$as_empresa`, código de la empresa.
+* `$ls_logusr`/`$as_usuario`, nombre de usuario.
+* `$as_sistema`, Nombre del sistema pasado por la función `uf_load_seguridad`.
+* `$as_ventanas`/`$as_ventana`, Nombre del formulario/ventana pasado por la función
+  `uf_load_seguridad`.
+* `$aa_permisos`, Un Arreglo con los siguientes índices: _leer_, _incluir_, _cambiar_,
+  _eliminar_, _imprimir_, _anular_, _ejecutar_. Este Arreglo
+  se pasa por parametro a la función `uf_load_seguridad`.
+
+Los valores con que se llena el Arreglo `$aa_permisos` se obtienen de consultar
+la tabla `sss_derecho_usuario`.
+
+.sss_derecho_usuario
+|====
+| Campo          | Valores posibles | Variable PHP | |
+| enabled        | 0 o 1 | $aa_permisos["enabled"] | |
+| leer           | 0 o 1 | $aa_permisos["leer"] | |
+| incluir        | 0 o 1 | $aa_permisos["incluir"] | |
+| cambiar        | 0 o 1 | $aa_permisos["cambiar"] | |
+| eliminar       | 0 o 1 | $aa_permisos["eliminar"] | |
+| imprimir       | 0 o 1 | $aa_permisos["imprimir"] | |
+| administrativo | 0 o 1 | $aa_permisos["administrador"] | |
+| anular         | 0 o 1 | $aa_permisos["anular"] | |
+| ejecutar       | 0 o 1 | $aa_permisos["ejecutar"] | |
+|====
+
+Luego se llama al método `uf_print_permisos` desde el formulario/pantalla.
+
+[source,php]
+.saf/sigesp_saf_d_activo.php
+----
+...
+require_once("class_funciones_activos.php");
+$io_fun_activo=new class_funciones_activos();
+$io_fun_activo->uf_print_permisos($ls_permisos,$la_permisos,$ls_logusr,"location.href='sigespwindow_blank.php'");
+...
+----
+
+Este método utiliza cuatro parámetros:
+
+. `$ls_permisos`/`$as_permisos`, true o false.
+. `$la_permisos`/`$aa_permisos`, Array con los permisos.
+. `$ls_logusr`/`$as_logusr`, Nombre de usuario.
+. `$as_accion`, Redireción hacia la pantalla principal del sistema.
+
+[source,php]
+.saf/class_funciones_activos.php
+----
+...
+function uf_print_permisos($as_permisos,$aa_permisos,$as_logusr,$as_accion)
+{
+ if (($as_permisos)||($as_logusr=="PSEGIS"))
+ {
+   print("<input type=hidden name=permisos id=permisos value='$as_permisos'>");
+   print("<input type=hidden name=leer id=leer value='$aa_permisos[leer]'>");
+   print("<input type=hidden name=incluir id=incluir value='$aa_permisos[incluir]'>");
+   print("<input type=hidden name=cambiar id=cambiar value='$aa_permisos[cambiar]'>");
+   print("<input type=hidden name=eliminar id=eliminar value='$aa_permisos[eliminar]'>");
+   print("<input type=hidden name=imprimir id=imprimir value='$aa_permisos[imprimir]'>");
+   print("<input type=hidden name=anular id=anular value='$aa_permisos[anular]'>");
+   print("<input type=hidden name=ejecutar id=ejecutar value='$aa_permisos[ejecutar]'>");
+ }
+ else
+ {
+   print("<script language=JavaScript>");
+   print("".$as_accion."");
+   print("</script>");
+ }
+}
+...
+----
+
+Para hacer efectivos los permisos, denegar y permitir acciones, se usa _JavaScript_.
+
+[source,JavaScript]
+.js/sigesp_saf_d_activo.js
+----
+function ue_guardar()
+{
+	f=document.form1;
+	li_incluir=f.incluir.value;
+	li_cambiar=f.cambiar.value;
+	lb_status=f.hidstatusact.value;
+
+	if(((lb_status=="C")&&(li_cambiar==1))||(lb_status=="")&&(li_incluir==1))
+	{
+		f.operacionact.value="GUARDAR";
+		f.action="sigesp_saf_d_activo.php";
+		f.submit();
+
+	}	else {
+ 		alert("No tiene permiso para realizar esta operacion");
+ 	}
+}
+----
+
+## Registro de evento
+
+Cada operación sobre el formulario es guardada en la tabla *sss_registro_eventos*.
+}
+
+## Refactorización de la seguridad (Borrador)
+
+Cambiar la validación via JavaScript por una validación desde PHP.
+
+[source,php]
+.saf/saf_c_seguro.php
+----
+funtion delete()
+{
+  require_once("../shared/class_folder/sigesp_c_seguridad");
+  $checkSeguridad = new sigesp_c_seguridad();
+  $permisos = $checkSeguridad->uf_sss_load_permisos($aa_seguridad["empresa"],$aa_seguridad["logusr"],
+                                                    $aa_seguridad["sistema"],$aa_seguridad["ventanas"],
+                                                    $aa_permisos);
+
+  if(true === $aa_permisos["eliminar"])
+  {
+    ...
+  } else {
+    return "No tiene permiso.";
+  }
+}
+----
+
+## La entidad sss_registro_eventos
+
+sss_derechos_usuarios
+
+[appendix]
+Sistemas
+--------
+
+|====
+| Código de Sistema | Nombre del Sistema | Descripción
+| APR | Apertura |
+| CXP | Cuentas por Pagar |
+| HSN | Historicos del Sistema de Nomina |
+| INS | Instala |
+| RCM | Reconversion Monetaria |
+| RPC | Proveedores y Beneficiario |
+| SAF | Activos Fijos |
+| SCB | Caja y Banco |
+| SCF | Contabilidad Fiscal |
+| SCG | Contabilidad Patrimonial |
+| SFC | Sistema de Facturacion y Cobranza |
+| SFP | Formulacion de presupuesto |
+| SIV | Inventario |
+| SNO | Nomina |
+| SNR | Nomina - Recursos Humanos |
+| SOB | Obras |
+| SOC | Ordenes de Compra |
+| SPG | Presupuesto de Gasto |
+| SPI | Presupuesto de Ingresos |
+| SPS | Prestaciones Sociales |
+| SRH | Recursos Humanos |
+| SSS | Seguridad |
+| MIS | Módulo Integrador |
+| SCV | Control de Viáticos |
+| SEP | Solicitud de Ejecución Presupuestaria |
+| CFG | Configuración |
+|====

@@ -81,10 +81,6 @@
 		//	   Creado Por: Ing. Luis Anibal Lang
 		// Fecha Creaci�n: 01/11/2005 								Fecha �ltima Modificaci�n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//file_put_contents('/tmp/sugau_saf.log',"uf_sss_insert_eventos_ventana --", FILE_APPEND);
-		//$args = func_get_args();
-		//file_put_contents('/tmp/sugau_saf.log',print_r($args, TRUE), FILE_APPEND);
-		//file_put_contents('/tmp/sugau_saf.log'," -- uf_sss_insert_eventos_ventana\n", FILE_APPEND);
 		function uf_sss_insert_eventos_ventana($as_empresa,$as_sistema,$as_evento,$as_usuario,$as_ventana,$as_descripcion)
 		{
 			if($as_usuario!="PSEGIS")
@@ -113,7 +109,8 @@
 					//$this->io_msg->message("CLASE->seguridad M�TODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 					//$this->io_msg->message("SQL: ".$ls_sql);
 					$lb_valido[0]=false;
-					$lb_valido[1]=utf8_encode("CLASE->seguridad MÉTODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_sql->message);
+					// $lb_valido[1]=utf8_encode("CLASE->seguridad METODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_sql->message);
+					$lb_valido[1]="CLASE->seguridad METODO->uf_sss_insert_eventos_ventana ERROR->".$this->io_sql->message;
 				}
 				else
 				{
@@ -456,5 +453,25 @@
 				return $codmenu;
 			}
 
-	}//  end class sigesp_c_seguridad
+			function uf_sss_registro_eventos_last($sistema)
+			{
+				$ls_sql = "SELECT numeve,codusu,evento,desevetra,fecevetra";
+				$ls_sql.= " FROM sss_registro_eventos";
+				$ls_sql.= " WHERE codsis = '".$sistema."'";
+				$ls_sql.= " ORDER BY fecevetra DESC";
+				$ls_sql.= " LIMIT 20";
+
+				$rs_data=$this->io_sql->select($ls_sql);
+				if($rs_data===false)
+				{
+					$this->io_msg->message("CLASE->seguridad METODO->uf_sss_registro_eventos_last ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+					$lb_valido=false;
+					return $rs_data;
+				}else{
+					$rs_data = $this->io_sql->obtener_asso($rs_data);
+					return $rs_data;
+				}
+			}
+
+		}//  end class sigesp_c_seguridad
 ?>
