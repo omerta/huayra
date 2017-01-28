@@ -81,8 +81,11 @@ a:active {
       </tr>
       <tr>
         <td><div align="right">Causa de Movimiento </div></td>
-        <td height="22"><div align="left">          <input name="txtcodcau" type="text" id="txtcodcau">
-        </div></td>
+        <td height="22">
+					<div align="left">
+						<input name="txtcodcau" type="text" id="txtcodcau">
+        	</div>
+				</td>
         <td>&nbsp;</td>
       </tr>
       <tr>
@@ -112,7 +115,8 @@ if(array_key_exists("operacion",$_POST))
 {
 	$ls_operacion=$_POST["operacion"];
 	$ls_cmpmov="%".$_POST["txtcmpmov"]."%";
-	$ls_codcau="%".$_POST["txtcodcau"]."%";
+	//$ls_codcau="%".$_POST["txtcodcau"]."%";
+	$ls_codcau=$_POST["txtcodcau"];
 	$ld_fecdes="%".$_POST["txtdesde"]."%";
 	$ld_fechas="%".$_POST["txthasta"]."%";
 	if(($ld_fecdes=="%%")||($ld_fechas=="%%"))
@@ -124,7 +128,7 @@ if(array_key_exists("operacion",$_POST))
 	{
 		$ld_fecdes=substr($ld_fecdes,1,10);
 		$ld_fechas=substr($ld_fechas,1,10);
-			
+
 		$ld_fecdes=$io_fun->uf_convertirdatetobd($ld_fecdes);
 		$ld_fechas=$io_fun->uf_convertirdatetobd($ld_fechas);
 	}
@@ -138,9 +142,10 @@ print "<tr class=titulo-celda>";
 print "<td width='50'>Comprobante </td>";
 print "<td width='150'>Causa</td>";
 print "<td width='65'>Fecha</td>";
+print "<td width='65'>C&oacute;digo Responsable de Uso</td>";
+print "<td width='65'>Responsable de Uso</td>";
 print "</tr>";
-if($ls_operacion=="BUSCAR")
-{
+if($ls_operacion=="BUSCAR") {
 	switch ($_SESSION["ls_gestor"])
 	{
 		case "MYSQLT":
@@ -182,7 +187,7 @@ if($ls_operacion=="BUSCAR")
 			"										      sno_personal.codper=saf_movimiento.codrespri)       ".
 			"				        WHEN 'B' THEN (SELECT ".$ls_cadena_beneficiario." ".
 			"								       FROM   rpc_beneficiario ".
-			"								       WHERE  rpc_beneficiario.codemp=saf_movimiento.codemp AND    ".      
+			"								       WHERE  rpc_beneficiario.codemp=saf_movimiento.codemp AND    ".
 			"										      rpc_beneficiario.ced_bene=saf_movimiento.codrespri)  ".
 			"	    END) AS nomrespri, ".
 			"       (CASE tipresuso WHEN 'P' THEN (SELECT ".$ls_cadena_personal."  ".
@@ -196,14 +201,45 @@ if($ls_operacion=="BUSCAR")
 			"	     END) AS nomresuso,  ".
 	        "       (SELECT denuniadm  ".
             "        FROM   spg_unidadadministrativa ".
-            "        WHERE  spg_unidadadministrativa.coduniadm=saf_movimiento.coduniadm) as denuniadm".
-	        "  FROM saf_movimiento,saf_causas ".
+            "        WHERE  spg_unidadadministrativa.coduniadm=saf_movimiento.coduniadm) as denuniadm,".
+	        "       (SELECT denuniadm  ".
+            "        FROM   saf_unidadadministrativa ".
+            "        WHERE  saf_unidadadministrativa.coduniadm=saf_movimiento.codubifis) as desubifis".
+            "  FROM saf_movimiento,saf_causas ".
 			" WHERE saf_movimiento.codcau=saf_causas.codcau ".
 			"   AND saf_causas.estcat='".$ls_estcat."' ".
 			"   AND saf_causas.tipcau='I' ".
 			"   AND saf_movimiento.codemp='".$ls_codemp."'".$ls_sqlint.
-			"   AND saf_movimiento.cmpmov like '".$ls_cmpmov."' ".
-			"   AND saf_movimiento.codcau like '".$ls_codcau."' ";
+			"   AND saf_movimiento.cmpmov like '".$ls_cmpmov."' ";
+			//"   AND saf_movimiento.codcau like '".$ls_codcau."' ".
+			if ($ls_codcau != '') {
+				$ls_sql.="   AND saf_movimiento.codcau = '".$ls_codcau."' ";
+			}
+			$ls_sql.=" ORDER BY saf_movimiento.cmpmov DESC";//echo"$ls_sql";
+
+	} else {
+        $ls_sql = "SELECT saf_movimiento.*,saf_causas.dencau";
+        $ls_sql.= ",(CASE tiprespri WHEN 'P' THEN (SELECT (sno_personal.nomper||' '||sno_personal.apeper)";
+        $ls_sql.= " FROM sno_personal";
+        $ls_sql.= " WHERE sno_personal.codemp=saf_movimiento.codemp";
+        $ls_sql.= " AND sno_personal.codper=saf_movimiento.codrespri)";
+        $ls_sql.= " WHEN 'B' THEN (SELECT (rpc_beneficiario.nombene||' '||rpc_beneficiario.apebene)";
+				    $ls_sql.= " FROM rpc_beneficiario";
+						$ls_sql.= " WHERE  rpc_beneficiario.codemp=saf_movimiento.codemp";
+						$ls_sql.= " AND rpc_beneficiario.ced_bene=saf_movimiento.codrespri) END) AS nomrespri,";
+						$ls_sql.= " (CASE tipresuso WHEN 'P' THEN (SELECT (sno_personal.nomper||' '||sno_personal.apeper)";
+						$ls_sql.= " FROM sno_personal WHERE  sno_personal.codemp=saf_movimiento.codemp AND sno_personal.codper=saf_movimiento.codresuso) WHEN 'B' THEN (SELECT (rpc_beneficiario.nombene||' '||rpc_beneficiario.apebene)";
+						$ls_sql.= " FROM rpc_beneficiario";
+						$ls_sql.= " WHERE  rpc_beneficiario.codemp=saf_movimiento.codemp AND rpc_beneficiario.ced_bene=saf_movimiento.codresuso) END) AS nomresuso,";
+						$ls_sql.= " (SELECT denuniadm FROM   spg_unidadadministrativa WHERE  spg_unidadadministrativa.coduniadm=saf_movimiento.coduniadm) as denuniadm,";
+						$ls_sql.= " (SELECT denuniadm          FROM   saf_unidadadministrativa         WHERE  saf_unidadadministrativa.coduniadm=saf_movimiento.codubifis) as desubifis";
+						$ls_sql.= " FROM saf_movimiento,saf_causas  WHERE saf_movimiento.codcau=saf_causas.codcau";
+						$ls_sql.= " AND saf_causas.estcat='1'";
+						$ls_sql.= " AND saf_causas.tipcau='I'";
+						$ls_sql.= " AND saf_movimiento.codemp='0001'";
+        $ls_sql.= " ORDER BY saf_movimiento.cmpmov DESC";
+        $ls_sql.= " LIMIT 10";
+	}
 	$rs_cta=$io_sql->select($ls_sql);
 	$li_row=$io_sql->num_rows($rs_cta);
 	if($li_row>0)
@@ -211,7 +247,8 @@ if($ls_operacion=="BUSCAR")
 		while($row=$io_sql->fetch_row($rs_cta))
 		{
 			print "<tr class=celdas-blancas>";
-			$ls_cmpmov=$row["cmpmov"];
+			$ls_cmpmov = $row["cmpmov"];
+			$ls_numcmp = $row["numcmp"];
 			$ls_codcau=$row["codcau"];
 			$ls_dencau=$row["dencau"];
 			$ld_feccmp=$io_fun->uf_formatovalidofecha($row["feccmp"]);
@@ -222,6 +259,8 @@ if($ls_operacion=="BUSCAR")
 			$ls_denrespri = $row["nomrespri"];
 			$ls_codresuso = $row["codresuso"];
 			$ls_denresuso = $row["nomresuso"];
+			$ls_codubifisresuso = $row["codubifis"]; //VARIABLE AGREGADA PARA LA UBICACIÓN FISICA DEL ACTIVO
+			$ls_desubifisresuso = $row["desubifis"]; //VARIABLE AGREGADA PARA LA UBICACIÓN FISICA DEL ACTIVO
 			$ls_coduniadm = $row["coduniadm"];
 			$ls_denuniadm = $row["denuniadm"];
 			$ls_ubigeo = $row["ubigeoact"];
@@ -229,19 +268,22 @@ if($ls_operacion=="BUSCAR")
 			$ls_tipresuso = $row["tipresuso"];
 			$ld_fecent=$io_fun->uf_formatovalidofecha($row["fecentact"]);
 			$ld_fecent=$io_fun->uf_convertirfecmostrar($ld_fecent);
+
 			print "<td><a href=\"javascript: aceptar('$ls_cmpmov','$ls_codcau','$ls_dencau','$ld_feccmp',".
 				  "'$ls_descmp','$ls_estpromov','$ls_coddestino','$ls_codrespri','$ls_codresuso','$ls_coduniadm',".
-				  "'$ls_denuniadm','$ls_ubigeo','$ls_denrespri','$ls_denresuso','$ls_tiprespri','$ls_tipresuso','$ld_fecent');\">".$ls_cmpmov."</a></td>";
+				  "'$ls_denuniadm','$ls_ubigeo','$ls_denrespri','$ls_denresuso','$ls_tiprespri','$ls_tipresuso','$ld_fecent','$ls_numcmp','$ls_codubifisresuso','$ls_desubifisresuso');\">".$ls_numcmp."</a></td>";
 			print "<td>".$ls_dencau."</td>";
 			print "<td>".$ld_feccmp."</td>";
-			print "</tr>";			
+			print "<td>".$ls_codubifisresuso."</td>";
+			print "<td>".$ls_desubifisresuso."</td>";
+			print "</tr>";
 		}
 	}
 	else
 	{
 			$io_msg->message("No hay registros");
 	}
-}
+// }
 print "</table>";
 ?>
 </div>
@@ -252,24 +294,26 @@ print "</table>";
 <script language="JavaScript">
 	function aceptar(ls_cmpmov,ls_codcau,ls_dencau,ld_fectraact,ls_obstra,ls_estpromov,ls_coddestino,ls_codrespri,
 	                 ls_codresuso,ls_coduniadm,ls_denuniadm,ls_ubigeo,ls_denrespri,ls_denresuso,ls_tiprespri,
-					 ls_tipresuso,ld_fecent)
+					 ls_tipresuso,ld_fecent,as_numcmp,ls_codubifis,ls_desubifis)
 	{
-		opener.document.form1.txtcmpmov.value=ls_cmpmov;
+		opener.document.form1.txtcmpmov.value = ls_cmpmov;
+
 		if(ls_coddestino!="reporte")
 		{
 			opener.document.form1.txtcodcau.value=ls_codcau;
-			opener.document.form1.txtdencau.value=ls_dencau;
+			//opener.document.form1.txtdencau.value=ls_dencau;
 			opener.document.form1.txtfeccmp.value=ld_fectraact;
 			opener.document.form1.txtdescmp.value=ls_obstra;
 			opener.document.form1.hidestpromov.value=ls_estpromov;
 			opener.document.form1.hidstatus.value="C";
 			opener.document.form1.txtcmpmov.readOnly=true;
 			opener.document.form1.txtcodcau.readOnly=true;
-			opener.document.form1.txtdencau.readOnly=true;
+			//opener.document.form1.txtdencau.readOnly=true;
 			opener.document.form1.txtfeccmp.readOnly=true;
 			tipo=document.form1.tipo.value;
 			if(tipo=="incorporacion")
 			{
+				opener.document.form1.txtnumcmp.value = as_numcmp;
 				opener.document.form1.txtcodrespri.value=ls_codrespri;
 				opener.document.form1.txtcodrespri.readOnly=true;
 				opener.document.form1.txtdenrespri.value=ls_denrespri;
@@ -280,8 +324,12 @@ print "</table>";
 				opener.document.form1.txtdenresuso.readOnly=true;
 				opener.document.form1.txtcoduniadm.value=ls_coduniadm;
 				opener.document.form1.txtcoduniadm.readOnly=true;
-				opener.document.form1.txtdenuniadm.value=ls_denuniadm;
-				opener.document.form1.txtdenuniadm.readOnly=true;
+				//opener.document.form1.txtdenuniadm.value=ls_denuniadm;
+				//opener.document.form1.txtdenuniadm.readOnly=true;
+				opener.document.form1.txtcoduni.value=ls_codubifis;
+				opener.document.form1.txtcoduni.readOnly=true;
+				//opener.document.form1.txtdenuni.value=ls_desubifis;
+				//opener.document.form1.txtdenuni.readOnly=true;
 				opener.document.form1.txtubigeo.value=ls_ubigeo;
 				opener.document.form1.cmbtiprespri.value=ls_tiprespri;
 				opener.document.form1.cmbtipresuso.value=ls_tipresuso;
@@ -299,7 +347,7 @@ print "</table>";
 		f.action="sigesp_saf_cat_incorporaciones.php";
 		f.submit();
 	}
- 
+
 ////////////////////////    Validar la Fecha     ///////////////////////////
 var patron = new Array(2,2,4)
 var patron2 = new Array(1,3,3,3,3)
@@ -310,7 +358,7 @@ if(d.valant != d.value){
 	val = val.split(sep)
 	val2 = ''
 	for(r=0;r<val.length;r++){
-		val2 += val[r]	
+		val2 += val[r]
 	}
 	if(nums){
 		for(z=0;z<val2.length;z++){

@@ -429,67 +429,33 @@ class class_funciones_activos
 		*/
 		function uf_formatoprogramatica($as_codpro,&$as_programatica)
    	{
-<<<<<<< HEAD
-		//////////////////////////////////////////////////////////////////////////////
-		//	     Function: uf_formatoprogramatica
-		//		   Access: public
-		//	  Description: Función que obtiene que de acuerdo a la modalidad imprime la programatica
-		//	   Creado Por: Ing. Yesenia Moreno/ Ing. Luis Lang
-		// Fecha Creación: 19/04/2007 								Fecha Última Modificación : 
-		//////////////////////////////////////////////////////////////////////////////
-		$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
-		$li_len1=0;
-		$li_len2=0;
-		$li_len3=0;
-		$li_len4=0;
-		$li_len5=0;
-		$ls_titulo="";
-		$this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
-		$ls_codest1=substr($as_codpro,0,25);
-		$ls_codest2=substr($as_codpro,25,25);
-		$ls_codest3=substr($as_codpro,50,25);
-		$ls_codest4=substr($as_codpro,75,25);
-		$ls_codest5=substr($as_codpro,100,25);
-		$ls_codest1=substr($ls_codest1,(25-$li_len1),$li_len1);
-		$ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
-		$ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
-		$ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
-		$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);		
-		switch($ls_modalidad)
-		{
-			case "1": // Modalidad por Proyecto
-				$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3;
-				break;
-=======
-			$ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
-			$li_len1=0;
-			$li_len2=0;
-			$li_len3=0;
-			$li_len4=0;
-			$li_len5=0;
-			$ls_titulo="";
-			$this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
-			$ls_codest1=substr($as_codpro,0,25);
-			$ls_codest2=substr($as_codpro,25,25);
-			$ls_codest3=substr($as_codpro,50,25);
-			$ls_codest4=substr($as_codpro,75,25);
-			$ls_codest5=substr($as_codpro,100,25);
-			$ls_codest1=substr($ls_codest1,(25-$li_len1),$li_len1);
-			$ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
-			$ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
-			$ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
-			$ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);
-			switch($ls_modalidad)
-			{
-				case "1": // Modalidad por Proyecto
-					$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3;
-					break;
->>>>>>> e3fc211c127c9a1233594703a124fb91e062f032
-
-				case "2": // Modalidad por Programa
-					$as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3."-".$ls_codest4."-".$ls_codest5;
-					break;
-			}
+        $ls_modalidad=$_SESSION["la_empresa"]["estmodest"];
+        $li_len1=0;
+        $li_len2=0;
+        $li_len3=0;
+        $li_len4=0;
+        $li_len5=0;
+        $ls_titulo="";
+        $this->uf_loadmodalidad($li_len1,$li_len2,$li_len3,$li_len4,$li_len5,$ls_titulo);
+        $ls_codest1=substr($as_codpro,0,25);
+        $ls_codest2=substr($as_codpro,25,25);
+        $ls_codest3=substr($as_codpro,50,25);
+        $ls_codest4=substr($as_codpro,75,25);
+        $ls_codest5=substr($as_codpro,100,25);
+        $ls_codest1=substr($ls_codest1,(25-$li_len1),$li_len1);
+        $ls_codest2=substr($ls_codest2,(25-$li_len2),$li_len2);
+        $ls_codest3=substr($ls_codest3,(25-$li_len3),$li_len3);
+        $ls_codest4=substr($ls_codest4,(25-$li_len4),$li_len4);
+        $ls_codest5=substr($ls_codest5,(25-$li_len5),$li_len5);
+        switch($ls_modalidad)
+        {
+            case "1": // Modalidad por Proyecto
+                $as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3;
+            break;
+            case "2": // Modalidad por Programa
+                $as_programatica=$ls_codest1."-".$ls_codest2."-".$ls_codest3."-".$ls_codest4."-".$ls_codest5;
+            break;
+        }
    	}// end function uf_obtenertipo
 	//-----------------------------------------------------------------------------------------------------------------------------------
 
