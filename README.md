@@ -68,6 +68,12 @@ Causar la relectura del archivo pg_hba.conf.
 # systemctl reload postgresql
 ```
 
+Conceder privilegios al usuario:
+
+```
+(psql) DATABASE=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO usuario_db;
+```
+
 # Servidos Web Apache2
 
 * Insalar apache2

@@ -7,6 +7,7 @@
 //		});
 //	});
 
+/* mensaje de espera */
 $(document).ajaxStart(function () {
 	$('#mensaje_espera_texto').show();
 	$(document.body).css({'cursor' : 'wait'});
@@ -15,18 +16,57 @@ $(document).ajaxStart(function () {
 	$(document.body).css({'cursor' : 'default'});
 });
 
+/* eliminar el contenido del modal al cerrarlo */
+$(document).ready(function() {
+  $(".modal").on("hidden.bs.modal", function() {
+		$('#table_catalogo_rotulacion > tbody').html('');
+  });
+});
+
 function ue_buscar()
 {
-	f=document.form1;
-	li_leer=f.leer.value;
-	if (li_leer==1)
- 	{
-		window.open("sigesp_saf_cat_rotulacion.php","catalogo","menubar=no,toolbar=no,scrollbars=yes,width=518,height=400,left=50,top=50,location=no,resizable=yes");
- 	}
-	else
- 	{
- 		alert("No tiene permiso para realizar esta operacion");
- 	}
+	$('#table_catalogo_rotulacion > tbody').html('');
+	var codrot = $('#txtcodigo').val();
+	var denrot = $('#txtdenominacion').val();
+	$.post("sigesp_saf_puente_rotulacion.php",
+				 {status:"CATALOGO",codrot:codrot,denrot:denrot},null,"json")
+				 .done(function(data)
+				 {
+					 if(data != null){
+						 $.each(data, function(i, val) {
+								$('#table_catalogo_rotulacion > tbody:last-child').append('<tr class="celdas-blancas"></tr>');
+								var aceptar = ("'"+val['codrot']+"','"+val['denrot']+"','"+val['emprot']+"'");
+							 $.each(val, function(j, val) {
+								 if(j == 'codrot')
+								 {
+									 $('#table_catalogo_rotulacion > tbody > tr:last-child').append('<td><a href=\"javascript: aceptar('+ aceptar +');\">'+ val +'</td>');
+								 }else{
+									 $('#table_catalogo_rotulacion > tbody > tr:last-child').append('<td>'+ val +'</td>');
+								 }
+							 });
+						 });
+					 }else{
+						 $('#table_catalogo_rotulacion > tbody').append('<tr><td colspan="3" class="alert alert-warning">Upps!, no hay datos que mostrar</tr></td>');
+					 }
+					 $('#txtcodigo').val('');
+					 $('#txtdenominacion').val('');
+					 $('#catalogo_rotulacion').modal('show');
+				 })
+				 .fail(function(data) {
+					 alert("Error con Ajax al buscar en la tabla los métodos de rotulacion.");
+					 console.log(data);
+				 })
+}
+
+function aceptar(prov,d,v,n,hidstatus)
+{
+	$('#txtcodrot').val(prov);
+	$('#txtdenrot').val(d);
+	$('#txtempleo').val(v);
+	$('#operacion').val('G');
+	$("#mensajes").hide('slow');
+	$("#mensajes_detalles").hide('slow');
+	$('#catalogo_rotulacion').modal('hide');
 }
 
 function ue_cata()
@@ -36,6 +76,12 @@ function ue_cata()
 
 function ue_nuevo()
 {
+	/* */
+	$("#mensajes").hide('slow');
+	$("#mensajes_detalles").hide('slow');
+	$("#required_error_block").hide('slow');
+
+	/* */
 		$.post("sigesp_saf_puente_rotulacion.php",
 						{newstatus:"NEW"},null,"json")
 				.done(function(data)
@@ -64,7 +110,7 @@ function ue_nuevo()
 						/* */
 						$("#operacion").val(''); // bandera que indica una modificación del formulario
 						$("#form1")[0].reset();
-						$("#txtnombre").val(data[1]);
+						$("#txtcodrot").val(data[1]);
 					}
 				});
 }

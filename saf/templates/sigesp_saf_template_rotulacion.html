@@ -1,53 +1,88 @@
-{% extends "base_saf.html" %}
-{% block content %}
-<script type="text/javascript" language="JavaScript1.2" src="js/sigesp_saf_d_rotulacion.js"></script>
+{# @TODO cambiar el nombre a sigesp_saf_t_rotulacion.html.twig #}
+{% extends "base.html.twig" %}
+{% use "base_saf.html.twig" %}
 
-  <h1 class="titulo">Definici&oacute;n de M&eacute;todos de Rotulaci&oacute;n</h1>
-	<h2 class="subtitulo">Datos</h2>
+{% block botonera %}
+  {% include "saf_botonera_definiciones.html.twig" %}
+{% endblock botonera %}
 
-	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" data-toggle="validator">
+{% block formulario %}
+  <h1 class="titulo">{{ titulo }}</h1>
+  <div class="formato-blanco">
+  	<form action="" method="post" name="form1" id="form1" enctype="multipart/form-data" data-toggle="validator" class="form-horizontal">
+      <!-- modal para el catalogo -->
+      <div id="catalogo_rotulacion" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" arial-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Cat&aacute;logo de M&eacute;todo de Rotulaci&oacute;n</h4>
+            </div>
+            <!--  -->
+            <div class="container">
+              <div class="form-inline">
+                <label for="txtcodigo" class="sr-only">C&oacute;digo</label>
+                <!-- <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Jane Doe"> -->
+                <input type="number" name="txtcodigo" id="txtcodigo" class="form-control" placeholder="C&oacute;digo">
 
-    {# BLOQUES PARA MENSAJES #}
-      <!-- Mensaje y gif de espesta -->
-      <div id="mensaje_espera_texto" class="alert alert-danger" style="display:none;"> Por favor espere...</div>
-      <!-- mesaje de exito o error -->
-      <div id="mensajes" style="display:none;"></div>
-      <!-- mensaje detallado en caso de error -->
-      <div id="mensajes_detalles" style="display:none;"></div>
-      <!-- validacion de campos required -->
-      <div id="required_error_block" style="display:none;">
-          <div class="alert alert-danger">
-            <p><strong>Error!</strong> Falta llenar los siguientes campos.</p>
+                <label for="txtdenominacion" class="sr-only">Denominaci&oacute;n</label>
+                <!-- <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Jane Doe"> -->
+                <input type="text" name="txtdenominacion" id="txtdenominacion" value="" class="form-control" placeholder="Denominaci&oacute;n">
+
+                <button type="button" name="button" class="btn btn-primary" onclick="ue_buscar();">Buscar</button>
+              </div>
+            </div>
+            <div class="modal-body">
+              <table class="table table-bordered fondo-tabla" id="table_catalogo_rotulacion">
+                <thead>
+                  <tr class="titulo-celda">
+                    <th>C&oacute;digo</th>
+                    <th>Denominaci&oacute;n</th>
+                    <th>Empleo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" name="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
           </div>
-          <div class="sub_required_error_block alert alert-danger">
-          </div>
+        </div>
+      </div>
+      <!-- modal para el catalogo -->
+
+      {# Comienza tu formulario aqui #}
+  		<div class="form-group">
+  			<label for="codigo" class="control-label col-md-10">C&oacute;digo</label>
+  			<div class="col-md-2">
+  				<input name="txtcodrot" type="text" id="txtcodrot" style="text-align:center" class="form-control" readonly required>
+  			</div>
+  		</div>
+
+      <div class="form-group">
+  			<label for="codigo" class="control-label col-md-3">Denominaci&oacute;n</label>
+  			<div class="col-md-9">
+  					<input name="txtdenrot" type="text" id="txtdenrot" class="form-control" required>
+  			</div>
+  		</div>
+
+      <div class="form-group">
+        <label for="codigo" class="control-label col-md-3">Empleo</label>
+        <div class="col-md-9">
+          <textarea name="txtempleo" cols="50" id="txtempleo" class="form-control"></textarea>
+        </div>
       </div>
 
-    {# Comienza tu formulario aqui #}
-		<div class="form-group">
-			<label for="codigo" class="control-label col-md-10">C&oacute;digo</label>
-			<div class="col-md-2">
-				<input name="txtcodrot" type="text" id="txtnombre" style="text-align:center" class="form-control" readonly required>
-			</div>
-		</div>
-
-    <div class="form-group">
-			<label for="codigo" class="control-label col-md-3">Denominaci&oacute;n</label>
-			<div class="col-md-9">
-					<input name="txtdenrot" type="text" id="txtdenrot" class="form-control" required>
-			</div>
-		</div>
-
-    <div class="form-group">
-      <label for="codigo" class="control-label col-md-3">Empleo</label>
-      <div class="col-md-9">
-        <textarea name="txtempleo" cols="50" id="txtempleo" class="form-control"></textarea>
-      </div>
-    </div>
-
-    {# Marcador Guardar-Actualuzar #}
-    <input name="operacion" type="hidden" id="operacion">
-    {# fin del formulario #}
-</form>
-
-{% endblock %}
+      {# Marcador Guardar-Actualuzar #}
+      <input name="operacion" type="hidden" id="operacion">
+      {# fin del formulario #}
+    </form>
+  </div>
+{% endblock formulario %}
+{% block extrajs %}
+  <script type="text/javascript" language="JavaScript1.2" src="js/sigesp_saf_d_rotulacion.js"></script>
+{% endblock extrajs %}

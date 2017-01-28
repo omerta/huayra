@@ -9,7 +9,12 @@
     $denominacion = utf8_decode($denominacion);
     $empleo = $_POST['empleo'];
     $empleo = utf8_decode($empleo);
-    $status = $_POST['status'];
+		/* catalogo */
+		$codrot = $_POST['codrot'];
+		$denrot = $_POST['denrot'];
+		$denrot = utf8_decode($denrot);
+		/* */
+		$status = $_POST['status'];
     $newstatus = $_POST['newstatus'];
 
     if ($newstatus == 'NEW')
@@ -21,7 +26,11 @@
     	Guardar($ls_codigo,$denominacion,$empleo,$status);
     }elseif ($status == "DELETE") {
     	Eliminar($ls_codigo);
-    }
+    }elseif($status == "CATALOGO") {
+			$io_saf= new sigesp_saf_c_rotulacion();
+			$tipos = $io_saf->uf_saf_select_rotulacion($codrot,$denrot);
+			echo $tipos;
+		}
 
     function Nuevo()
     {

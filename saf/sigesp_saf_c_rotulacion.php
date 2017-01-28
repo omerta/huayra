@@ -38,11 +38,14 @@ class sigesp_saf_c_rotulacion
 	 *
 	 * @author Luis Anibal Lang 2006
 	 */
-	function uf_saf_select_rotulacion($as_codigo)
+	function uf_saf_select_rotulacion($as_codigo = null,$denrot = null)
 	{
 		$lb_valido=false;
 		$ls_sql = "SELECT * FROM saf_rotulacion";
-		$ls_sql.= " WHERE codrot='".$as_codigo."'";
+		$ls_sql.= " WHERE denrot ilike '%".$denrot."%'";
+		!empty($as_codigo) ? $ls_sql.= " AND codrot='".$as_codigo."'" : false;
+		$ls_sql.= " ORDER BY codrot";
+
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
@@ -51,13 +54,12 @@ class sigesp_saf_c_rotulacion
 		}
 		else
 		{
-			if($row=$this->io_sql->fetch_row($rs_data))
-			{
-				$lb_valido=true;
-			}
+			$data=$this->io_sql->obtener_asso($rs_data);
 		}
 		$this->io_sql->free_result($rs_data);
-		return $lb_valido;
+		// return json_encode($data);
+		return json_encode($data);
+		// return $data;
 	}//fin uf_saf_select_rotulacion
 
 	/**

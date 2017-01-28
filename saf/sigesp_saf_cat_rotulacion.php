@@ -1,4 +1,8 @@
 <?php
+/**
+ * @deprecated 12/01/2017
+ * @deprecated Se reemplaza por un modal de bootstrap en template.
+ */
 session_start();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -8,7 +12,6 @@ session_start();
 <title>Cat&aacute;logo de M&eacute;todo de Rotulaci&oacute;n </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-<!--
 a:link {
 	color: #006699;
 }
@@ -18,7 +21,6 @@ a:visited {
 a:active {
 	color: #006699;
 }
--->
 </style>
 <link href="../shared/css/ventanas.css" rel="stylesheet" type="text/css">
 <link href="../shared/css/general.css" rel="stylesheet" type="text/css">
@@ -79,7 +81,7 @@ if(array_key_exists("operacion",$_POST))
 
 	$ls_sql = "SELECT * FROM saf_rotulacion".
 	$ls_sql.= " WHERE denrot ilike '".$ls_denominacion."'";
-	empty(!$ls_codigo) ? $ls_sql.= " AND codrot = '".$ls_codigo."'" : "FALSE";
+	!empty($ls_codigo) ? $ls_sql.= " AND codrot = '".$ls_codigo."'" : "FALSE";
 	$ls_sql.= " ORDER BY codrot";
 }
 else
@@ -89,8 +91,8 @@ else
 }
 print "<table width=500 border=0 cellpadding=1 cellspacing=1 class=fondo-tabla align=center>";
 print "<tr class=titulo-celda>";
-print "<td>Código</td>";
-print "<td>Denominación</td>";
+print "<td>C&oacute;digo</td>";
+print "<td>Denominaci&oacute;n</td>";
 print "</tr>";
 
 	$rs_cta=$io_sql->select($ls_sql);
@@ -130,9 +132,9 @@ print "</table>";
 		opener.document.form1.txtdenrot.value=d;
 		opener.document.form1.txtempleo.value=v;
 		opener.document.form1.operacion.value="G";
-
-		/* @TODO borrar cualquier mensaje impreso */
-
+		/* cerrar los posibles mesanjes de otras operaciones */
+		window.opener.$("#mensajes").hide('slow');
+		window.opener.$("#mensajes_detalles").hide('slow');
 		close();
   }
   function ue_search()
