@@ -99,3 +99,9 @@ Causar la lectura del los sitios virutal disponibles.
 ```bash
 huayra/shared$ php composer.phar require twig/twig
 ```
+
+# ROSPdf (ZEPPDF)
+
+```bash
+huayra/shared$ php composer.phar require rospdf/pdf-php
+```
