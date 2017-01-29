@@ -22,15 +22,15 @@ class class_sql
 		$this->datastore=$obj;
 		$this->conn=$con;
 	}
-	
-	
-	
+
+
+
 	function seleccionar($ps_sentencia,&$pa_datos)
 	 {
-	   
+
 	   $lb_valido = false;
 	   $resultado =$this->conn->Execute($ps_sentencia);
-	   
+
 				if ($resultado != null && $this->num_rows($resultado) > 0)
 				{
 				  $lb_valido = true;
@@ -42,9 +42,9 @@ class class_sql
 					  $ls_campo =  $this->field_name($resultado,$j);
 					  $pa_datos[$ls_campo][$i] = $fila[$ls_campo];
 					}
-					$i++;		
+					$i++;
 				  }
-			
+
 				}
 	   if(empty($pa_datos))
 	   {
@@ -52,7 +52,7 @@ class class_sql
 	   }
 				return $lb_valido;
 	} // end function
-	  
+
 
 	function select($sql)
 	{
@@ -74,7 +74,7 @@ class class_sql
 			return $result;
 		}
 	} // end function
-		
+
 	function execute($sql)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ class class_sql
 			return $result;
 		}
 	}// end function
-	
+
 	function fetch_row($rs_data)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ class class_sql
 		// Arguments:
 		//			     $rs_data->Resulset obtenido del metodo select.
 		////////////////////////////////////////////////////////////////////////////////////////////
-		if(isset($rs_data)) 
+		if(isset($rs_data))
 		{
 			if (empty($rs_data))
 			{
@@ -121,7 +121,7 @@ class class_sql
 		return $this->fetch_row;
 	}// end function
 
-	function num_rows($rs_data) 
+	function num_rows($rs_data)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	 num_rows
@@ -129,7 +129,7 @@ class class_sql
 		// Arguments:
 		//			     $rs_data->Resulset obtenido del metodo select.
 		////////////////////////////////////////////////////////////////////////////////////////////
-		if(isset($rs_data)) 
+		if(isset($rs_data))
 		{
 			if (empty($rs_data))
 			{
@@ -143,7 +143,7 @@ class class_sql
 		return $this->numrows;
 	}// end function
 
-	function field_name($rs_data,$field) 
+	function field_name($rs_data,$field)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	filed_name
@@ -151,8 +151,8 @@ class class_sql
 		// Arguments:
 		//			     $rs_data->Resulset obtenido del metodo select.
 		//				 $field->numero de la columna a buscar
-		////////////////////////////////////////////////////////////////////////////////////////////		
-		if(isset($rs_data) && isset($field)) 
+		////////////////////////////////////////////////////////////////////////////////////////////
+		if(isset($rs_data) && isset($field))
 		{
 			$campo = $rs_data->FetchField($field);
 			$this->fetcharray = $campo->name;
@@ -160,7 +160,7 @@ class class_sql
 		return $this->fetcharray;
 	}// end function
 
-	function field_type ($rs_data,$field) 
+	function field_type ($rs_data,$field)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	filed_type
@@ -168,8 +168,8 @@ class class_sql
 		// Arguments:
 		//			     $rs_data->Resulset obtenido del metodo select.
 		//				 $field->numero de la columna a buscar
-		////////////////////////////////////////////////////////////////////////////////////////////				
-		if(isset($rs_data) && isset($field)) 
+		////////////////////////////////////////////////////////////////////////////////////////////
+		if(isset($rs_data) && isset($field))
 		{
 				$campo = $rs_data->FetchField($field);
 				$this->fetcharray = $campo->type;
@@ -177,7 +177,7 @@ class class_sql
 		return $this->fetcharray;
 	}// end function
 
-	function free_result ($result)  
+	function free_result ($result)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	free_result
@@ -185,15 +185,15 @@ class class_sql
 		// Arguments:
 		//			     $result->Resulset obtenido del metodo select.
 		////////////////////////////////////////////////////////////////////////////////////////////
-		$result->Close(); 		
+		$result->Close();
 	}// end function
-	
-	function close () 
+
+	function close ()
 	{
 		$this->closeid =  $this->conn->Close();
 		return $this->closeid;
 	}// end function
-	
+
 	function obtener_datos($result)
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,7 +201,7 @@ class class_sql
 		// Description : Metodo que retorna una matriz datastore con los valores obtenidos de la ejecucion del metodo select
 		// Arguments:
 		//			     $result->Resulset obtenido del metodo select.
-		////////////////////////////////////////////////////////////////////////////////////////////		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		$this->datastore->reset_ds();//Blanqueo la matriz $data.
 		if($result->RecordCount()>0)
 		{
@@ -217,43 +217,84 @@ class class_sql
 					$nombre = $campo->name;
 					$tipo =  $result->MetaType($campo->type);
 					$valor = $result->fields[$nombre];
-					if( $tipo == 'D' || $tipo == 'T') 
+					if( $tipo == 'D' || $tipo == 'T')
 					{
 						$valor =$this->io_funciones->uf_formatovalidofecha($valor);
 					}
 					$this->datastore->insertRow($nombre,$valor);
 				}
-				$i++;	
+				$i++;
 				$result->MoveNext();
 			}
 		}
-		return $this->datastore->data;	
+		return $this->datastore->data;
 	}// end function
+
+	/**
+		 *
+		 *  @param array $result Resulset obtenido del metodo select.
+		 */
+		function obtener_asso($result)
+		{
+		/**
+		* Blanqueo la matriz $data.
+		*/
+			$this->datastore->reset_ds();
+			if($result->RecordCount()>0)
+			{
+				$i = 0;
+				$result->MoveFirst();
+				$columnas=count($result->FetchRow()); //numero de conlumnas
+				$result->MoveFirst();
+				$array = array();
+				while($result->EOF===false)
+				{
+					for ($j=0; $j<$columnas; $j++)
+					{
+						$campo = $result->FetchField($j);
+						$nombre = $campo->name; //nombre del campo
+						$tipo =  $result->MetaType($campo->type);
+						$valor = $result->fields[$nombre]; // valor del campo
+						$array[$nombre]= $valor;
+	// 					if( $tipo == 'D' || $tipo == 'T')
+	// 						{
+	// 						$valor =$this->io_funciones->uf_formatovalidofecha($valor);
+	// 						}
+	// 						$this->datastore->insertRow($nombre,$valor);
+					}
+					$array2[] = $array;
+					$i++;
+					$result->MoveNext();
+				}
+			}
+			//print_r($array2);
+			return $array2;
+			}
 
 	function begin_transaction()
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	begin_transaction
 		// Description : Metodo que inicia una transaccion SQL
-		////////////////////////////////////////////////////////////////////////////////////////////		
+		////////////////////////////////////////////////////////////////////////////////////////////
 		$this->conn->BeginTrans();
 	}// end function
-	
+
 	function commit()
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	commit
 		// Description : Realiza el cierre satisfactorio de la transaccion.Depende de la ejecucion anterior del begin_transaction
-		////////////////////////////////////////////////////////////////////////////////////////////				
+		////////////////////////////////////////////////////////////////////////////////////////////
 		$this->conn->CommitTrans();
 	}// end function
-	
+
 	function rollback()
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Function:   	commit
 		// Description : Realiza el aborto o reverso de la transaccion ejecutada(INSERT,UPDATE,DELETE).Depende de la ejecucion anterior del begin_transaction
-		////////////////////////////////////////////////////////////////////////////////////////////				
+		////////////////////////////////////////////////////////////////////////////////////////////
 		$this->conn->RollbackTrans();
 	}	// end function
 } // end class

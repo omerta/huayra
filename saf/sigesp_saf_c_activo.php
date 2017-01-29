@@ -3,7 +3,7 @@ require_once("../shared/class_folder/class_sql.php");
 require_once("../shared/class_folder/class_datastore.php");
 require_once("../shared/class_folder/class_mensajes.php");
 require_once("../shared/class_folder/sigesp_include.php");
-require_once("../shared/class_folder/sigesp_c_seguridad.php");
+require_once("../shared/class_folder/sigesp_c_seguridad_26042016.php");
 require_once("../shared/class_folder/class_funciones.php");
 
 
@@ -23,15 +23,15 @@ class sigesp_saf_c_activo
 		$this->io_sql=new class_sql($this->con);
 		$this->seguridad= new sigesp_c_seguridad();
 		$this->io_funcion = new class_funciones();
-		
+
 	}//fin de la function sigesp_saf_c_metodos()
-	
+
 	function uf_saf_select_activo($as_codemp,$as_codact)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_activo
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica si existe un determinado activo en la tabla saf_activo
@@ -90,7 +90,7 @@ class sigesp_saf_c_activo
 		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n : 21/05/2007
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
-		$this->io_sql->begin_transaction();	
+		$this->io_sql->begin_transaction();
 		if($ad_fecemisol=="")
 		{
 			$ad_fecemisol="1900-01-01";
@@ -115,7 +115,7 @@ class sigesp_saf_c_activo
 		   {
 		     $as_codconbie = '02';
 		   }
-		$ls_sql = "INSERT INTO saf_activo (codemp,codact,denact,maract,modact,fecregact,feccmpact,codconbie,spg_cuenta_act,esttipinm,". 
+		$ls_sql = "INSERT INTO saf_activo (codemp,codact,denact,maract,modact,fecregact,feccmpact,codconbie,spg_cuenta_act,esttipinm,".
 				  "                        catalogo,costo,estdepact,obsact,fotact,codpai,codest,codmun,cod_pro,nompro,numordcom,monordcom,codfuefin,".
 				  "                        numsolpag,fecemisol,codsitcon,codconcom,codgru,codsubgru,codsec,codite,tipinm,cod_aquisicion,estatus_uso,".
 				  "						   serial,numero_chapa) ".
@@ -136,14 +136,14 @@ class sigesp_saf_c_activo
 		else
 		{
 				$lb_valido=true;
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="INSERT";
 				$ls_descripcion ="Insertó el Activo ".$as_codact." de la Empresa ".$as_codemp;
 				$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-				
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 				if($lb_valido)
 				{
 				    $this->io_sql->commit();
@@ -188,7 +188,7 @@ class sigesp_saf_c_activo
 		// Modificado Por: Ing. Yozelin Barragan
 		// Fecha Creaciï¿½n: 01/01/2006 				Fecha ï¿½ltima Modificaciï¿½n : 05/06/2006 -- 21/05/2007
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//file_put_contents('/tmp/sugau_saf.log',"uf_saf_update_activo", FILE_APPEND);	
+		//file_put_contents('/tmp/sugau_saf.log',"uf_saf_update_activo", FILE_APPEND);
 		//$array = func_get_args();
 		//file_put_contents('/tmp/sugau_saf.log',print_r($array), FILE_APPEND);
 		$lb_valido=true;
@@ -197,7 +197,7 @@ class sigesp_saf_c_activo
 		{
 			$ad_fecemisol="1900-01-01";
 		}
-		
+
 		if($as_codgru=="")
 		{
 		   $as_codgru="---";
@@ -214,20 +214,20 @@ class sigesp_saf_c_activo
 		{
 		   $as_codite="---";
 		}
-				
+
 		$ls_sql="UPDATE saf_activo".
 				"   SET denact='".$as_denact."',maract='".$as_maract."',modact='".$as_modact."',fecregact='".$ad_fecregact."',".
-				" 		esttipinm='".$as_radiotipo."',feccmpact='".$ad_feccmpact."',codconbie='".$as_codconbie."',". 
+				" 		esttipinm='".$as_radiotipo."',feccmpact='".$ad_feccmpact."',codconbie='".$as_codconbie."',".
    				" 		spg_cuenta_act='".$as_spgcuenta."',catalogo='".$as_catalogo."',costo='".$ai_cosact ."',".
 				" 		estdepact='".$ls_estdepact."',obsact='".$as_obsact."',fotact='".$as_foto."',codpai='".$as_codpai."',".
 				" 		codest='".$as_codest."',codmun='".$as_codmun ."',cod_pro='".$as_codpro."',nompro='".$as_denpro."',".
 				" 		numordcom='".$as_numordcom."',monordcom='". $ai_monord."',codfuefin='".$as_codfuefin."',".
-				"       numsolpag='".$as_numsolpag."',fecemisol='".$ad_fecemisol."',codsitcon='".$as_codsitcon."',codconcom='".$as_codconcom."',". 
+				"       numsolpag='".$as_numsolpag."',fecemisol='".$ad_fecemisol."',codsitcon='".$as_codsitcon."',codconcom='".$as_codconcom."',".
 				" 		codgru='".$as_codgru."',codsubgru='".$as_codsubgru."',codsec='".$as_codsec."',codite='".$as_codite."', ".
 				"       tipinm='".$as_clasif."',cod_aquisicion='".$as_formadqui."',estatus_uso='".$as_usoactualbien."', ".
 				"		serial='".$as_serial."',numero_chapa='".$as_numerochapa."'".
-				" WHERE codemp =  '".$as_codemp ."'". 
-				"   AND codact =  '".$as_codact ."'"; 
+				" WHERE codemp =  '".$as_codemp ."'".
+				"   AND codact =  '".$as_codact ."'";
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
@@ -239,13 +239,13 @@ class sigesp_saf_c_activo
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizo el Activo ".$as_codact." de la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],$aa_seguridad["sistema"],
 																		  $ls_evento,$aa_seguridad["logusr"],$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-			
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -258,7 +258,7 @@ class sigesp_saf_c_activo
 
 	    return $lb_valido;
 	}// fin de la function uf_sss_update_movimientos
-	
+
 	//JR
 	function  uf_saf_update_activosoc($ls_codemp,$ls_numordcom,$ls_itemnumord,$ls_estcondat)
 	{
@@ -268,16 +268,16 @@ class sigesp_saf_c_activo
 		//     Argumentos: $as_codemp    // codigo de empresa                 $as_codmun    // codigo de municipio
 		//				   $as_codart    // codigo de activo          	      $as_radiotipo // tipo de bien
 		//			       $as_codord    // denominacion del activo           $as_obsact    // observaciones
-		//    Description: Funcion que actualiza los datos basicos de un activo en la tabla soc_dt_servicio para decir que el 
+		//    Description: Funcion que actualiza los datos basicos de un activo en la tabla soc_dt_servicio para decir que el
 		//				items fue marcado como activo
 		//	   Creado Por: Ing. Johan Rujano
-		// 
-		// Fecha Creación: 05/11/2013 				
+		//
+		// Fecha Creación: 05/11/2013
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$this->io_sql->begin_transaction();
-		
-		
+
+
 		if ($ls_estcondat=="S"){
 			$ls_sql="UPDATE soc_dt_servicio SET actfijo=1  WHERE codemp =  '".$ls_codemp ."'".
 					" AND numordcom ='".$ls_numordcom."' AND codser='".$ls_itemnumord."' ".
@@ -286,9 +286,9 @@ class sigesp_saf_c_activo
 			$ls_sql="UPDATE soc_dt_bienes SET actfijo=1  WHERE codemp =  '".$ls_codemp ."'".
 					" AND numordcom ='".$ls_numordcom."' AND codart='".$ls_itemnumord."' ".
 			        " AND estcondat='".$ls_estcondat."'";
-			
+
 		}
-		
+
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
@@ -299,14 +299,14 @@ class sigesp_saf_c_activo
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizo el Activo ".$as_codact." En la Orden de Compra de la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-			
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -319,14 +319,14 @@ class sigesp_saf_c_activo
 
 	    return $lb_valido;
 	}// fin de la function uf_sss_update_movimientos
-	
+
 
 	function uf_saf_delete_activo($as_codemp,$as_codact,$aa_seguridad)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_delete_activo
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que elimina un determinado activo en la tabla saf_activo
@@ -334,7 +334,7 @@ class sigesp_saf_c_activo
 		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n : 01/01/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
-		$this->io_sql->begin_transaction();	
+		$this->io_sql->begin_transaction();
 		$lb_encontrado=$this->uf_saf_select_dta($as_codemp,$as_codact);
 		if ($lb_encontrado)
 		   {
@@ -372,7 +372,7 @@ class sigesp_saf_c_activo
 							$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 															$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 															$aa_seguridad["ventanas"],$ls_descripcion);
-							/////////////////////////////////         SEGURIDAD               /////////////////////////////			
+							/////////////////////////////////         SEGURIDAD               /////////////////////////////
 							$this->io_sql->commit();
 						  }
 				     }
@@ -386,7 +386,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_dta
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica si un activo tiene seriales asociados
@@ -416,7 +416,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_dtedificios
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica si un activo tiene seriales asociados
@@ -447,7 +447,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_movimiento
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica si un activo tiene seriales asociados
@@ -478,7 +478,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_depreciacion
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp    //codigo de empresa 
+		//      Argumento: $as_codemp    //codigo de empresa
 		//				   $as_codact    //codigo de activo
 		//				   $as_metodo    // codigo del metodo de depreciacion
 		//				   $ai_vidautil  // vida util del activo
@@ -509,18 +509,18 @@ class sigesp_saf_c_activo
 			  $as_codestpro1 = $as_codestpro2 = $as_codestpro3 = $as_codestpro4 = $as_codestpro5 = str_pad('',25,'-',0);
 			}
 		 $ls_sql =  "UPDATE saf_activo
-		 			    SET codmetdep = '".$as_metodo ."', 
-					        vidautil = '".$ai_vidautil ."', 
+		 			    SET codmetdep = '".$as_metodo ."',
+					        vidautil = '".$ai_vidautil ."',
 							cossal   = '".$as_valres ."',
-							spg_cuenta_dep = '".$as_ctadep ."', 
-							sc_cuenta = '".$as_ctacon."', 
+							spg_cuenta_dep = '".$as_ctadep ."',
+							sc_cuenta = '".$as_ctacon."',
 							codestpro1 = '".$as_codestpro1 ."',
-					        codestpro2 = '".$as_codestpro2 ."', 
+					        codestpro2 = '".$as_codestpro2 ."',
 					        codestpro3 = '".$as_codestpro3 ."',
 							codestpro4 = '".$as_codestpro4 ."',
 					        codestpro5 = '".$as_codestpro5 ."',
 					        estcla = '".$as_estcla."'
-					  WHERE codemp =  '".$as_codemp."' 
+					  WHERE codemp =  '".$as_codemp."'
 					    AND codact =  '".$as_codact."'";
 		$this->io_sql->begin_transaction();
 		$li_row = $this->io_sql->execute($ls_sql);
@@ -533,14 +533,14 @@ class sigesp_saf_c_activo
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualización la depreciación del Activo ".$as_codact." de la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-			
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -557,8 +557,8 @@ class sigesp_saf_c_activo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_load_seriales
-		//         Access: public  
-		//      Argumento: $as_codemp  //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp  //codigo de empresa
 		//				   $as_codact  //codigo de activo
 		//				   $ao_object  // arreglo de objetos de la grid
 		//				   $ai_totrows // total de filas
@@ -572,15 +572,15 @@ class sigesp_saf_c_activo
 		$ls_sql_int = "";
 		if (strtoupper($ls_gestor) == "MYSQLT")
 		{
-		 $ls_sql_int = " CONCAT(c.nomper,' ',c.apeper) as nomres_per, CONCAT(d.nombene,' ',d.apebene) as nomres_ben, 
+		 $ls_sql_int = " CONCAT(c.nomper,' ',c.apeper) as nomres_per, CONCAT(d.nombene,' ',d.apebene) as nomres_ben,
                          CONCAT(e.nomper,' ',e.apeper) as nomrespri_per, CONCAT(f.nombene,' ',f.apebene) as nomrespri_ben";
 		}
 		else
 		{
-		 $ls_sql_int = " c.nomper||' '||c.apeper as nomres_per, d.nombene||' '||d.apebene as nomres_ben, 
+		 $ls_sql_int = " c.nomper||' '||c.apeper as nomres_per, d.nombene||' '||d.apebene as nomres_ben,
                          e.nomper||' '||e.apeper as nomrespri_per, f.nombene||' '||f.apebene as nomrespri_ben ";
 		}
-		
+
 		$ls_sql = "SELECT a.*, b.denuniadm, ".$ls_sql_int." ".
 		          "   FROM saf_dta a ".
                   " LEFT OUTER JOIN spg_unidadadministrativa b ON b.coduniadm = a.coduniadm ".
@@ -588,8 +588,8 @@ class sigesp_saf_c_activo
                   " LEFT OUTER JOIN rpc_beneficiario d on d.ced_bene = a.codres  ".
                   " LEFT OUTER JOIN sno_personal e on e.codper = a.codrespri ".
                   " LEFT OUTER JOIN rpc_beneficiario f on f.ced_bene = a.codrespri".
-				  " WHERE a.codemp='".$as_codemp."'". 
-				  " AND a.codact='".$as_codact."'";	 
+				  " WHERE a.codemp='".$as_codemp."'".
+				  " AND a.codact='".$as_codact."'";
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
@@ -601,7 +601,7 @@ class sigesp_saf_c_activo
 			{
 				$ls_nomresuso = "";
 				$ls_nomrespri = "";
-				$ls_codact=$row["codact"]; 
+				$ls_codact=$row["codact"];
 				$ls_seract=$row["seract"];
 				$ls_chaact=$row["idchapa"];
 				$ls_unidad=$row["coduniadm"];
@@ -614,12 +614,12 @@ class sigesp_saf_c_activo
 				$ls_responsableuso=$row["codres"];
 				$ls_observacion=$row["obsideact"];
 				$ls_idactivo=$row["ideact"];
-				
+
 				if ($ls_nomrespri_per == "" && $ls_nomrespri_ben == "" )
 				{
 				 $ls_nomrespri = "POR DEFINIR";
 				}
-				elseif($ls_nomrespri_per != "") 
+				elseif($ls_nomrespri_per != "")
 				{
 				 $ls_nomrespri = $ls_nomrespri_per;
 				}
@@ -627,7 +627,7 @@ class sigesp_saf_c_activo
 				{
 				 $ls_nomrespri = $ls_nomrespri_ben;
 				}
-				
+
 				if ($ls_nomresuso_per == "" && $ls_nomresuso_ben == "" )
 				{
 				 $ls_nomresuso = "POR DEFINIR";
@@ -639,8 +639,8 @@ class sigesp_saf_c_activo
 				else
 				{
 				 $ls_nomresuso = $ls_nomresuso_ben;
-				} 
-	
+				}
+
 				$ao_object[$ai_totrows][1]="<input name=txtcodactd".$ai_totrows." type=text id=txtcodactd".$ai_totrows." class=sin-borde size=18 maxlength=15 value='".$ls_codact."' onKeyUp='javascript: ue_validarnumero(this);'>";
 				$ao_object[$ai_totrows][2]="<input name=txtseractd".$ai_totrows." type=text id=txtseractd".$ai_totrows." class=sin-borde size=22 maxlength=20 value='".$ls_seract."' onKeyPress='return keyrestrictgrid(event)' onBlur='ue_rellenarcampo(this,15)'>";
 				$ao_object[$ai_totrows][3]="<input name=txtchaactd".$ai_totrows." type=text id=txtchaactd".$ai_totrows." class=sin-borde size=18 maxlength=15 value='".$ls_chaact."' onKeyUp='javascript: ue_validarnumero(this);' onBlur='ue_rellenarcampo(this,15)'>";
@@ -649,13 +649,13 @@ class sigesp_saf_c_activo
 				$ao_object[$ai_totrows][5]="<input name=txtnomrespri".$ai_totrows." type=text id=txtnomrespri".$ai_totrows." class=sin-borde size=50 maxlength=50 value='".$ls_nomrespri."' onKeyUp='javascript: ue_validarcomillas(this);'  readonly>".
 				                           "<input name=txtresponsabled".$ai_totrows." type=hidden id=txtresponsabled".$ai_totrows." class=sin-borde size=12 maxlength=10 value='".$ls_responsable."' onKeyUp='javascript: ue_validarnumero(this);' onBlur='ue_rellenarcampo(this,10)'>";
 				$ao_object[$ai_totrows][6]="<input name=txtnomres".$ai_totrows." type=text id=txtnomres".$ai_totrows." class=sin-borde size=50 maxlength=50 value='".$ls_nomresuso."' onKeyUp='javascript: ue_validarcomillas(this);'  readonly>".
-				                           "<input name=txtcodres".$ai_totrows." type=hidden id=txtcodres".$ai_totrows." class=sin-borde size=12 maxlength=10 value='".$ls_responsableuso."' readonly>";			  	   
+				                           "<input name=txtcodres".$ai_totrows." type=hidden id=txtcodres".$ai_totrows." class=sin-borde size=12 maxlength=10 value='".$ls_responsableuso."' readonly>";
 				$ao_object[$ai_totrows][7]="<input name=txtobserd".$ai_totrows." type=text id=txtobserd".$ai_totrows." class=sin-borde size=18 maxlength=100 value='".$ls_observacion."' onKeyUp='javascript: ue_validarcomillas(this);' >";
-				$ao_object[$ai_totrows][8]="<input name=txtidactivod".$ai_totrows." type=text id=txtidactivod".$ai_totrows." class=sin-borde size=18 maxlength=15 value='".$ls_idactivo."' onKeyUp='javascript: ue_validarnumero(this);'>";			
-				$ao_object[$ai_totrows][9]="<a href=javascript:uf_agregarpartes(".$ai_totrows.");><img src=../shared/imagebank/tools/nuevo.gif alt='Agregar partes' width=15 height=15 border=0></a>";			
-				$ao_object[$ai_totrows][10]="<a href=javascript:uf_delete_dt(".$ai_totrows.");><img src=../shared/imagebank/tools15/eliminar.gif alt=Aceptar width=15 height=15 border=0></a>";			
-	
-				$ai_totrows=$ai_totrows + 1;			
+				$ao_object[$ai_totrows][8]="<input name=txtidactivod".$ai_totrows." type=text id=txtidactivod".$ai_totrows." class=sin-borde size=18 maxlength=15 value='".$ls_idactivo."' onKeyUp='javascript: ue_validarnumero(this);'>";
+				$ao_object[$ai_totrows][9]="<a href=javascript:uf_agregarpartes(".$ai_totrows.");><img src=../shared/imagebank/tools/nuevo.gif alt='Agregar partes' width=15 height=15 border=0></a>";
+				$ao_object[$ai_totrows][10]="<a href=javascript:uf_delete_dt(".$ai_totrows.");><img src=../shared/imagebank/tools15/eliminar.gif alt=Aceptar width=15 height=15 border=0></a>";
+
+				$ai_totrows=$ai_totrows + 1;
 			}
 		}
 		$this->io_sql->free_result($rs_data);
@@ -666,7 +666,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_seriales
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//				   $as_idact    // id de activo
 		//	      Returns: Retorna un Booleano
@@ -676,7 +676,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 		$ls_sql = "SELECT * FROM saf_dta  ".
-				  "WHERE codemp='".$as_codemp."'". 
+				  "WHERE codemp='".$as_codemp."'".
 				  " AND codact='".$as_codact."'".
 				  " AND ideact='".$as_idact."'" ;
 		$rs_data=$this->io_sql->select($ls_sql);
@@ -698,7 +698,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_unidad
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_coduniadm // codigo de unidad administrativa
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica la existencia de una unidad administrativa en la tabla spg_unidadadministrativa
@@ -708,7 +708,7 @@ class sigesp_saf_c_activo
 		$lb_valido=false;
 		$ls_sql="SELECT coduniadm".
 				"  FROM saf_unidadadministrativa".
-				" WHERE codemp='".$as_codemp."'". 
+				" WHERE codemp='".$as_codemp."'".
 				"   AND coduniadm='".$as_coduniadm."'" ;
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
@@ -729,7 +729,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_responsable
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codres // codigo de personal (responsable)
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica la existencia de un personal en la tabla sno_personal
@@ -738,7 +738,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 		$ls_sql = "SELECT * FROM sno_personal  ".
-				  " WHERE codemp='".$as_codemp."'". 
+				  " WHERE codemp='".$as_codemp."'".
 				  " AND codper='".$as_codres."'" ;
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
@@ -760,7 +760,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_insert_seriales
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp    //codigo de empresa 
+		//      Argumento: $as_codemp    //codigo de empresa
 		//				   $as_codact    // codigo de activo
 		//				   $as_idact     // id de activo
 		//				   $as_idchapa   // numero de chapa en el activo
@@ -783,7 +783,7 @@ class sigesp_saf_c_activo
 					  "         '".$as_coduniadm."','".$as_codrespri."','".$as_obsideact."','".$as_estact."','".$as_logusr."',".
 					  "         '".$as_codres."') ";
 		$this->io_sql->begin_transaction();
-		$li_row=$this->io_sql->execute($ls_sql);	
+		$li_row=$this->io_sql->execute($ls_sql);
 	    if($li_row===false)
 	    {
 		 $this->io_msg->message("CLASE->activo Mï¿½TODO->uf_saf_insert_seriales ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
@@ -793,13 +793,13 @@ class sigesp_saf_c_activo
 		else
 		{
 		 $lb_valido=true;
-		 /////////////////////////////////         SEGURIDAD               /////////////////////////////		
+		 /////////////////////////////////         SEGURIDAD               /////////////////////////////
 		 $ls_evento="INSERT";
 		 $ls_descripcion ="Insertï¿½ Serial".$as_seract."con Id".$as_idact." asociado al Activo ".$as_codact." de la Empresa ".$as_codemp;
 		 $ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 										 $aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 										 $aa_seguridad["ventanas"],$ls_descripcion);
-		 /////////////////////////////////         SEGURIDAD               /////////////////////////////		
+		 /////////////////////////////////         SEGURIDAD               /////////////////////////////
 		 $this->io_sql->commit();
 	   }
 		return $lb_valido;
@@ -811,7 +811,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_seriales
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp    //codigo de empresa 
+		//      Argumento: $as_codemp    //codigo de empresa
 		//				   $as_codact    // codigo de activo
 		//				   $as_idact     // id de activo
 		//				   $as_idchapa   // numero de chapa en el activo
@@ -822,7 +822,7 @@ class sigesp_saf_c_activo
 		//				   $as_codres    // codigo de personal (responsable por uso)
 		//				   $aa_seguridad // arreglo de registro de seguridad
 		//	      Returns: Retorna un Booleano
-		//    Description: Funcion que actualiza los seriales y otros datos importantes de los activos relacionados a un activo en 
+		//    Description: Funcion que actualiza los seriales y otros datos importantes de los activos relacionados a un activo en
 		//				   particular en la tabla saf_dta
 		//	   Creado Por: Ing. Luis Anibal Lang
 		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n : 01/01/2006
@@ -835,7 +835,7 @@ class sigesp_saf_c_activo
 						"       codrespri='". $as_codrespri ."',".
 						"       obsideact='". $as_obsideact ."',".
 						"       codres='". $as_codres ."'".
-						" WHERE codemp =  '". $as_codemp ."'". 
+						" WHERE codemp =  '". $as_codemp ."'".
 						"   AND codact =  '". $as_codact ."'".
 						"   AND ideact =  '". $as_idact ."'";
 			$this->io_sql->begin_transaction();
@@ -849,16 +849,16 @@ class sigesp_saf_c_activo
 			else
 			{
 				$lb_valido=true;
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="UPDATE";
 				$ls_descripcion ="Actualizï¿½ Serial".$as_seract."con Id".$as_idact." asociado al Activo ".$as_codact." de la Empresa ".$as_codemp;
 				$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$this->io_sql->commit();
 			}
-		
+
 	  return $lb_valido;
 	}// fin de la function uf_saf_update_seriales
 
@@ -867,12 +867,12 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_delete_seriales
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // id de activo
 		//				   $aa_seguridad   // arreglo de registro de seguridad
 		//	      Returns: Retorna un Booleano
-		//    Description: Funcion que elimina un serial y otros datos de los activos relacionados a un activo en 
+		//    Description: Funcion que elimina un serial y otros datos de los activos relacionados a un activo en
 		//				   particular en la tabla saf_dta
 		//	   Creado Por: Ing. Luis Anibal Lang
 		// Fecha Creaciï¿½n: 01/01/2006 								Fecha ï¿½ltima Modificaciï¿½n : 01/01/2006
@@ -888,8 +888,8 @@ class sigesp_saf_c_activo
 			$ls_sql = " DELETE FROM saf_dta".
 					  " WHERE codemp= '".$as_codemp. "'".
 					  " AND codact= '".$as_codact. "'".
-					  " AND ideact= '".$as_idact. "'"; 
-			$this->io_sql->begin_transaction();	
+					  " AND ideact= '".$as_idact. "'";
+			$this->io_sql->begin_transaction();
 			$li_row=$this->io_sql->execute($ls_sql);
 			if($li_row===false)
 			{
@@ -906,7 +906,7 @@ class sigesp_saf_c_activo
 				$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////			
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$this->io_sql->commit();
 			}
 		}
@@ -922,7 +922,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_movimiento
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // identificador del activo
 		//	      Returns: Retorna un Booleano
@@ -932,22 +932,22 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 
-// ----------------   MODIFICACIÃ“N   -------------------------------------------------		
-		
+// ----------------   MODIFICACIÃ“N   -------------------------------------------------
+
 		if($as_idact!="")
 		{
 			$ls_sqlint="   AND ideact='".$as_idact.";";
-		}	
+		}
 		else
 		{
 			$ls_sqlint=";";
 		}
 		$ls_sql = "SELECT codact,ideact FROM saf_dt_movimiento  ".
-				  " WHERE codemp='".$as_codemp."'". 
-				  "   AND codact='".$as_codact."'" .$ls_sqlint=""; 
-		$rs_data=$this->io_sql->select($ls_sql); 
+				  " WHERE codemp='".$as_codemp."'".
+				  "   AND codact='".$as_codact."'" .$ls_sqlint="";
+		$rs_data=$this->io_sql->select($ls_sql);
 		$li_numrows=$this->io_sql->num_rows($rs_data); //para saber	el numero de filas del select en la tabla saf_dt_movimiento
-		
+
 		if($rs_data===false)
 		{
 			$this->io_msg->message("CLASE->activo Mï¿½TODO->uf_saf_select_movimiento ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
@@ -956,16 +956,16 @@ class sigesp_saf_c_activo
 		{
 			if($row=$this->io_sql->fetch_row($rs_data))
 			{$lb_valido=true;}
-			
+
 		}
 		$this->io_sql->free_result($rs_data);
 		return $lb_valido;
 		return $li_numrows;
-		
+
 
 /*	-----------	ORIGINAL ----------------------------
 				$ls_sql = "SELECT codact,ideact FROM saf_dt_movimiento  ".
-				  " WHERE codemp='".$as_codemp."'". 
+				  " WHERE codemp='".$as_codemp."'".
 				  "   AND codact='".$as_codact."'" .
 				  "   AND ideact='".$as_idact."'" ;
 				$rs_data=$this->io_sql->select($ls_sql);
@@ -997,8 +997,8 @@ class sigesp_saf_c_activo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_partes
-		//         Access: public 
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // id de activo
 		//				   $as_codpar // codigo de parte asociada al activo
@@ -1032,8 +1032,8 @@ class sigesp_saf_c_activo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_insert_partes
-		//         Access: public 
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // id de activo
 		//				   $as_codpar // codigo de parte
@@ -1047,7 +1047,7 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
         $this->io_sql->begin_transaction();
-		$ls_sql = "INSERT INTO saf_partes (codemp, codact, ideact, codpar, denpar, estpar, cmpmov)". 
+		$ls_sql = "INSERT INTO saf_partes (codemp, codact, ideact, codpar, denpar, estpar, cmpmov)".
 				  " VALUES( '".$as_codemp."','".$as_codact."','".$as_idact."','".$as_codpar."', '".$as_denpar."','".$as_estpar."','000000000000000')";
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
@@ -1059,13 +1059,13 @@ class sigesp_saf_c_activo
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
 			$ls_descripcion ="Insertï¿½ el codigo de parte ".$as_codpar." con Id ".$as_idact." asociado al Activo ".$as_codact." de la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 		return $lb_valido;
@@ -1075,8 +1075,8 @@ class sigesp_saf_c_activo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_partes
-		//         Access: public 
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // id de activo
 		//				   $as_codpar // codigo de parte
@@ -1105,13 +1105,13 @@ class sigesp_saf_c_activo
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizï¿½ el codigo de parte ".$as_codpar." con Id ".$as_idact." asociado al Activo ".$as_codact." de la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 	  return $lb_valido;
@@ -1121,8 +1121,8 @@ class sigesp_saf_c_activo
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_partes
-		//         Access: public 
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact // codigo de activo
 		//				   $as_idact  // id de activo
 		//				   $as_codpar // codigo de parte
@@ -1138,7 +1138,7 @@ class sigesp_saf_c_activo
 				   " AND codact =  '". $as_codact ."'".
 				   " AND ideact =  '". $as_idact ."'".
 				   " AND codpar =  '". $as_codpar ."'";
-		$this->io_sql->begin_transaction();	
+		$this->io_sql->begin_transaction();
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
@@ -1156,7 +1156,7 @@ class sigesp_saf_c_activo
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////			
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 		return $lb_valido;
@@ -1167,12 +1167,12 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_articulo
 		//         Access: public (sigesp_siv_d_articulo)
-		//      Argumento: $as_codemp //codigo de empresa 
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_cuenta //numero de cuenta presupuestaria
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que verifica si existe una determinada cuenta presupuestaria
 		//	   Creado Por: Ing. Luis Anibal Lang
-		// Fecha Creaciï¿½n: 28/03/2006 								Fecha ï¿½ltima Modificaciï¿½n : 28/03/2006 
+		// Fecha Creaciï¿½n: 28/03/2006 								Fecha ï¿½ltima Modificaciï¿½n : 28/03/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//file_put_contents('/tmp/sugau_saf.log', print_r(func_get_args(), TRUE), FILE_APPEND);
 		$lb_valido=false;
@@ -1225,23 +1225,23 @@ class sigesp_saf_c_activo
 		$lb_valido=true;
 		if ($as_nomfot!="" && $as_tipfot!="")
 		{
-			if (!((strpos($as_tipfot, "gif") || strpos($as_tipfot, "jpeg") || strpos($as_tipfot, "png")) && ($as_tamfot < 100000))) 
-			{ 
+			if (!((strpos($as_tipfot, "gif") || strpos($as_tipfot, "jpeg") || strpos($as_tipfot, "png")) && ($as_tamfot < 100000)))
+			{
 				$lb_valido=false;
 				$as_nomfot="";
 				$this->io_msg->message("El archivo de la foto no es valido.");
 			}
 			else
-			{ 
+			{
 				if (!((move_uploaded_file($as_nomtemfot, "fotosactivos/".$as_nomfot))))
 				{
 					$lb_valido=false;
 					$as_nomfot="";
-		        	$this->io_msg->message("CLASE->articulo METODO->uf_upload ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+		        	$this->io_msg->message("CLASE->articulo METODO->uf_upload ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 				}
 			}
 		}
-		return $lb_valido;	
+		return $lb_valido;
     }
   //----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1251,10 +1251,10 @@ class sigesp_saf_c_activo
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_config
 		//		   Access: public
-		//	    Arguments: 
+		//	    Arguments:
 		//	      Returns: $ls_resultado variable buscado
 		//	  Description: Funciï¿½n que obtiene una variable de la tabla config
-		// Modificado por: Ing. Yozelin Barragan            
+		// Modificado por: Ing. Yozelin Barragan
 		// Fecha Creaciï¿½n: 01/01/2006 	 Fecha ï¿½ltima Modificaciï¿½n : 21/05/2007
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $lb_valido=false;
@@ -1267,20 +1267,20 @@ class sigesp_saf_c_activo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_mensajes->message("CLASE->articulo ->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_mensajes->message("CLASE->articulo ->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
 		{
 			if($row=$this->io_sql->fetch_row($rs_data))
 			{
-				$lb_valido=true; 
+				$lb_valido=true;
 			}
 		}
 		return rtrim($lb_valido);
 	}// end function uf_select_config
    //----------------------------------------------------------------------------------------------------------------------------------
-	
+
    //-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_insert_config($as_codemp,$as_sistema, $as_seccion, $as_variable, $as_valor, $as_tipo)
 	{
@@ -1295,10 +1295,10 @@ class sigesp_saf_c_activo
 		//	      Returns: $lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
 		//	  Description: Funciï¿½n que inserta la variable de configuraciï¿½n
 		//	   Creado Por: Ing. Yesenia Moreno
-		// Fecha Creaciï¿½n: 01/01/2006 				Fecha ï¿½ltima Modificaciï¿½n : 
+		// Fecha Creaciï¿½n: 01/01/2006 				Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
-		$this->io_sql->begin_transaction();		
+		$this->io_sql->begin_transaction();
 		$ls_sql="INSERT INTO sigesp_config(codemp, codsis, seccion, entry, value, type)VALUES ".
 				"('".$as_codemp."','".$as_sistema."','".$as_seccion."','".$as_variable."','".$as_valor."','".$as_tipo."')";
 		$li_row=$this->io_sql->execute($ls_sql);
@@ -1313,9 +1313,9 @@ class sigesp_saf_c_activo
 			$this->io_sql->commit();
 		}
 		return $lb_valido;
-	}// end function uf_insert_config	
+	}// end function uf_insert_config
 	//-----------------------------------------------------------------------------------------------------------------------------------
-  
+
    //-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_saf_guardar_configuracion($as_codemp,$as_sistema,$as_seccion,$as_variable,$as_valor,$as_tipo)
 	{
@@ -1330,7 +1330,7 @@ class sigesp_saf_c_activo
 		//	      Returns: $lb_valido True si se ejecuto el insert ï¿½ False si hubo error en el insert
 		//	  Description: Funciï¿½n que inserta la variable de configuraciï¿½n
 		//	   Creado Por: Ing. Yozelin Barragan
-		// Fecha Creaciï¿½n: 21/05/2007				Fecha ï¿½ltima Modificaciï¿½n : 
+		// Fecha Creaciï¿½n: 21/05/2007				Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $lb_valido = true;
 		$lb_existe = $this->uf_select_config($as_codemp);
@@ -1340,23 +1340,23 @@ class sigesp_saf_c_activo
 		   }
 		/*else
 		{
-		   $this->io_msg->message("La configuracion ya existe.");  
+		   $this->io_msg->message("La configuracion ya existe.");
 		   $lb_valido=false;
 		}*/
 	    return  $lb_valido;
-	}// end function uf_saf_guardar_configuracion	
+	}// end function uf_saf_guardar_configuracion
 	//-----------------------------------------------------------------------------------------------------------------------------------
-  
+
    //-----------------------------------------------------------------------------------------------------------------------------------
 	function uf_select_valor_config($as_codemp)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_select_valor_config
 		//		   Access: public
-		//	    Arguments: 
+		//	    Arguments:
 		//	      Returns: $ls_resultado variable buscado
 		//	  Description: Funciï¿½n que obtiene una variable de la tabla config
-		// Modificado por: Ing. Yozelin Barragan            
+		// Modificado por: Ing. Yozelin Barragan
 		// Fecha Creaciï¿½n: 21/05/2007 	 Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $lb_valido=false;
@@ -1369,7 +1369,7 @@ class sigesp_saf_c_activo
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_msg->message("CLASE->articulo ->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+			$this->io_msg->message("CLASE->articulo ->uf_select_config ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -1377,7 +1377,7 @@ class sigesp_saf_c_activo
 			if($row=$this->io_sql->fetch_row($rs_data))
 			{
 				$li_valor=trim($row["value"]);
-				$lb_valido=true; 
+				$lb_valido=true;
 			}
 			else
 			{
@@ -1386,9 +1386,9 @@ class sigesp_saf_c_activo
 		}
 		return $li_valor;
 	}// end function uf_select_config
-	
-	
-	
+
+
+
 	/**
 	 *
 	 */
@@ -1413,16 +1413,16 @@ class sigesp_saf_c_activo
 		//$this->io_sql->free_result($rs_data);
 		return array($lb_valido,$rs_data);
 	}
-	
-	
+
+
    //----------------------------------------------------------------------------------------------------------------------------------
 function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_coduniadm,$as_codrespri,
 					                             $as_codres,$aa_seguridad,$as_codubifisresuso)
-	{ 
+	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_res_uniadm_seriales
 		//         Access: public (sigesp_siv_d_activos)
-		//      Argumento: $as_codemp    //codigo de empresa 
+		//      Argumento: $as_codemp    //codigo de empresa
 		//				   $as_codact    // codigo de activo
 		//				   $as_idact     // id de activo
 		//				   $as_coduniadm // codigo de unidad adminisrativa
@@ -1430,7 +1430,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		//				   $as_codres    // codigo de personal (responsable por uso)
 		//				   $aa_seguridad // arreglo de registro de seguridad
 		//	      Returns: Retorna un Booleano
-		//    Description: Funcion que actualiza los seriales y otros datos importantes de los activos relacionados a un activo en 
+		//    Description: Funcion que actualiza los seriales y otros datos importantes de los activos relacionados a un activo en
 		//				   particular en la tabla saf_dta
 		//	   Creado Por: Ing. Arnaldo Suï¿½rez
 		// Fecha Creaciï¿½n: 20/02/2006 								Fecha ï¿½ltima Modificaciï¿½n : 01/01/2006
@@ -1442,9 +1442,9 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 				   "       codrespri='". $as_codrespri ."',".
 				   "       codres='". $as_codres ."',".
 				   "       codubifis='". $as_codubifisresuso ."'".
-				   " WHERE codemp =  '". $as_codemp ."'". 
+				   " WHERE codemp =  '". $as_codemp ."'".
 				   "   AND codact =  '". $as_codact ."'".
-				   "   AND ideact =  '". $as_idact ."'";			
+				   "   AND ideact =  '". $as_idact ."'";
 			$this->io_sql->begin_transaction();
 			$li_row = $this->io_sql->execute($ls_sql);
 			if($li_row===false)
@@ -1456,16 +1456,16 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 			else
 			{
 				$lb_valido=true;
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="UPDATE";
 				$ls_descripcion ="Actualizï¿½ detalle de Activo ".$as_codact."con Id".$as_idact." de la Empresa ".$as_codemp;
 				$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$this->io_sql->commit();
-			}	
-		
+			}
+
 	  return $lb_valido;
 	}// fin de la function uf_saf_update_seriales
 
@@ -1474,23 +1474,23 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//	     Function: uf_load_config
 	//		   Access: public
-	//	    Arguments: 
+	//	    Arguments:
 	//	      Returns: $lb_existe = Variable booleana que retornarï¿½ true en caso de ser encontrado, caso contrario false.
 	//	  Description: Determina si el registro ya existe dentro de la Tabla sigesp_config.
-	// Modificado por: Ing. Nï¿½stor Falcï¿½n.            
+	// Modificado por: Ing. Nï¿½stor Falcï¿½n.
 	// Fecha Creaciï¿½n: 09/07/2009 	 Fecha ï¿½ltima Modificaciï¿½n : 09/07/2009
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$lb_existe = false;
-	$ls_sql = "SELECT value 
-	             FROM sigesp_config 
-	            WHERE codemp = '".$_SESSION["la_empresa"]["codemp"]."' 
+	$ls_sql = "SELECT value
+	             FROM sigesp_config
+	            WHERE codemp = '".$_SESSION["la_empresa"]["codemp"]."'
 				  AND codsis = '".$as_codsis."'
 				  AND seccion = '".$as_seccion."'
 				  AND entry = '".$as_entry."'";
 	$rs_data = $this->io_sql->select($ls_sql);
 	if ($rs_data===false)
 	   {
-		 $this->io_msg->message("CLASE->sigesp_saf_c_activo.php->uf_load_config;ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message)); 
+		 $this->io_msg->message("CLASE->sigesp_saf_c_activo.php->uf_load_config;ERROR->".$this->io_funciones->uf_convertirmsg($this->io_sql->message));
 	     $lb_valido = false;
 	   }
 	else
@@ -1498,11 +1498,11 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	     if ($row=$this->io_sql->fetch_row($rs_data))
 			{
 			  $ls_value = $row["value"];
-			  $lb_existe = true; 
+			  $lb_existe = true;
 			}
 	   }
     return $lb_existe;
-  }	
+  }
 
   function uf_saf_select_catalogo_general()
   {
@@ -1513,7 +1513,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function uf_saf_select_catalogo_general_assoc()
   {
   	$lb_valido=false;
@@ -1539,7 +1539,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   			$catalogo .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else
   		{
-  			$catalogo .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';	
+  			$catalogo .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
   		}
   	}
   	//file_put_contents('/tmp/sugau_saf.log', print_r($catalogo, TRUE), FILE_APPEND);
@@ -1556,7 +1556,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowCategoria($id)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1572,7 +1572,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	}
   	return $catalogo2;
   }
-  
+
   function uf_saf_select_catalogo_especifica($sub_categoria)
   {
   	$lb_valido=false;
@@ -1583,7 +1583,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowCategoriaEspecifica($sub_categoria)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1599,7 +1599,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	}
 	return $catalogo3;
   }
-  
+
   function ShowCodigoPresupuestario($idespecifico)
   {
   	$lb_valido=false;
@@ -1628,7 +1628,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowSudebipSeguroAseguradoras($companiaase)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1651,7 +1651,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	}
   	return $catalogo2;
   }
-  
+
   /** sudebip_seguro_monedas */
   function uf_saf_select_sudebip_seguro_monedas()
   {
@@ -1663,7 +1663,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowSudebipSeguroMonedas($monedase)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1677,17 +1677,17 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	{
   		if($cod_array[$i] == $monedase)
   		{
-  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';	
+  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else
   		{
   			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
   		}
-  	
+
   			//file_put_contents('/tmp/sugau_saf.log', print_r($catalogo2, TRUE), FILE_APPEND);
   	}
   	return $catalogo2;
   }
-  
+
   /** sudebip_tipo_cobertura */
   function uf_saf_select_sudebip_tipo_cobertura()
   {
@@ -1699,7 +1699,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowSudebipTipoCobertura($tipocobase)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1713,7 +1713,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	{
   		if ($cod_array[$i] == $tipocobase)
   		{
-  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else{
   			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
 		}
@@ -1722,10 +1722,10 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	return $catalogo2;
   }
 
-	/** 
+	/**
 	 *	     Function: uf_saf_select_activo
 	 *         Access: public (sigesp_siv_d_activos)
-	 *      Argumento: $as_codemp //codigo de empresa 
+	 *      Argumento: $as_codemp //codigo de empresa
 	 *				   $as_codact //codigo de activo
 	 *	      Returns: Retorna un Booleano
 	 *    Description: Funcion que verifica si existe un determinado activo en la tabla saf_activo_seguro
@@ -1756,7 +1756,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   {
 	$lb_valido=true;
     $this->io_sql->begin_transaction();
-	
+
 	$ls_sql = "INSERT INTO saf_activo_seguro (codemp,codact,companiaase,numpolase,tipopolase,montocobase,monedaase,".
 			  "                               fechainiase,fechafinase,respcivase,tipocobase,descobase)".
 			  " VALUES( '".$ls_codemp."','".$ls_codact."','".$companiaase."','".$numpolase."','".$tipopolaseid."',".
@@ -1764,7 +1764,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 			  "         '".$rescivase."','".$tipocobase."','".$descobase."')";
 
 	$li_row=$this->io_sql->execute($ls_sql);
-	
+
 	if($li_row===false)
 	{
 		$this->io_msg->message("CLASE->activo MÉTODO->uf_saf_insert_activo_seguro ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
@@ -1774,13 +1774,13 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	else
 	{
 		$lb_valido=true;
-		/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+		/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		$ls_evento="INSERT";
 		$ls_descripcion ="Insertó el número de poliza ".$numpolase." para el activo ".$ls_codact;
 		$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 										$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 										$aa_seguridad["ventanas"],$ls_descripcion);
-		/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+		/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		$this->io_sql->commit();
 	}
 	return $lb_valido;
@@ -1798,9 +1798,9 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 			  "     montocobase='".$montocobase."',monedaase='".$monedase."',".
 			  "     fechainiase='".$fechainiase."',fechafinase='".$fechafinase."',respcivase='".$rescivase."',".
 			  "     tipocobase='".$tipocobase."',descobase='".$descobase."'".
-			  " WHERE codemp =  '".$as_codemp ."'". 
+			  " WHERE codemp =  '".$as_codemp ."'".
 			  "   AND codact =  '".$as_codact ."'";
-	
+
 	$li_row = $this->io_sql->execute($ls_sql);
 	if($li_row===false)
 	{
@@ -1811,14 +1811,14 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	else
 	{
 		$lb_valido=true;
-		/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+		/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		$ls_evento="UPDATE";
 		$ls_descripcion ="Actualizó el número de poliza ".$numpolase." para el activo ".$as_codact;
 		$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 										$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 										$aa_seguridad["ventanas"],$ls_descripcion);
-		/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-		
+		/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 		if($lb_valido)
 		{
 			$this->io_sql->commit();
@@ -1829,13 +1829,13 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		}
 	}
 
-    return $lb_valido;	
+    return $lb_valido;
   }
 
   function uf_saf_delete_activo_seguro($as_codemp,$as_codact,$aa_seguridad)
   {
 	$lb_valido=false;
-	$this->io_sql->begin_transaction();	
+	$this->io_sql->begin_transaction();
 
 	$ls_sql = "DELETE FROM saf_activo_seguro WHERE codemp= '".$as_codemp. "' AND codact = '".$as_codact."'";
     $li_exec=$this->io_sql->execute($ls_sql);
@@ -1853,7 +1853,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 										$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 										$aa_seguridad["ventanas"],$ls_descripcion);
-		/////////////////////////////////         SEGURIDAD               /////////////////////////////			
+		/////////////////////////////////         SEGURIDAD               /////////////////////////////
 		$this->io_sql->commit();
 	  }
   }
@@ -1883,7 +1883,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowFuenteFinanciamiento($ls_codfuefin)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1897,7 +1897,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	{
   		if ($cod_array[$i] == $ls_codfuefin)
   		{
-  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else{
   			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
 		}
@@ -1918,7 +1918,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowSituacionContable($ls_codsitcon)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1932,7 +1932,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	{
   		if ($cod_array[$i] == $ls_codsitcon)
   		{
-  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else{
   			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
 		}
@@ -1953,7 +1953,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
   	return $rs_data;
   }
-  
+
   function ShowCondicionCompra($ls_codconcom)
   {
   	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -1967,7 +1967,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
   	{
   		if ($cod_array[$i] == $ls_codconcom)
   		{
-  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
   		}else{
   			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
 		}
@@ -1988,7 +1988,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
     	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
     	return $rs_data;
     }
-    
+
     function ShowEstadoConsevacion($ls_codconbie)
     {
     	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -2002,7 +2002,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
     	{
     		if ($cod_array[$i] == $ls_codconbie)
     		{
-    			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+    			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
     		}else{
     			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
   		}
@@ -2023,7 +2023,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
     	//file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
     	return $rs_data;
     }
-    
+
     function ShowUsoActual($ls_usoactual)
     {
     	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -2037,7 +2037,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
     	{
     		if ($cod_array[$i] == $ls_usoactual)
     		{
-    			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+    			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
     		}else{
     			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
   		}
@@ -2049,10 +2049,10 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	/**
      * uf_saf_select_pais
      * @access public
-     * @return boolean 
+     * @return boolean
      */
-	
-    function uf_saf_select_pais() {        
+
+    function uf_saf_select_pais() {
         $lb_valido = false;
         /** lista de paises segun sudebip */
         /* $ls_sql = "SELECT codigo_pais,descripcion FROM sudebip_paises WHERE codigo_pais != '239'"; */
@@ -2066,10 +2066,10 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		{
 			$this->io_msg->message("CLASE->sedes MÉTODO->uf_saf_select_pais ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 		}
-			
+
         return $rs_data;
     }//fin uf_saf_select_tiposede
-    
+
       function ShowPaises($ls_codpai)
       {
       	//file_put_contents('/tmp/sugau_saf.log', print_r(ShowCategoria, TRUE), FILE_APPEND);
@@ -2086,7 +2086,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
       	{
       		if ($cod_array[$i] == $ls_codpai)
       		{
-      			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+      			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
       		}else{
       			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
     		}
@@ -2131,7 +2131,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
       	{
       		if ($cod_array[$i] == $ls_codest)
       		{
-      			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+      			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
       		}else{
       			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
     		}
@@ -2146,12 +2146,12 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	function uf_saf_select_municipio($ls_codestado) {
 	    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    //	     Function: uf_saf_select_municipio
-	    //         Access: public 
+	    //         Access: public
 	    // Fecha Creación: 13/11/2014
-	    //  Johan Rujano 								Fecha Última Modificación :  
+	    //  Johan Rujano 								Fecha Última Modificación :
 	    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	    $lb_valido = false;
-		
+
 		//$ls_sql = "SELECT codigo_municipio,descripcion FROM sudebip_municipios WHERE codigo_estado = '".$ls_codestado."'";
 		$ls_sql = "SELECT codmun,denmun FROM sigesp_municipio WHERE codest = '".$ls_codestado."'";
 	    $result_set=$this->io_sql->select($ls_sql);
@@ -2171,7 +2171,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	  	$array = $this->uf_saf_select_municipio($ls_codestado);
 	  	//$cod_array = $array[codigo_municipio];
 	  	//$longitud = count($cod_array);
-	  	//$des_array = $array[descripcion];	
+	  	//$des_array = $array[descripcion];
 	  	$cod_array = $array[codmun];
 	  	$longitud = count($cod_array);
 	  	$des_array = $array[denmun];
@@ -2181,7 +2181,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	  	{
 	  		if ($cod_array[$i] == $ls_codmun)
 	  		{
-	  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';		
+	  			$catalogo2 .= '<option value="'.$cod_array[$i].'" selected>'.$des_array[$i].'</option>';
 	  		}else{
 	  			$catalogo2 .= '<option value="'.$cod_array[$i].'">'.$des_array[$i].'</option>';
 			}
@@ -2197,8 +2197,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_activopoliza
-		//         Access: public  
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//				   $as_rifase //R.I.F. de la aseguradora
 		//				   $as_numpolase //numero de la poliza de seguro
@@ -2239,9 +2239,9 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_activopoliza
-		//         Access: public  
-		//     Argumentos: $as_codemp    // codigo de empresa                  
-		//				   $as_codact    // codigo de activo          	     
+		//         Access: public
+		//     Argumentos: $as_codemp    // codigo de empresa
+		//				   $as_codact    // codigo de activo
 		//				   $as_rifase    //R.I.F. de la aseguradora
 		//				   $as_numpolase //numero de la poliza de seguro
 		//				   $as_percobase //periodo de cobertura de la poliza
@@ -2260,8 +2260,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 				  "       numpolase='". $as_numpolase ."',".
 				  "       percobase='". $as_percobase ."',".
 				  "       moncobase='". $ai_moncobase ."',".
-				  "       fecvigase='". $ad_fecvigase ."'". 
-				  " WHERE codemp =  '". $as_codemp ."'". 
+				  "       fecvigase='". $ad_fecvigase ."'".
+				  " WHERE codemp =  '". $as_codemp ."'".
 				  "   AND codact =  '". $as_codact ."'";
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
@@ -2273,14 +2273,14 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizó los datos de la póliza del Activo ".$as_codact." acociado a la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
-			
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
+
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -2300,8 +2300,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_activomantenimiento
-		//         Access: public  
-		//      Argumento: $as_codemp //codigo de empresa 
+		//         Access: public
+		//      Argumento: $as_codemp //codigo de empresa
 		//				   $as_codact //codigo de activo
 		//				   $as_numconman //numero de contrato de mantenimiento
 		//				   $as_codproman //codigo del proveedor de mantenimiento
@@ -2347,9 +2347,9 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_activomantenimiento
-		//         Access: public  
-		//     Argumentos: $as_codemp    // codigo de empresa                  
-		//				   $as_codact    // codigo de activo          	     
+		//         Access: public
+		//     Argumentos: $as_codemp    // codigo de empresa
+		//				   $as_codact    // codigo de activo
 		//				   $as_numconman //numero de contrato de mantenimiento
 		//				   $as_codproman //codigo del proveedor de mantenimiento
 		//				   $ad_feciniman //fecha de inicio del contrato
@@ -2366,8 +2366,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 				  "   SET numconman='". $as_numconman ."',".
 				  "       codproman='". $as_codproman ."',".
 				  "       feciniman='". $ad_feciniman ."',".
-				  "       fecfinman='". $ad_fecfinman ."'". 
-				  " WHERE codemp =  '". $as_codemp ."'". 
+				  "       fecfinman='". $ad_fecfinman ."'".
+				  " WHERE codemp =  '". $as_codemp ."'".
 				  "   AND codact =  '". $as_codact ."'";
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
@@ -2378,13 +2378,13 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizó los datos del contrato de mantenimiento del Activo ".$as_codact." acociado a la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 	    return $lb_valido;
@@ -2395,8 +2395,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_activo
 		//         Access: public (sigesp_siv_d_activo)
-		//     Argumentos: $as_codemp    // codigo de empresa                  
-		//				   $as_codact    // codigo de activo          	     
+		//     Argumentos: $as_codemp    // codigo de empresa
+		//				   $as_codact    // codigo de activo
 		//			       $as_codban    // codigo del banco
 		//				   $as_ctaban    // codigo de cuenta de la empresa
 		//				   $as_codtipcta // tipo de cuenta
@@ -2415,8 +2415,8 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 				  "       ctaban='". $as_ctaban ."',".
 				  "       codtipcta='". $as_codtipcta ."',".
 				  "       tippag='". $as_tippag ."',".
-				  "       numregpag='". $as_numregpag ."'". 
-				  " WHERE codemp =  '". $as_codemp ."'". 
+				  "       numregpag='". $as_numregpag ."'".
+				  " WHERE codemp =  '". $as_codemp ."'".
 				  " AND codact =  '". $as_codact ."'";
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
@@ -2427,13 +2427,13 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizó los datos de banco del Activo ".$as_codact." acociado a la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 	    return $lb_valido;
@@ -2443,9 +2443,9 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_activorotulacion
-		//         Access: public  
-		//     Argumentos: $as_codemp    // codigo de empresa                  
-		//				   $as_codact    // codigo de activo          	     
+		//         Access: public
+		//     Argumentos: $as_codemp    // codigo de empresa
+		//				   $as_codact    // codigo de activo
 		//				   $as_codrot    //codigo de rotulacion
 		//				   $as_codprorot //codigo del proveedor del servicio de rotulacion
 		//				   $ad_fecrot    //fecha de la rotulacion
@@ -2461,7 +2461,7 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 				  "   SET codrot='". $as_codrot ."',".
 				  "       codprorot='". $as_codprorot ."',".
 				  "       fecrot='". $ad_fecrot ."'".
-				  " WHERE codemp =  '". $as_codemp ."'". 
+				  " WHERE codemp =  '". $as_codemp ."'".
 				  "   AND codact =  '". $as_codact ."'";
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
@@ -2472,13 +2472,13 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
 			$ls_descripcion ="Actualizó los datos de la rotulación del Activo ".$as_codact." acociado a la Empresa ".$as_codemp;
 			$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$this->io_sql->commit();
 		}
 	    return $lb_valido;
@@ -2529,13 +2529,57 @@ function  uf_saf_update_res_uniadm_seriales($as_codemp,$as_codact,$as_idact,$as_
 	              " FROM saf_activo" .
 	              " WHERE saf_activo.codemp='" . $as_codemp . "'" .
 	              " ORDER BY saf_activo.codact DESC LIMIT 15";
-	    
+
 	    $result_set=$this->io_sql->select($ls_sql);
 	    $rs_data=$this->io_sql->obtener_asso($result_set);
 	    //file_put_contents('/tmp/sugau_saf.log', print_r($rs_data, TRUE), FILE_APPEND);
 
 	    return $rs_data;
 	}
+
+	/**
+	 * Lista el *Catálogo de Unidad Ejecutora*
+	 *
+	 * @param string $ls_coduniadm Código de la *Unidad Organizacional* actual.
+	 *
+	 * @return string $unidadesEjecutoras Las <option> del <select>.
+	 */
+	 function uf_list_catalogo_unidad_ejecutora($ls_coduniadm)
+	 {
+		 $sql = "SELECT spg_unidadadministrativa.coduniadm, ";
+		 $sql .= "max(spg_unidadadministrativa.denuniadm) as denuniadm";
+		 $sql .= " FROM spg_unidadadministrativa, spg_dt_unidadadministrativa, spg_ep5";
+		 $sql .= " WHERE spg_unidadadministrativa.codemp='".$this->ls_codemp."'";
+		 $sql .= " AND spg_unidadadministrativa.coduniadm <>'----------' ";
+		 $sql .= " AND spg_unidadadministrativa.codemp=spg_dt_unidadadministrativa.codemp";
+		 $sql .= " AND spg_unidadadministrativa.coduniadm=spg_dt_unidadadministrativa.coduniadm";
+		 $sql .= " AND spg_dt_unidadadministrativa.estcla=spg_ep5.estcla";
+		 $sql .= " AND spg_dt_unidadadministrativa.codestpro1=spg_ep5.codestpro1";
+		 $sql .= " AND spg_dt_unidadadministrativa.codestpro2=spg_ep5.codestpro2";
+		 $sql .= " AND spg_dt_unidadadministrativa.codestpro3=spg_ep5.codestpro3";
+		 $sql .= " AND spg_dt_unidadadministrativa.codestpro4=spg_ep5.codestpro4";
+		 $sql .= " AND spg_dt_unidadadministrativa.codestpro5=spg_ep5.codestpro5";
+		 $sql .= " GROUP BY spg_unidadadministrativa.codemp, spg_unidadadministrativa.coduniadm";
+		 $sql .= " ORDER BY coduniadm ASC ";
+
+		 $result_set = $this->io_sql->select($sql);
+		 $rs_data = $this->io_sql->obtener_datos($result_set);
+		 $coduniadm_array = $rs_data["coduniadm"];
+		 $longitud = count($coduniadm_array);
+		 $denuniadm_array = $rs_data["denuniadm"];
+
+		 $unidadesEjecutoras = '<option value="0">Seleccione</option>';
+		 for($i=1;$i<=$longitud;$i++)
+		 {
+			 if($coduniadm_array[$i] == $ls_coduniadm)
+			 {
+				 $unidadesEjecutoras .= '<option value="'.$coduniadm_array[$i].'" selected>'.$denuniadm_array[$i].'</option>';
+			 }else {
+				 $unidadesEjecutoras .= '<option value="'.$coduniadm_array[$i].'">'.$denuniadm_array[$i].'</option>';
+			 }
+		 }
+		 return $unidadesEjecutoras;
+	 }
 
 }
 ?>

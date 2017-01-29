@@ -1,34 +1,37 @@
 <?php
 session_start();
+
 //////////////////////////////////////////////         SEGURIDAD               /////////////////////////////////////////////
 if(!array_key_exists("la_logusr",$_SESSION))
 {
-	print "<script language=JavaScript>";
-	print "location.href='../sigesp_inicio_sesion.php'";
-	print "</script>";
+    print "<script language=JavaScript>";
+    print "location.href='../sigesp_inicio_sesion.php'";
+    print "</script>";
 }
 $ls_logusr=$_SESSION["la_logusr"];
+
 require_once("class_funciones_activos.php");
 $io_fun_activo=new class_funciones_activos();
-// @TODO
 //$io_fun_activo->uf_load_seguridad("SAF","sigesp_saf_p_incorporaciones.php",$ls_permisos,$la_seguridad,$la_permisos);
 $io_fun_activo->uf_load_seguridad("SAF","sigesp_saf_d_aseguradoras.php",$ls_permisos,$la_seguridad,$la_permisos);
+
 require_once("sigesp_saf_c_activo.php");
 $ls_codemp = $_SESSION["la_empresa"]["codemp"];
 $io_saf_tipcat= new sigesp_saf_c_activo();
 $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 //////////////////////////////////////////////         SEGURIDAD               /////////////////////////////////////////////
-   function uf_obtenervalor($as_valor, $as_valordefecto)
-   {
-	//////////////////////////////////////////////////////////////////////////////
-	//	Function:  uf_obtenervalor
-	//	Access:    public
-	//	Arguments:
-    // 				as_valor         //  nombre de la variable que desamos obtener
-    // 				as_valordefecto  //  contenido de la variable
-    // Description: Funci? que obtiene el valor de una variable si viene de un submit
-	//////////////////////////////////////////////////////////////////////////////
-		if(array_key_exists($as_valor,$_POST))
+
+//////////////////////////////////////////////////////////////////////////////
+//	Function:  uf_obtenervalor
+//	Access:    public
+//	Arguments:
+// 				as_valor         //  nombre de la variable que desamos obtener
+// 				as_valordefecto  //  contenido de la variable
+// Description: Funci? que obtiene el valor de una variable si viene de un submit
+//////////////////////////////////////////////////////////////////////////////
+function uf_obtenervalor($as_valor, $as_valordefecto)
+{
+    if(array_key_exists($as_valor,$_POST))
 		{
 			$valor=$_POST[$as_valor];
 		}
@@ -37,14 +40,15 @@ $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 			$valor=$as_valordefecto;
 		}
    		return $valor;
-   }
-   //--------------------------------------------------------------
-   function uf_limpiarvariables()
-   {
-		//////////////////////////////////////////////////////////////////////////////////
-		//	Function:  uf_limpiarvariables
-		//	Description: Funci? que limpia todas las variables necesarias en la p?ina
-		/////////////////////////////////////////////////////////////////////////////////
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+//	Function:  uf_limpiarvariables
+//	Description: Funci? que limpia todas las variables necesarias en la p?ina
+/////////////////////////////////////////////////////////////////////////////////
+function uf_limpiarvariables()
+{
+
    		global $ls_cmpmov,$ls_codres,$ls_codresnew,$ls_nomres,$ls_nomresnew,$ls_descmp,$ld_feccmp, $ls_codcau,$ls_dencau,$ls_codubicfisica;
    		global $ls_estpromov,$ls_status,$ls_titletable,$li_widthtable,$ls_nametable,$lo_title,$li_totrows,$ls_codrespri,$ls_numcmp;
 		global $ls_denrespri,$ls_codresuso,$ls_denresuso,$ls_tiprespri,$ls_tipresuso,$ls_coduniadm,$ls_denuniadm,$ls_ubigeo;
@@ -197,32 +201,32 @@ $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
               <ul class="nav navbar-nav">
 								<li>
 									<a href="javascript: ue_nuevo();"><span>Nuevo</span>
-										<img src="../shared/imagebank/pngb64/new.png" alt="Nuevo" width="20" title="Nuevo" height="20" border="0">
+										<img src="../shared/imagebank/gnome-icon-theme/document-new.png" alt="Nuevo" width="20" title="Nuevo" height="20" border="0">
 									</a>
 								</li>
 								<li>
 									<a href="javascript: ue_guardar();"><span>Guardar</span>
-										<img src="../shared/imagebank/pngb64/save.png" alt="Grabar"  width="20" title="Guardar" height="20" border="0">
+										<img src="../shared/imagebank/gnome-icon-theme/document-save.png" alt="Grabar"  width="20" title="Guardar" height="20" border="0">
 									</a>
 								</li>
 								<li>
 									<a href="javascript: ue_buscar();"><span>Buscar</span>
-										<img src="../shared/imagebank/pngb64/search.png" alt="Buscar" width="20"  height="20" title="Buscar" border="0">
+										<img src="../shared/imagebank/gnome-icon-theme/system-search.png" alt="Buscar" width="20"  height="20" title="Buscar" border="0">
 									</a>
 								</li>
 						    <li>
 					    		<a href="javascript: ue_imprimir();"><span>Imprimir</span>
-						    		<img src="../shared/imagebank/pngb64/print.png" alt="Imprimir" title="Imprimir" width="20" height="20" border="0">
+						    		<img src="../shared/imagebank/gnome-icon-theme/document-print.png" alt="Imprimir" title="Imprimir" width="20" height="20" border="0">
 						    	</a>
 								</li>
 								<li>
 									<a href="javascript: ue_cerrar();"><span>Cerrar</span>
-										<img src="../shared/imagebank/pngb64/logout.png" alt="Salir" width="20" height="20" title="Salir" border="0">
+										<img src="../shared/imagebank/gnome-icon-theme/application-exit.png" alt="Salir" width="20" height="20" title="Salir" border="0">
 									</a>
 								</li>
 								<li>
 									<a href="javascript: ue_ayuda();"><span>Ayuda</span>
-										<img src="../shared/imagebank/pngb64/help.png" alt="Ayuda" title="Ayuda" width="20" height="20">
+										<img src="../shared/imagebank/gnome-icon-theme/help-browser.png" alt="Ayuda" title="Ayuda" width="20" height="20">
 									</a>
 								</li>
 							</ul>
@@ -234,7 +238,7 @@ $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 
 <?php
 	require_once("../shared/class_folder/sigesp_include.php");
-	$in=     new sigesp_include();
+	$in = new sigesp_include();
 	$con= $in->uf_conectar();
 	require_once("../shared/class_folder/class_sql.php");
 	$io_sql=  new class_sql($con);
@@ -250,8 +254,8 @@ $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 	$io_saf= new sigesp_saf_c_movimiento();
 	require_once("../shared/class_folder/grid_param.php");
 	$in_grid= new grid_param();
-	require_once("sigesp_saf_c_activo.php");
-	$io_saf_dta= new sigesp_saf_c_activo();
+	// require_once("sigesp_saf_c_activo.php");
+	// $io_saf_dta= new sigesp_saf_c_activo();
 	/* Unidad Física de Activos Fijos */
 	require_once("sigesp_saf_c_unidadfisica.php");
 	$io_unidadfisica = new sigesp_saf_c_unidadfisica();
@@ -639,7 +643,8 @@ $ls_rbtipocat=$io_saf_tipcat->uf_select_valor_config($ls_codemp);
 				<div class="col-md-9">
 					<!-- <input name="txtcoduniadm" type="text" id="txtcoduniadm" class="form-control" value="<?php print $ls_coduniadm; ?>" readonly> -->
 					<select class="form-control" id="txtcoduniadmid" name="txtcoduniadm" aria-describedby="helpUbiOrg">
-						<?php echo $io_saf_dta->uf_list_catalogo_unidad_ejecutora($ls_coduniadm); ?>
+						<?php /*echo $io_saf_dta->uf_list_catalogo_unidad_ejecutora($ls_coduniadm);*/ ?>
+						<?php echo $io_saf_tipcat->uf_list_catalogo_unidad_ejecutora($ls_coduniadm); ?>
 					</select>
 					<span id="helpUbiOrg" class="help-block">Cat&aacute;logo de Unidad Ejecutora.</span>
 				</div>

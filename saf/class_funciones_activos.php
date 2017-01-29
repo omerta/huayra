@@ -287,7 +287,7 @@ class class_funciones_activos
 	 */
    function uf_load_seguridad($as_sistema,$as_ventanas,&$as_permisos,&$aa_seguridad,&$aa_permisos)
    {
-		require_once("../shared/class_folder/sigesp_c_seguridad.php");
+		require_once("../shared/class_folder/sigesp_c_seguridad_26042016.php");
 		$io_seguridad= new sigesp_c_seguridad();
 		$ls_empresa=$_SESSION["la_empresa"]["codemp"];
 		$ls_logusr=$_SESSION["la_logusr"];

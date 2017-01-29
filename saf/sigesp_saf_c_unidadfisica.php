@@ -11,7 +11,7 @@ class sigesp_saf_c_unidadfisica
 	{
 		require_once("../shared/class_folder/class_mensajes.php");
 		require_once("../shared/class_folder/sigesp_include.php");
-		require_once("../shared/class_folder/sigesp_c_seguridad.php");
+		require_once("../shared/class_folder/sigesp_c_seguridad_26042016.php");
 		require_once("../shared/class_folder/class_funciones.php");
 		$this->io_msg=new class_mensajes();
 		$in=new sigesp_include();
@@ -21,17 +21,17 @@ class sigesp_saf_c_unidadfisica
 		$this->seguridad=   new sigesp_c_seguridad();
 		$this->io_funcion = new class_funciones();
 	}
-	
+
 	function uf_saf_select_unidadfisica($as_coduniadm)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_unidadfisica
-		//         Access: private 
+		//         Access: private
 		//      Argumento: $as_coduniadm //codigo de Unidad
 		//	      Returns: Retorna un Booleano
-		//    Description: Funcion que verifica existe la unidad 
+		//    Description: Funcion que verifica existe la unidad
 		//	   Creado Por: Ing. Luis Lang / Ing. Yesenia Moreno
-		// Fecha Creación: 21/11/2007 								Fecha Última Modificación :
+		// Fecha Creaciï¿½n: 21/11/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 		$ls_sql="SELECT coduniadm".
@@ -41,7 +41,7 @@ class sigesp_saf_c_unidadfisica
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_msg->message("CLASE->unidadfisica MÉTODO->uf_saf_select_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+			$this->io_msg->message("CLASE->unidadfisica Mï¿½TODO->uf_saf_select_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -54,7 +54,7 @@ class sigesp_saf_c_unidadfisica
 		}
 		return $lb_valido;
 	}  // end function uf_saf_select_unidadfisica
-	
+
 	function  uf_saf_insert_unidadfisica($as_coduniadm,$as_denuniadm,$aa_seguridad)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ class sigesp_saf_c_unidadfisica
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que inserta la unidad fisica
 		//	   Creado Por: Ing. Luis Lang / Ing. Yesenia Moreno
-		// Fecha Creación: 21/11/2007 								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 21/11/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$ls_sql="INSERT INTO saf_unidadadministrativa (codemp, coduniadm, denuniadm) ".
@@ -74,19 +74,19 @@ class sigesp_saf_c_unidadfisica
 		$li_row=$this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
-			$this->io_msg->message("CLASE->unidadfisica MÉTODO->uf_saf_insert_cambioresponsable ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+			$this->io_msg->message("CLASE->unidadfisica Mï¿½TODO->uf_saf_insert_cambioresponsable ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="INSERT";
-			$ls_descripcion ="Insertó la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
+			$ls_descripcion ="Insertï¿½ la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
 			$lb_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -101,18 +101,18 @@ class sigesp_saf_c_unidadfisica
 		return $lb_valido;
 	} //end function  uf_saf_insert_cambioresponsable
 
-	function uf_saf_update_unidadfisica($as_coduniadm,$as_denuniadm,$aa_seguridad) 
+	function uf_saf_update_unidadfisica($as_coduniadm,$as_denuniadm,$aa_seguridad)
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_update_unidadfisica
-		//         Access: public 
+		//         Access: public
 		//      Argumento: $as_coduniadm //codigo de unidad
 		//                 $as_denuniadm //Denominacion de Unidad
 		//				   $aa_seguridad //arreglo de registro de seguridad
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que actualiza un los responsables de un activo en la tabla saf_dta
 		//	   Creado Por: Ing. Luis Anibal Lang
-		// Fecha Creación: 03/04/2006 								Fecha Última Modificación : 03/04/2006 
+		// Fecha Creaciï¿½n: 03/04/2006 								Fecha ï¿½ltima Modificaciï¿½n : 03/04/2006
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=true;
 		$this->io_sql->begin_transaction();
@@ -123,19 +123,19 @@ class sigesp_saf_c_unidadfisica
 		$li_row = $this->io_sql->execute($ls_sql);
 		if($li_row===false)
 		{
-			$this->io_msg->message("CLASE->unidadfisica MÉTODO->uf_saf_update_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+			$this->io_msg->message("CLASE->unidadfisica Mï¿½TODO->uf_saf_update_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
 		{
 			$lb_valido=true;
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			$ls_evento="UPDATE";
-			$ls_descripcion ="Actualizó la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
+			$ls_descripcion ="Actualizï¿½ la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
 			$lb_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 											$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 											$aa_seguridad["ventanas"],$ls_descripcion);
-			/////////////////////////////////         SEGURIDAD               /////////////////////////////		
+			/////////////////////////////////         SEGURIDAD               /////////////////////////////
 			if($lb_valido)
 			{
 				$this->io_sql->commit();
@@ -162,7 +162,7 @@ class sigesp_saf_c_unidadfisica
 		//	      Returns: Retorna un Booleano
 		//    Description: Funcion que realiza las operaciones asociadas al grabar una unidad fisica de Activos
 		//	   Creado Por: Ing. Luis Lang / Ing. Yesenia Moreno
-		// Fecha Creación: 21/11/2007 								Fecha Última Modificación :
+		// Fecha Creaciï¿½n: 21/11/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 		if($as_estatus=="C")
@@ -201,20 +201,20 @@ class sigesp_saf_c_unidadfisica
 		//				   aa_seguridad // Arreglo de variables de seguridad
 		//	  Description: Funcion que elimina una unidad
 		//	   Creado Por: Ing. Luis Anibal Lang
-		// Fecha Creación: 22/11/2007								Fecha Última Modificación : 
+		// Fecha Creaciï¿½n: 22/11/2007								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=$this->uf_saf_selectactivos($as_coduniadm);
 		if(!$lb_valido)
 		{
 			$this->io_sql->begin_transaction();
 			$ls_sql="DELETE ".
-					"  FROM saf_unidadadministrativa". 
+					"  FROM saf_unidadadministrativa".
 					" WHERE codemp='".$this->ls_codemp."'".
 					"   AND coduniadm='".$as_coduniadm."'";
 			$rs_data=$this->io_sql->execute($ls_sql);
 			if($rs_data===false)
 			{
-				$this->io_msg->message("CLASE->unidadfisica MÉTODO->uf_saf_delete_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+				$this->io_msg->message("CLASE->unidadfisica Mï¿½TODO->uf_saf_delete_unidadfisica ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 				$lb_valido=false;
 				$this->io_sql->rollback();
 			}
@@ -223,14 +223,14 @@ class sigesp_saf_c_unidadfisica
 				$lb_valido=true;
 				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$ls_evento="DELETE";
-				$ls_descripcion ="Eliminó la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
+				$ls_descripcion ="Eliminï¿½ la Unidad Fisica ".$as_coduniadm." Asociado a la Empresa ".$this->ls_codemp;
 				$ls_variable= $this->seguridad->uf_sss_insert_eventos_ventana($aa_seguridad["empresa"],
 												$aa_seguridad["sistema"],$ls_evento,$aa_seguridad["logusr"],
 												$aa_seguridad["ventanas"],$ls_descripcion);
-				/////////////////////////////////         SEGURIDAD               /////////////////////////////			
+				/////////////////////////////////         SEGURIDAD               /////////////////////////////
 				$this->io_sql->commit();
 			}
-		}	
+		}
 		else
 		{
 			$this->io_msg->message("Posee activos relacionados");
@@ -243,12 +243,12 @@ class sigesp_saf_c_unidadfisica
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//	     Function: uf_saf_select_unidadfisica
-		//         Access: private 
+		//         Access: private
 		//      Argumento: $as_coduniadm //codigo de Unidad
 		//	      Returns: Retorna un Booleano
-		//    Description: Funcion que verifica existe la unidad 
+		//    Description: Funcion que verifica existe la unidad
 		//	   Creado Por: Ing. Luis Lang / Ing. Yesenia Moreno
-		// Fecha Creación: 21/11/2007 								Fecha Última Modificación :
+		// Fecha Creaciï¿½n: 21/11/2007 								Fecha ï¿½ltima Modificaciï¿½n :
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$lb_valido=false;
 		$ls_sql="SELECT codact".
@@ -258,7 +258,7 @@ class sigesp_saf_c_unidadfisica
 		$rs_data=$this->io_sql->select($ls_sql);
 		if($rs_data===false)
 		{
-			$this->io_msg->message("CLASE->unidadfisica MÉTODO->uf_saf_selectactivos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
+			$this->io_msg->message("CLASE->unidadfisica Mï¿½TODO->uf_saf_selectactivos ERROR->".$this->io_funcion->uf_convertirmsg($this->io_sql->message));
 			$lb_valido=false;
 		}
 		else
@@ -271,6 +271,39 @@ class sigesp_saf_c_unidadfisica
 		}
 		return $lb_valido;
 	}  // end function uf_saf_selectactivos
-	
-} 
+
+	/**
+	 * Lista las Unidades Administrativas
+	 *
+	 * @param string $ls_codubifisresuso CÃ³digo de ubicaciÃ³n fisica de la ubicaciÃ³n
+	 *				fÃ­sica.
+	 * @return string $unidadesAdministrativas Las <option> del <select>.
+	 */
+	 function uf_list_unidadAdministrativa($ls_codubifisresuso)
+	 {
+		 $ls_sql = "SELECT coduniadm,denuniadm";
+ 		 $ls_sql.= " FROM saf_unidadadministrativa";
+		 $ls_sql.= " WHERE codemp='".$this->ls_codemp."'";
+
+		 $result_set = $this->io_sql->select($ls_sql);
+		 $rs_data = $this->io_sql->obtener_datos($result_set);
+		//  dump("<pre>".$rs_data."</pre>"); die;
+		 $coduniadm_array = $rs_data["coduniadm"];
+		 $longitud = count($coduniadm_array);
+		 $denuniadm_array = $rs_data["denuniadm"];
+
+		 $unidadesAdministrativas = '<option value="0">Seleccione</option>';
+		 for($i=1;$i<=$longitud;$i++)
+		 {
+			 	if($coduniadm_array[$i] == $ls_codubifisresuso)
+				{
+					$unidadesAdministrativas .= '<option value="'.$coduniadm_array[$i].'" selected>'.$denuniadm_array[$i].'</option>';
+				}else {
+					$unidadesAdministrativas .= '<option value="'.$coduniadm_array[$i].'">'.$denuniadm_array[$i].'</option>';
+				}
+		 }
+		 return $unidadesAdministrativas;
+	 }
+
+}
 ?>
