@@ -5,8 +5,10 @@ CHANGELOG
 
  * Twig 2.x
  * PHP pdf Class (EZPDF) 0.12.31
+ * adodb 5.20.9
 
 * 12.2016 (2016-12-31)
 
  * Twig 1.18.2
  * PHP pdf Class (EZPDF) 009
+ * adodb 4.81
