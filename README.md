@@ -111,3 +111,9 @@ huayra/shared$ php composer.phar require twig/twig
 ```bash
 huayra/shared$ php composer.phar require rospdf/pdf-php
 ```
+
+# ADOdb
+
+```bash
+huayra/shared$ php composer.phar require adodb/adodb-php
+```
