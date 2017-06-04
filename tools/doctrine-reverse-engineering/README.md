@@ -30,6 +30,8 @@ Processing entity "SafTipoestructura"
 Exporting "annotation" mapping information to "/var/www/demos/doctrine-reverse-engineering/entidades"
 ```
 
+Reemplazar las incidencias `@ORM\` por `@`.
+
 Generar los *métodos* (getters y setters):
 
 ```bash

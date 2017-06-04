@@ -1,0 +1,112 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * SssUsuarios
+ *
+ * @ORM\Table(name="sss_usuarios")
+ * @ORM\Entity
+ */
+class SssUsuarios
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codemp", type="string", length=4, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $codemp;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codusu", type="string", length=30, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $codusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cedusu", type="string", length=8, nullable=true)
+     */
+    private $cedusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nomusu", type="string", length=100, nullable=false)
+     */
+    private $nomusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apeusu", type="string", length=50, nullable=false)
+     */
+    private $apeusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pwdusu", type="string", length=50, nullable=false)
+     */
+    private $pwdusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telusu", type="string", length=20, nullable=true)
+     */
+    private $telusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nota", type="text", nullable=true)
+     */
+    private $nota;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="actusu", type="smallint", nullable=true)
+     */
+    private $actusu;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="blkusu", type="smallint", nullable=true)
+     */
+    private $blkusu;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="admusu", type="smallint", nullable=true)
+     */
+    private $admusu;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="ultingusu", type="date", nullable=true)
+     */
+    private $ultingusu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fotousu", type="string", length=254, nullable=true)
+     */
+    private $fotousu;
+
+
+}
+
